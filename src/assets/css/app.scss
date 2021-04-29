@@ -1,0 +1,292 @@
+
+.custom-bg-dark {
+    background-color: #373f46 !important
+}
+
+#app {
+    font-family: Avenir, Helvetica, Arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-align: center;
+    color: #2c3e50;
+    margin-left: 30px;
+}
+
+div#app-container {
+    margin: 1.5em;
+}
+
+.jumbotron {
+    margin-bottom: 0;
+}
+
+footer#custom-footer {
+    height: 6rem;
+    background-color: #373f46;
+    font-size: 1rem;
+    position: fixed;
+    bottom: 0px;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white !important;
+}
+
+.header{
+    position: fixed;
+    background: $c-white;
+    z-index: 15;
+    display: flex;
+    @include tablet-min{
+        width: calc(100% - 170px);
+        height: 75px;
+        margin-left: 30px;
+        border-top: 0;
+        border-bottom: 0;
+        top: 0;
+    }
+    &__search{
+        height: 50px;
+        display: flex;
+        position: relative;
+        z-index: 5;
+        width: calc(100% - 110px);
+        position: fixed;
+        top: 0;
+        right: 55px;
+        @include tablet-min{
+            position: relative;
+            height: 75px;
+            right: 0;
+        }
+        &-input{
+            display: block;
+            width: 100%;
+            padding: 15px 20px 15px 45px;
+            outline: none;
+            border: 0;
+            background-color: transparent;
+            color: $c-dark;
+            font-weight: 300;
+            font-size: 16px;
+            @include tablet-min{
+                padding: 15px 30px 15px 60px;
+            }
+            @include tablet-landscape-min{
+                padding: 15px 30px 15px 80px;
+            }
+            @include desktop-min{
+                padding: 15px 30px 15px 90px;
+            }
+        }
+        &-icon{
+        width: 14px;
+        height: 14px;
+        fill: rgba($c-dark, 0.5);
+        transition: fill 0.5s ease;
+        pointer-events: none;
+        position: absolute;
+        top: 50%;
+        margin-top: -7px;
+        left: 20px;
+        @include tablet-min{
+            width: 18px;
+            height: 18px;
+            margin-top: -9px;
+            left: 30px;
+        }
+        @include tablet-landscape-min{
+            left: 50px;
+        }
+        @include desktop-min{
+            left: 60px;
+        }
+        }
+        &-input:focus + &-icon{
+            fill: $c-dark;
+        }
+    }
+    }
+    .main{
+        position: relative;
+        padding: 50px 0 0;
+        @include tablet-min{
+            width: calc(100% - 95px);
+            padding: 75px 0 0;
+            margin-left: 95px;
+            position: relative;
+    }
+}
+
+div#custom-home {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.top-menu-item {
+    height: 80px;
+    background: white;
+    padding-top: 20px;
+    padding-left: 10px;
+}
+
+.top-menu-item img {
+    width:80%;
+    max-width:80%;
+    height:auto;
+    margin:0 auto;
+    padding: 2px;
+}
+
+.icon-lg{
+    width: 50%;
+}
+
+.nav-logo {
+    height: 30px;
+}
+
+.w100 {
+    width: 100%;
+}
+
+.w50 {
+    width: 50%;
+}
+
+.w60 {
+    width: 60%;
+}
+
+.w40 {
+    width: 40%;
+}
+
+.w20 {
+    width: 20%;
+    padding: 5px;
+}
+
+.w10 {
+    width: 12%;
+    padding: 5px;
+}
+
+.w30 {
+    width: 30%;
+    padding: 5px;
+}
+
+.h100 {
+    height: 100%;
+    margin-top: 0px;
+}
+
+.margined {
+    margin: 1em;
+}
+
+.margined-s{
+    margin: 0.5em;
+}
+
+.padding {
+    padding: 2px;
+}
+
+.md-icon {
+    width: 50px; 
+    height: 50px;
+    padding: 10px;
+}
+
+.top{
+    vertical-align:top;
+}
+
+.right{
+    float: right;
+}
+
+.left{
+    float: left;
+}
+
+.horizontal div {
+    display: inline-block;
+    margin: 2px;
+}
+
+.horizontal-no-margin div {
+    display: inline-block;
+}
+
+.fcontainer {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+  
+.fitem {
+    flex: 0 22%;
+    height: 100px;
+    margin-bottom: 2%; /* (100-32*3)/2 */
+}
+
+.loader {  /* Loader Div Class */
+    justify-content: center;
+    position: absolute;
+    top:0px;
+    right:0px;
+    width:100%;
+    height:100%;
+    background-color:#300;
+    background-size: 50px;
+    background-repeat:no-repeat;
+    background-position:center;
+    z-index:10000000;
+    opacity: 0.8;
+    filter: alpha(opacity=40);
+}
+
+.loader div {
+    justify-content: center;
+    display: inline-block;
+    margin-top: 20%;
+}
+
+.border{
+    border: #300;
+    border-radius: 2px;
+    border-width: 2px;
+}
+
+.green{
+    color: white;
+    background: green;
+}
+
+.red{
+    color: white;
+    background: red;
+}
+
+.orange{
+    color: white;
+    background: orange;
+}
+
+.text{
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    width: 99%;
+}
+  
+zing-grid {
+    --zg-cell-height: 50px;
+  }

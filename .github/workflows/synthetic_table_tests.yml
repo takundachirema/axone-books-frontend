@@ -1,0 +1,31 @@
+name: synthetic_table_tests
+
+on:
+   # Run tests on every push.
+   push
+
+jobs:
+  run_tests:
+
+      runs-on: ubuntu-20.04
+
+      strategy:
+        # Prevent all build to stop if a single one fails
+        fail-fast: false
+
+      steps:
+      - uses: actions/checkout@v2
+      
+      - name: Set up Python 3.8
+        uses: actions/setup-python@v1
+        with:
+          python-version: 3.8
+  
+      - name: Install deps
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r ./python_scripts/requirements.txt
+
+      - name: Run tests
+        run: |
+          python python_scripts/test_get_calc_stats.py
