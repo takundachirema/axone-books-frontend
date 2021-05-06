@@ -36,6 +36,8 @@ import numeral from 'numeral'
 import storage from '../storage.js'
 import BooksListItem from './BooksListItem.vue'
 
+const assert = require('assert');
+
 // Storage for removed favorite item
 let removed;
 
@@ -85,12 +87,39 @@ export default {
   },
   methods: {
     getLatestBooks(){
-      alert(process.env.VUE_APP_BIGCHAINDB)
+      axios.post(
+        'http://localhost:3000/api/latest',
+        {
+          mongodb_url: process.env.VUE_APP_BIGCHAINDB_MONGO_DB
+        }
+      )
+      .then(resp => {
+          let data = resp.data;
+          if(this.shortList){
+            this.books = data.results.slice(0, 5);
+            this.pages = 1;
+            this.results = 5;
+          } else {
+            this.books = data.results;
+            this.pages = data.total_pages;
+            this.results = data.total_results;
+          }
+          this.listLoaded = true;
+          if(this.type == 'page'){
+            document.title = this.pageTitle;
+          }
+          console.log(resp.data.results) 
+      })
+      .catch(e => {
+          console.log(e)
+      })
+    },
+    populateList(){
 
     },
     fetchCategory(){
       axios.get(this.request)
-      .then(function(resp){
+      .then(function(resp) {
           let data = resp.data;
           if(this.shortList){
             this.books = data.results.slice(0, 5);

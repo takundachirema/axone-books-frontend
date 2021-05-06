@@ -21,7 +21,8 @@ import 'bootstrap-vue/dist/bootstrap-vue.css';
 import './assets/js/zingchart-navpie.min.js';
 
 import { BootstrapVue, IconsPlugin } from 'bootstrap-vue'
-//import {setEnvironment} from './config/env';
+
+window.eventHub = new Vue();
 
 Vue.use(BootstrapVue)
 Vue.use(IconsPlugin)
@@ -30,7 +31,6 @@ Vue.use(VueSidebarMenu)
 Vue.component('zinggrid', ZingGrid)
 Vue.component('zingchart', ZingChartVue)
 Vue.config.productionTip = false
-Vue.prototype.$bigChainUrl = 'http://localhost:9984/'
 
 const router = new VueRouter({
   mode: 'history',

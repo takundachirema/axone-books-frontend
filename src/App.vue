@@ -11,6 +11,8 @@
     </sidebar-menu>
     <router-view :data="getData()"/>
     
+    <book-popup v-if="bookPopupIsVisible" @close="closeBookPopup" :book="book"></book-popup>
+
     <header class="header">
       <div class="header__search row">
         <div class="input-field col s1">
@@ -25,11 +27,29 @@
 
 <script>
   import M from 'materialize-css'
+  import storage from './storage.js'
+  import BookPopup from './components/BookPopup.vue'
 
   export default {
     name: 'App',
+    components: {BookPopup},
     methods: {
       getData(){ },
+      openBookPopup(book, newBookPopup){
+        if(newBookPopup){
+          storage.backTitle = document.title;
+        }
+        storage.createBookPopup = newBookPopup;
+        this.bookPopupIsVisible = true;
+        this.book = book;
+        document.querySelector('body').classList.add('hidden');
+      },
+      closeBookPopup(){
+        storage.createBookPopup = false;
+        this.bookPopupIsVisible = false;
+        document.querySelector('body').classList.remove('hidden');
+        window.history.back();
+      },
       onToggleCollapse (collapsed) {
         this.collapsed = collapsed
       },
@@ -40,16 +60,37 @@
       },
       filter: function() {
         console.log("add name")
+      },
+      // Router After Leave
+      afterLeave(){
+        document.querySelector('body').scrollTop = 0;
+      },
+      // Detect if touch device
+      isTouchDevice() {
+        return 'ontouchstart' in document.documentElement;
       }
     },
     mounted () {
       M.AutoInit()
     },
     created () {
-      this.collapsed = true
+      this.collapsed = true;
+      window.addEventListener('popstate', this.onHistoryState);
+      window.addEventListener('pagehide', this.changeHistoryState);
+      eventHub.$on('openBookPopup', this.openBookPopup);
+      eventHub.$on('setSearchQuery', this.setSearchQuery);
+      eventHub.$on('requestToken', this.requestToken);
+      eventHub.$on('setUserStatus', this.setUserStatus);
+      if (this.isTouchDevice()) {
+        document.querySelector('body').classList.add('touch');
+      }
     },
     data() {
       return {
+        bookPopupIsVisible: false,
+        bookPopupHistoryVisible: false,
+        book: {},
+        searchQuery: '',
         loading: true,
         menu: [
           {

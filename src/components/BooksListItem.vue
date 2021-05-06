@@ -6,7 +6,7 @@
         <img v-if="noImage" class="books-item__img is-loaded" src="../assets/images/no-image.png" alt="">
       </figure>
       <div class="books-item__content">
-        <p class="books-item__title">{{ book.title }}</p>
+        <p class="books-item__title">{{ book.metadata.title }}</p>
       </div>
     </a>
   </li>
@@ -25,16 +25,19 @@ export default {
       noImage: false
     }
   },
+  mounted(){
+    //console.log("book item "+JSON.stringify(this.book))
+  },
   methods: {
     poster() {
-      if(this.book.poster_path){
-        return 'https://image.tmdb.org/t/p/w370_and_h556_bestv2' + this.book.poster_path;
+      if(this.book.metadata.cover){
+        return process.env.VUE_APP_IPFS_GATEWAY + this.book.metadata.cover;
       } else {
         this.noImage = true;
       }
     },
     openBookPopup(id, event){
-      eventHub.$emit('openBookPopup', id, event);
+      eventHub.$emit('openBookPopup', this.book, event);
     }
   }
 }

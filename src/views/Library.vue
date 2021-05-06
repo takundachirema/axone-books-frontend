@@ -4,7 +4,8 @@
             :type="'component'" 
             :mode="'collection'" 
             :category="'popular'" 
-            :shortList="true">
+            :shortList="true"
+            :pageTitle="'Latest Books'">
         </books-list>
     </div>
 </template>
