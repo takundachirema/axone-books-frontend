@@ -16,10 +16,12 @@ import BooksList from '../components/BooksList.vue'
 export default {
     components: { BooksList },
     created(){
+        eventHub.$emit('showHeader', true);
         document.title = 'Books';
     },
     data(){
         return {
+            show_header: true
         }
     }
 }

@@ -13,7 +13,7 @@
     
     <book-popup v-if="bookPopupIsVisible" @close="closeBookPopup" :book="book"></book-popup>
 
-    <header class="header">
+    <header v-show="show_header" class="header">
       <div class="header__search row">
         <div class="input-field col s1">
           <i class="material-icons prefix">search</i>
@@ -68,6 +68,9 @@
       // Detect if touch device
       isTouchDevice() {
         return 'ontouchstart' in document.documentElement;
+      },
+      showHeader(show) {
+        this.show_header = show;
       }
     },
     mounted () {
@@ -81,6 +84,7 @@
       eventHub.$on('setSearchQuery', this.setSearchQuery);
       eventHub.$on('requestToken', this.requestToken);
       eventHub.$on('setUserStatus', this.setUserStatus);
+      eventHub.$on('showHeader', this.showHeader);
       if (this.isTouchDevice()) {
         document.querySelector('body').classList.add('touch');
       }
@@ -92,6 +96,7 @@
         book: {},
         searchQuery: '',
         loading: true,
+        show_header: false,
         menu: [
           {
             header: true,
@@ -102,6 +107,11 @@
             href: '/',
             title: 'Library',
             icon: 'fa fa-book'
+          },
+          {
+            href: '/read',
+            title: 'Read',
+            icon: 'fa fa-book-reader'
           },
           {
             href: '/publish',

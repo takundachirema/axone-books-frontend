@@ -10,6 +10,7 @@
     text-align: center;
     color: #2c3e50;
     margin-left: 30px;
+    
 }
 
 div#app-container {
@@ -33,13 +34,65 @@ footer#custom-footer {
     color: white !important;
 }
 
+.pager-container {
+    width: 100%;
+    text-align: center;
+    .side-list{
+        float: left;
+    }
+}
+
+.pager {
+    width: 80%;
+    //display: inline-block;
+    margin: 0 auto;
+    //margin-right: 20px;
+    padding: 3px;
+    span {
+        float: left;
+    };
+    .nav-left {
+        position: fixed;
+        cursor: pointer;
+        top: 0;
+        height: 100%;
+        background-image: url('https://manybooks.net/themes/custom/mnybks/images/arrow-left.png');
+        width: 10%;
+        background-size: 50px;
+        background-position: center left;
+        background-repeat: no-repeat;
+        z-index: 1;
+        opacity: 0.8;
+        &:hover{
+            opacity: 1;
+        }
+    };
+    .nav-right {
+        position: fixed;
+        cursor: pointer;
+        top: 0;
+        height: 100%;
+        background-image: url('https://manybooks.net/themes/custom/mnybks/images/arrow-right.png');
+        width: 10%;
+        background-size: 50px;
+        background-position: center right;
+        right: 10%;
+        background-repeat: no-repeat;
+        z-index: 1;
+        opacity: 0.8;
+        &:hover{
+            opacity: 1;
+        }
+    }
+}
+
 .header{
     position: fixed;
     background: $c-white;
     z-index: 15;
     display: flex;
+    width: 100%;
     @include tablet-min{
-        width: calc(100% - 170px);
         height: 75px;
         margin-left: 30px;
         border-top: 0;
@@ -54,6 +107,92 @@ footer#custom-footer {
         width: calc(100% - 110px);
         position: fixed;
         top: 0;
+        right: 55px;
+        @include tablet-min{
+            position: relative;
+            height: 75px;
+            right: 0;
+        }
+        &-input{
+            display: block;
+            width: 100%;
+            padding: 15px 20px 15px 45px;
+            outline: none;
+            border: 0;
+            background-color: transparent;
+            color: $c-dark;
+            font-weight: 300;
+            font-size: 16px;
+            @include tablet-min{
+                padding: 15px 30px 15px 60px;
+            }
+            @include tablet-landscape-min{
+                padding: 15px 30px 15px 80px;
+            }
+            @include desktop-min{
+                padding: 15px 30px 15px 90px;
+            }
+        }
+        &-icon{
+        width: 14px;
+        height: 14px;
+        fill: rgba($c-dark, 0.5);
+        transition: fill 0.5s ease;
+        pointer-events: none;
+        position: absolute;
+        top: 50%;
+        margin-top: -7px;
+        left: 20px;
+        @include tablet-min{
+            width: 18px;
+            height: 18px;
+            margin-top: -9px;
+            left: 30px;
+        }
+        @include tablet-landscape-min{
+            left: 50px;
+        }
+        @include desktop-min{
+            left: 60px;
+        }
+        }
+        &-input:focus + &-icon{
+            fill: $c-dark;
+        }
+    }
+    }
+    .main{
+        position: relative;
+        padding: 50px 0 0;
+        @include tablet-min{
+            width: calc(100% - 95px);
+            padding: 75px 0 0;
+            margin-left: 95px;
+            position: relative;
+    }
+}
+
+.footer{
+    position: fixed;
+    background: $c-primary;
+    z-index: 15;
+    display: flex;
+    width: 100%;
+    @include tablet-min{
+        height: 75px;
+        margin-left: 30px;
+        border-top: 0;
+        border-bottom: 0;
+        bottom: 0;
+    }
+    &__search{
+        height: 50px;
+        display: flex;
+        position: relative;
+        z-index: 5;
+        width: calc(100% - 110px);
+        position: fixed;
+        bottom: 0;
         right: 55px;
         @include tablet-min{
             position: relative;

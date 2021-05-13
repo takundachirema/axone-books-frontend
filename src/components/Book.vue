@@ -9,23 +9,16 @@
           </figure>
           <div class="book__title">
             <h1 class="book__title-text">
-              {{ book.metadata.title }}
-              <span v-if="book.metadata.tags">{{ book.metadata.tags }}</span>
+              {{ book.metadata.book_title }}
+              <span v-if="book.metadata.chapter_title">{{ book.metadata.chapter_title }}</span>
             </h1>
           </div>
         </div>
       </header>
       <div class="book__main">
         <div class="book__wrap book__wrap--main" :class="{'book__wrap--page': type=='page'}">
-          <div class="book__actions" v-if="userLoggedIn && favoriteChecked">
-            <a href="#" class="book__actions-link" :class="{'active' : favorite === true}" @click.prevent="toggleFavorite">
-              <svg class="book__actions-icon" :class="{'waiting' : favorite === ''}">
-                <use xlink:href="#iconFavorite"></use>
-              </svg>
-              <span class="book__actions-text" v-if="favorite === ''">Wait...</span>
-              <span class="book__actions-text" v-else-if="favorite">Marked as Favorite</span>
-              <span class="book__actions-text" v-else>Mark as Favorite?</span>
-            </a>
+          <div class="book__actions" >
+            <button id="read" class="btn waves-effect waves-light" @click.prevent="readBook()">Read</button>
           </div>
           <div class="book__info">
             <div v-if="book.metadata.blurb" class="book__description">
@@ -77,6 +70,10 @@ export default {
     }
   },
   methods: {
+    readBook(){
+      let route = this.$router.resolve('/read');
+      window.open(route.href+"/"+this.book.id+"/"+this.book.metadata.book_title, '_blank');
+    },
     showBook(){
       this.poster();
       this.backdrop();
@@ -92,7 +89,7 @@ export default {
         storage.createBookPopup = false;
       }
       // Change Page title
-      document.title = this.book.metadata.title + storage.pageTitlePostfix;
+      document.title = this.book.metadata.book_title;
     },
     poster() {
       if(this.book.metadata.cover){

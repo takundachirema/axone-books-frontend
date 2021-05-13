@@ -96,9 +96,9 @@ export default {
       .then(resp => {
           let data = resp.data;
           if(this.shortList){
-            this.books = data.results.slice(0, 5);
+            this.books = data.results.slice(0, 10);
             this.pages = 1;
-            this.results = 5;
+            this.results = 10;
           } else {
             this.books = data.results;
             this.pages = data.total_pages;
@@ -124,7 +124,7 @@ export default {
           if(this.shortList){
             this.books = data.results.slice(0, 5);
             this.pages = 1;
-            this.results = 5;
+            this.results = 10;
           } else {
             this.books = data.results;
             this.pages = data.total_pages;

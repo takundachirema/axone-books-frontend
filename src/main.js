@@ -11,6 +11,7 @@ import VueRouter from 'vue-router'
 import About from './views/About.vue'
 import Library from './views/Library.vue'
 import Publish from './views/Publish.vue'
+import Read from './views/Read.vue'
 
 import 'materialize-css/dist/css/materialize.min.css'
 import 'material-design-icons/iconfont/material-icons.css'
@@ -41,14 +42,19 @@ const router = new VueRouter({
       component: Library
     },
     {
-      path: '/about',
-      name: 'About',
-      component: About
+      path: '/read/:id/:title',
+      name: 'Read',
+      component: Read
     },
     {
       path: '/publish',
       name: 'Publish',
       component: Publish
+    },
+    {
+      path: '/about',
+      name: 'About',
+      component: About
     }
   ]
 })

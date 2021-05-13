@@ -1,12 +1,12 @@
 <template>
   <li class="books-item">
-    <a class="books-item__link" :class="{'no-image': noImage}" :href="'/book/' + book.id" @click.prevent="openBookPopup(book.id, true)">
+    <a class="books-item__link" :class="{'no-image': noImage}" :href="'/book/' + book.id" @click.prevent="openBookPopup(true)">
       <figure class="books-item__poster">
         <img v-if="!noImage" class="books-item__img" src="../assets/images/placeholder.png" v-img="poster()" alt="">
         <img v-if="noImage" class="books-item__img is-loaded" src="../assets/images/no-image.png" alt="">
       </figure>
       <div class="books-item__content">
-        <p class="books-item__title">{{ book.metadata.title }}</p>
+        <p class="books-item__title">{{ book.metadata.book_title }}</p>
       </div>
     </a>
   </li>
@@ -36,7 +36,7 @@ export default {
         this.noImage = true;
       }
     },
-    openBookPopup(id, event){
+    openBookPopup(event){
       eventHub.$emit('openBookPopup', this.book, event);
     }
   }
