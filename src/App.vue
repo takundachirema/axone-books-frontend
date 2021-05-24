@@ -35,6 +35,13 @@
     components: {BookPopup},
     methods: {
       getData(){ },
+      storeBooks(books){
+        //alert("store books")
+        for (var i=0;i<books.length;i++){
+          //alert(books[i].metadata.title);
+          localStorage.setItem(books[i].id,JSON.stringify(books[i]))
+        }
+      },
       openBookPopup(book, newBookPopup){
         if(newBookPopup){
           storage.backTitle = document.title;
@@ -85,6 +92,7 @@
       eventHub.$on('requestToken', this.requestToken);
       eventHub.$on('setUserStatus', this.setUserStatus);
       eventHub.$on('showHeader', this.showHeader);
+      eventHub.$on('storeBooks', this.storeBooks);
       if (this.isTouchDevice()) {
         document.querySelector('body').classList.add('touch');
       }

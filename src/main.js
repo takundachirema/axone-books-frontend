@@ -22,15 +22,19 @@ import 'bootstrap-vue/dist/bootstrap-vue.css';
 import './assets/js/zingchart-navpie.min.js';
 
 import { BootstrapVue, IconsPlugin } from 'bootstrap-vue'
+import VueTippy, { TippyComponent } from "vue-tippy";
 
 window.eventHub = new Vue();
 
+Vue.use(VueTippy);
 Vue.use(BootstrapVue)
 Vue.use(IconsPlugin)
 Vue.use(VueRouter)
 Vue.use(VueSidebarMenu)
 Vue.component('zinggrid', ZingGrid)
 Vue.component('zingchart', ZingChartVue)
+Vue.component("tippy", TippyComponent);
+
 Vue.config.productionTip = false
 
 const router = new VueRouter({

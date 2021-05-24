@@ -95,6 +95,7 @@ export default {
       )
       .then(resp => {
           let data = resp.data;
+          eventHub.$emit('storeBooks', data.results);
           if(this.shortList){
             this.books = data.results.slice(0, 10);
             this.pages = 1;

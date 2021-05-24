@@ -17,16 +17,6 @@
             </pdf>
             <div class="nav-right"></div>
         </div>
-        <div class="side-list">
-
-            <books-list
-                :type="'component'" 
-                :mode="'collection'" 
-                :category="'popular'" 
-                :shortList="true"
-                :pageTitle="'Latest Books'">
-            </books-list>
-        </div>
 
         <footer class="footer">
             <div class="page-nav row">
