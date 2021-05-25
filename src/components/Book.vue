@@ -107,7 +107,14 @@ export default {
         spacingFactor: 1.2
       },
       edgesLayout: {
-        snap: true
+        snap: true,
+        /**
+         * return undefined if the source node version is > target node
+         */
+        edgeType: function( sourceNode, targetNode ){
+          //console.log(sourceNode)
+          return undefined;
+        },
       },
       menuLayout: {
         menuRadius: 100, // the radius of the circular menu in pixels
