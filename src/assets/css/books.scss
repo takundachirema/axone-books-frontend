@@ -55,6 +55,42 @@
   transition: height, 0.5s linear;
 }
 
+.publish__container{
+  width: 100%;
+  z-index: 20;
+  background: white;
+  cursor:pointer;
+}
+
+.publish{
+  width: 100%;
+  display: none;
+  -webkit-transition:height, 0.5s linear;
+  -moz-transition: height, 0.5s linear;
+  -ms-transition: height, 0.5s linear;
+  -o-transition: height, 0.5s linear;
+  transition: height, 0.5s linear;
+}
+
+.publish.open{
+  width: 100%;
+  display: block;
+  height:auto;
+  -webkit-transition:height, 0.5s linear;
+  -moz-transition: height, 0.5s linear;
+  -ms-transition: height, 0.5s linear;
+  -o-transition: height, 0.5s linear;
+  transition: height, 0.5s linear;
+}
+
+.book__container.open{
+  display: block;
+}
+
+.book__container {
+  display: none;
+}
+
 .books-item {
     &__link{
       text-decoration: none;

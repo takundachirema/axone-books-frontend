@@ -264,6 +264,23 @@ footer#custom-footer {
     }
 }
 
+.clickable {
+    cursor: pointer
+ }
+
+.modal{ 
+    width: 60% !important ; 
+    max-height: 90% !important;
+    height: 85% !important ; 
+    overflow-y: scroll !important;
+    outline: none !important;
+    .modal-content, .modal-footer {
+        outline: none !important;
+        border-bottom: 0px !important;
+        border-radius: 0px !important;
+    }
+}
+
 div#custom-home {
     height: 100%;
     display: flex;
@@ -331,12 +348,26 @@ div#custom-home {
     margin-top: 0px;
 }
 
+.h50px{
+    height: 50px;
+    margin-top: 0px;
+}
+
+.btn {
+    background-color: $c-primary !important;
+}
+
 .margined {
     margin: 1em;
 }
 
 .margined-s{
     margin: 0.5em;
+}
+
+.margined-sides{
+    margin-right: 0.5em;
+    margin-left: 0.5em;
 }
 
 .padding {

@@ -2,13 +2,101 @@
   <section class="book">
     <div class="dag__container">
         <div class="dag__more">
-          <input type="image" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" class="image__btn" @click.prevent="toggleDag()" alt="">
+          <input id="show-dag" type="image" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" class="image__btn" alt="">
         </div>
         <div class="dag">
           <div id="dag__cy" class="dag__cy"></div>
         </div>
     </div>
-    <div class="book__container" v-if="bookLoaded">
+
+    <div class="publish__container">
+      <form id="publish-form" class="publish col s12" onsubmit="return false">
+          <div class="row small-margin">
+            <div class="input-field col s12">
+                <blockquote>
+    Please fill in your private key for encrypting your document, otherwise generate a new key pair. For more information click here.
+                </blockquote>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="input-field col s12">
+                <span id="generate-key-pair" class="prefix clickable">
+                <i class="material-icons prefix tooltipped" data-position="bottom" data-tooltip="generate">public</i>
+                </span>
+                <input 
+                disabled
+                id="public_key-text-area"
+                type="text" 
+                class="validate">
+                <label for="public_key-text-area">Public Key</label>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="input-field col s12">
+                <i class="material-icons prefix">vpn_key</i>
+                <input 
+                id="private_key-text-area"
+                required="" 
+                aria-required="true" 
+                type="text" 
+                class="validate">
+                <label for="private_key-text-area">Private Key</label>
+            </div>
+          </div>
+
+          <div class="row small-margin">
+            <div class="input-field col s12">
+                <blockquote>
+    Get your wallet address for creation of this asset on Ethereum through metamask. For more information click here.
+                </blockquote>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="input-field col s12">
+                <i class="material-icons prefix">lock</i>
+                <input 
+                id="address-text-area"
+                required="" 
+                aria-required="true" 
+                type="text" 
+                class="validate">
+                <label for="address-text-area">Wallet Address</label>
+            </div>
+          </div>
+
+          <div class="row small-margin">
+            <div class="input-field col s12">
+                <blockquote>
+    Get your payment pointer from a webmonetization provider. For more information click here.
+                </blockquote>
+            </div>
+          </div>
+          
+          <div class="row">
+            <div class="input-field col s12">
+                <i class="material-icons prefix">monetization_on</i>
+                <input 
+                id="payment-text-area"
+                required="" 
+                aria-required="true" 
+                type="text"
+                class="validate">
+                <label for="payment-text-area">Payment Pointer</label>
+            </div>
+          </div>
+
+          <div class="h50px w100">
+            <button type="button" id="cancel-publish" class="btn waves-effect waves-light right margined-sides">Cancel</button>
+            <button id="submit-publication" class="btn waves-effect waves-light right margined-sides" type="submit">Publish</button>
+          </div>
+
+        </form>
+    </div>
+
+    <div class="book__container open" v-if="bookLoaded">
       <header class="book__header" :class="{'book__header--page': type=='page'}" :style="{ 'background-image': 'url(' + bookBackdropSrc + ')' }">
         <div class="book__wrap book__wrap--header" :class="{'book__wrap--page': type=='page'}">
           <figure class="book__poster">
@@ -65,9 +153,14 @@ import cytoscape from 'cytoscape'
 import dagre from 'cytoscape-dagre';
 import edgehandles from 'cytoscape-edgehandles';
 import cxtmenu from 'cytoscape-cxtmenu';
+import Base58 from 'base-58';
+import nacl from "tweetnacl";
+
+const driver = require('bigchaindb-driver')
 
 var cy;
 var self;
+var publishNode;
 
 export default {
   props: ['book', 'type'],
@@ -113,7 +206,7 @@ export default {
          */
         edgeType: function( sourceNode, targetNode ){
           //console.log(sourceNode)
-          return undefined;
+          return 'flat';
         },
       },
       menuLayout: {
@@ -226,6 +319,24 @@ export default {
     }
   },
   methods: {
+    registerEvents(){
+      $('#generate-key-pair').bind('click', function(e) {       
+        self.generateKeyPair();      
+      }); 
+
+      $('#show-dag').bind('click', function(e) {       
+        self.toggleClass('dag','open'); 
+      });
+
+      $('#cancel-publish').bind('click', function(e) {       
+        self.publishCancel();
+      });
+
+      $("#publish-form").submit(function () {
+        self.publishChapter();
+        return false;
+      });
+    },
     prepareGraph() {
 
       cytoscape.use(dagre);
@@ -264,8 +375,7 @@ export default {
         level: 2
       });
       cy.panBy({
-        x: -100,
-        y: 150
+        y: 200
       });
     },
     /**
@@ -351,14 +461,17 @@ export default {
       console.log(menu);
       menu.selector = "#"+id;
 
-      menu.commands[0].select = function(ele){
-        self.addNewNode(ele.data('id'), false);
+      menu.commands[0].select = function(node){
+        self.addNewNode(node.data('id'), false);
       }
 
-      menu.commands[1].select = function(ele){}
+      menu.commands[1].select = function(node){
+        console.log(node._private);
+        self.showPublishChapter(node._private);
+      }
 
-      menu.commands[2].select = function(ele){
-        self.addNewNode(ele.data('id'), true);
+      menu.commands[2].select = function(node){
+        self.addNewNode(node.data('id'), true);
       }
       
       if (create_parent){
@@ -430,17 +543,105 @@ export default {
       resultString = nestedArray.join(', ');
       return resultString;
     },
-    checkIfInFavorites(id){
-      axios.get(`https://api.thebookdb.org/3/book/${id}/account_states?api_key=${storage.apiKey}&session_id=${storage.sessionId}`)
-      .then(function(resp){
-          this.favorite = resp.data.favorite;
-          this.favoriteChecked = true;
-          this.bookLoaded = true;
-      }.bind(this))
+    publishCancel(){
+      this.toggleClass('publish','open');
+      this.toggleClass('book__container','open');
+      const el = this.$el.getElementsByClassName('dag__container')[0];
+      
+      if (el) {
+        el.scrollIntoView({behavior: 'smooth'});
+      }
     },
-    toggleDag(){
-      $('.dag').toggleClass('open');
-      //$('.dag__cy').toggleClass('open');
+    showPublishChapter(node) {
+      this.publishNode = node;
+      console.log(this.publishNode)
+      this.toggleClass('publish','open');
+      this.toggleClass('dag','open');
+      this.toggleClass('book__container','open');
+    },
+    publishChapter() {
+      var node_id = this.publishNode.data.id;
+      var edges = this.publishNode.edges;
+      var parents = []
+      var children = []
+
+      for (var i=0;i<edges.length;i++){
+        var edge = edges[i];
+
+        var source = edge._private.source._private.data.id;
+        var target = edge._private.target._private.data.id;
+
+        if (node_id === source){
+          children.push(target);
+        }else{
+          parents.push(source);
+        }
+      }
+
+      this.postData(parents, children);
+    },
+    generateKeyPair(){
+      const key_pair = nacl.sign.keyPair();
+
+      var public_key = Base58.encode(key_pair["publicKey"]);
+
+      // nacl private key has the last 32 bytes as the public key
+      var private_key = Base58.encode(key_pair["secretKey"]);
+
+      $("#public_key-text-area").val(public_key);
+      $("#private_key-text-area").val(private_key);
+      M.updateTextFields();
+    },
+    /**
+     * ED key pair is only for signing.
+     * CV key pairs can be used for encryption.
+     * We use ed2curve library to convert between the 2.
+     * */
+    postData(parents, children){
+      let edPrivateKey = $("#private_key-text-area").val();
+      let address = $("#address-text-area").val();
+      let payment = $("#payment-text-area").val();
+
+      var api_url = process.env.VUE_APP_BIGCHAINDB_API;
+
+      var edPrivateKey_32 = Base58.encode(Base58.decode(edPrivateKey).slice(0, 32));
+      var edPublicKey = Base58.encode(Base58.decode(edPrivateKey).slice(32));
+
+      // Construct a transaction payload
+      const tx = driver.Transaction.makeCreateTransaction(
+        // Define the asset to store.
+        { 
+          payment_pointer: payment,
+          published: new Date().toString()
+        },
+        // Metadata contains information about the book.
+        { 
+          owner: address,
+          tags: "Axone Books",
+          parents: parents,
+          children: children,
+          published: new Date().toString()
+        },
+        // A transaction needs an output
+        [ driver.Transaction.makeOutput(
+                driver.Transaction.makeEd25519Condition(edPublicKey))
+        ],
+        edPublicKey
+      )
+
+      // Sign the transaction with private keys
+      const txSigned = driver.Transaction.signTransaction(tx, edPrivateKey_32)
+
+      // Send the transaction off to BigchainDB
+      let conn = new driver.Connection(api_url)
+
+      conn.postTransactionCommit(txSigned)
+        .then(res => {
+            console.log('Transaction', txSigned.id, 'accepted')
+        })
+    },
+    toggleClass(class_name, class_change){
+      $('.'+class_name).toggleClass(class_change);
     },
     toggleFavorite(){
       let favoriteInvert = !this.favorite;
@@ -463,6 +664,7 @@ export default {
   },
   mounted() {
     this.prepareGraph();
+    this.registerEvents();
   },
   created() {
     self = this;
