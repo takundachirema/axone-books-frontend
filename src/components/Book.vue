@@ -176,6 +176,8 @@ export default {
       userLoggedIn: storage.sessionId ? true : false,
       favoriteChecked: false,
       favorite: '',
+      // keeps adjacent nodes for clicked node
+      adjacentNodes: {},
       colaLayout: {
         name: "cola",
         handleDisconnected: true,
@@ -302,19 +304,6 @@ export default {
           'opacity': 0
         }}
       ],
-      testElements: [
-        {data: {id: 'all' ,title: 'Chapter 1: The boy who lived'}},
-        {data: {id: 'female'}},
-        {data: {id: 'edge1', source: 'all', target: 'female'}},
-        {data: {id: 'male'}},
-        {data: {id: 'edge2', source: 'all', target: 'male'}},
-        {data: {id: 'female_2016'}},
-        {data: {id: 'edgef16', source: 'female', target: 'female_2016'}},
-        {data: {id: 'male_2017'}},
-        {data: {id: 'edgem17', source: 'male', target: 'male_2017'}},
-        {data: {id: 'male_2018'}},
-        {data: {id: 'edgem18', source: 'male', target: 'male_2018'}},
-      ],
       graphElements: []
     }
   },
@@ -324,12 +313,18 @@ export default {
         self.generateKeyPair();      
       }); 
 
-      $('#show-dag').bind('click', function(e) {       
-        self.toggleClass('dag','open'); 
+      $('#show-dag').bind('click', function(e) {
+        if (this.book !== null){
+          self.toggleClass('dag','open'); 
+        }
       });
 
-      $('#cancel-publish').bind('click', function(e) {       
-        self.publishCancel();
+      $('#cancel-publish').bind('click', function(e) {
+        if (this.book == null){    
+          eventHub.$emit('closeBookPopup');
+        }else{
+          self.publishCancel();
+        }
       });
 
       $("#publish-form").submit(function () {
@@ -364,11 +359,17 @@ export default {
       // push the first node into graph
       this.pushNode(
         this.book.id, 
+        this.book.asset_id,
         this.book.metadata.chapter_title, 
         this.book.metadata.cover,
         true,
         true
       )
+
+      // set listener for node clicks
+      cy.on('click', 'node', function(evt){
+        self.nodeClickListener(evt.target._private.data);
+      });
 
       cy.center("#"+this.book.id);
       cy.zoom({
@@ -377,6 +378,30 @@ export default {
       cy.panBy({
         y: 200
       });
+    },
+    nodeClickListener(data){
+      console.log(data);
+
+      var asset_id = data.asset_id;
+      if (asset_id in this.adjacentNodes){
+        return;
+      }
+
+      // Get adjacent nodes /documents/adjacent
+      axios.post(
+        'http://localhost:3000/api/documents/adjacent',
+        {
+          mongodb_url: process.env.VUE_APP_BIGCHAINDB_MONGO_DB,
+          asset_id: asset_id
+        }
+      )
+      .then(resp => {
+          let data = resp.data;
+          console.log(data) 
+      })
+      .catch(e => {
+          console.log(e)
+      })
     },
     /**
      * book_id is the root element
@@ -388,7 +413,7 @@ export default {
         var book = linked_books[i]; 
 
         // put in the node
-        this.pushNode(book.id, book.metadata.chapter_title, book.metadata.cover);
+        this.pushNode(book.id, book.asset_id, book.metadata.chapter_title, book.metadata.cover);
 
         // put in the edge
         if (child_relationship){
@@ -398,9 +423,9 @@ export default {
         }
       }
     },
-    pushNode(id, title, ipfs_id=null, create_child=false, create_parent=false, publish=false){
+    pushNode(id, asset_id, title, ipfs_id=null, create_child=false, create_parent=false, publish=false){
       // put in the node
-      var node_data = this.getNodeData(id, title);
+      var node_data = this.getNodeData(id, asset_id, title);
       cy.add(node_data)
 
       this.pushMenu(id, create_child, create_parent, publish);
@@ -419,6 +444,7 @@ export default {
       
       this.pushNode(
         new_id,
+        new_id,
         "New Chapter",
         null,
         false,
@@ -435,10 +461,14 @@ export default {
       const layout = cy.makeLayout(this.dagreLayout);
       layout.run();
     },
-    getNodeData(id, title){
+    getNodeData(id, asset_id, title){
       var node_data = {}
       node_data["data"] = {}
+      // id is the transaction ID. unique for every node
       node_data["data"]["id"] = id;
+      // asset_id is ID of asset represented by the node.
+      // this is not unique for every node since there can be different versions of one asset.
+      node_data["data"]["asset_id"] = asset_id;
       node_data["data"]["title"] = title;
 
       return node_data;
@@ -512,13 +542,11 @@ export default {
       window.open(route.href+"/"+this.book.id+"/"+this.book.metadata.book_title, '_blank');
     },
     showBook(){
+      this.bookLoaded = true;
+
       this.poster();
       this.backdrop();
-      if(this.userLoggedIn){
-        this.checkIfInFavorites(this.book.id);
-      } else {
-        this.bookLoaded = true;
-      }
+      
       // Push state
       if(storage.createBookPopup){
         storage.bookPath = '/book/' + this.book.id;
@@ -568,8 +596,8 @@ export default {
       for (var i=0;i<edges.length;i++){
         var edge = edges[i];
 
-        var source = edge._private.source._private.data.id;
-        var target = edge._private.target._private.data.id;
+        var source = edge._private.source._private.data.asset_id;
+        var target = edge._private.target._private.data.asset_id;
 
         if (node_id === source){
           children.push(target);
@@ -577,7 +605,8 @@ export default {
           parents.push(source);
         }
       }
-
+      // console.log(children);
+      // console.log(parents);
       this.postData(parents, children);
     },
     generateKeyPair(){
@@ -611,6 +640,8 @@ export default {
       const tx = driver.Transaction.makeCreateTransaction(
         // Define the asset to store.
         { 
+          parents: parents,
+          children: children,
           payment_pointer: payment,
           published: new Date().toString()
         },
@@ -618,8 +649,6 @@ export default {
         { 
           owner: address,
           tags: "Axone Books",
-          parents: parents,
-          children: children,
           published: new Date().toString()
         },
         // A transaction needs an output
@@ -663,12 +692,18 @@ export default {
     }
   },
   mounted() {
-    this.prepareGraph();
     this.registerEvents();
+    if (this.book == null){
+      this.toggleClass('publish','open');
+    }else{
+      this.prepareGraph();
+    }
   },
   created() {
     self = this;
-    this.showBook();
+    if (this.book !== null){
+      this.showBook();
+    }
   }
 }
 </script>

@@ -114,7 +114,7 @@
             </a>
             <ul>
                 <li>
-                    <a href="#publish-modal" class="btn-floating blue modal-trigger">
+                    <a id="publish-button" class="btn-floating blue" href="#">
                         <i class="material-icons">add</i>
                     </a>
                 </li>
@@ -126,11 +126,18 @@
 
 <script>
 import BooksList from '../components/BooksList.vue'
-//import $ from 'jquery'
+import $ from 'jquery'
+
+var self;
 
 export default {
     components: { BooksList },
     methods: {
+        registerEvents(){
+            $('#publish-button').bind('click', function(e) {       
+                self.openBookPopup(true);      
+            });
+        },
         UISetup(){
             var elems = document.querySelectorAll('.fixed-action-btn');
             M.FloatingActionButton.init(elems, {
@@ -144,12 +151,17 @@ export default {
             M.Modal.init(elems, {
                 preventScrolling: false
             });
+        },
+        openBookPopup(event){
+            eventHub.$emit('openBookPopup', null, event);
         }
     },
     mounted(){
         this.UISetup();
+        this.registerEvents();
     },
     created(){
+        self = this;
         eventHub.$emit('showHeader', true);
         document.title = 'Books';
     },

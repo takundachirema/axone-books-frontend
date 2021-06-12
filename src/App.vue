@@ -88,6 +88,7 @@
       window.addEventListener('popstate', this.onHistoryState);
       window.addEventListener('pagehide', this.changeHistoryState);
       eventHub.$on('openBookPopup', this.openBookPopup);
+      eventHub.$on('closeBookPopup', this.closeBookPopup);
       eventHub.$on('setSearchQuery', this.setSearchQuery);
       eventHub.$on('requestToken', this.requestToken);
       eventHub.$on('setUserStatus', this.setUserStatus);

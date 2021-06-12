@@ -88,7 +88,7 @@ export default {
   methods: {
     getLatestBooks(){
       axios.post(
-        'http://localhost:3000/api/latest',
+        'http://localhost:3000/api/documents/latest',
         {
           mongodb_url: process.env.VUE_APP_BIGCHAINDB_MONGO_DB
         }

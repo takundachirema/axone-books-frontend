@@ -1,47 +1,18 @@
-# INF5006 Dashboard
-This repository contains the code used to create a dashboard representation of the University of Cape Town's African Institute of Financial Markets and Risk Management's (AIFMRM) quarterly Equity Risk Service report.
+# Axone Books
 
-## DB and MSSQL server setup
+This repository contains the Client and Server code for Axone books.
 
-### Setting up MSSQL server
-- In MS Studio go to the server instance and go to security.
-- Create the user eg. admin and give password eg admin.
-- Go to `user mappings` and map to the AIFMRM_ERS db.
+## Test Setup
 
-- Go to Server instance and right click, then click properties.
-- Then go to security and select `SQL server` authentication.
+### Connect to Mongodb
+- sudo docker exec -it bigchaindb_mongodb_1 bash
+- Then run: mongo
+- Then run: use bigchain
+- Then run: show collections
+- Then now you can query from any of the collections
 
-### Adding tables to the MSSQL server
-Assuming you've correctly opened the given AIFMRM_ERS database file, you will now want to add the additional synthetic tables to the AIFMRM_ERS db. You will require the following csv files: 
-* industry_portfolio_metrics.csv
-* portfolio_metrics.csv
-* shares_metrics.csv.
-* industry_portfolio_tooltips.csv
-* portfolio_metrics_tooltips.csv
-* share_metrics_tooltips.csv
-These can be found in the MSTeams group. Send an email to the UCT AIFMRM to gain access to these files. Note that the files provided here are just a small subset of the overall database. The full dataset will likely not be made available for public use.
+### Run these to create the text indexes
 
-To import the csv files as tables, open MS SQL Server Management Studio and do the following:
-1. Right-click on main database `AIFRMR_ERS`
-2. Go to `Tasks` option
-3. Select 'Import flat file'
-4. Follow the instructions, choose all default options and most importantly, DO NOT CHANGE the name of the table. Use the default name suggested based on the csv file.
-
-After doing this for each of the synthetic table (and the tool tip table once those have been added), you should now be able to run the following test queries from MS SQL Server Management Studio:
-    ```
-    select * from AIFMRM_ERS.dbo.industry_portfolio_metrics
-    ```
-    ```
-    select * from AIFMRM_ERS.dbo.shares_metrics
-    ```
-    ```
-    select * from AIFMRM_ERS.dbo.portfolio_metrics
-    ```
-    ```
-    select * from AIFMRM_ERS.dbo.portfolio_metrics_tooltips
-    ```
-
-If the queries execute as expected, then congratulations, you have successfully set up the databases.
 
 
 ## Project setup
@@ -107,9 +78,6 @@ We always appreciate pull requests, improvements and patches. Here are some basi
     * Open a Pull Request with a clear title and description.
 
 IMPORTANT: By submitting a patch, you agree to allow the project owner to license your work under the same license as that used by the project.
-
-### Requesting a new feature
-Please contact the UCT AIFMRM.
 
 ## Future Work
 If you would like to contribute to this project, these are the features that are currently in the pipeline:
