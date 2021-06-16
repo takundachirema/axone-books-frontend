@@ -14,6 +14,22 @@
           <div class="row small-margin">
             <div class="input-field col s12">
                 <blockquote>
+  Please select the document version. For more information click here.
+                </blockquote>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="input-field col s12">
+                <i class="material-icons prefix">format_list_numbered</i>
+                <select id="version_select" class="materialSelect"></select>
+                <label for="version_select">Version</label>
+            </div>
+          </div>
+
+          <div class="row small-margin">
+            <div class="input-field col s12">
+                <blockquote>
     Please fill in your private key for encrypting your document, otherwise generate a new key pair. For more information click here.
                 </blockquote>
             </div>
@@ -21,15 +37,15 @@
 
           <div class="row">
             <div class="input-field col s12">
-                <span id="generate-key-pair" class="prefix clickable">
+                <span id="generate-keys" class="prefix clickable">
                 <i class="material-icons prefix tooltipped" data-position="bottom" data-tooltip="generate">public</i>
                 </span>
                 <input 
                 disabled
-                id="public_key-text-area"
+                id="pk_text-area"
                 type="text" 
                 class="validate">
-                <label for="public_key-text-area">Public Key</label>
+                <label for="pk_text-area">Public Key</label>
             </div>
           </div>
 
@@ -37,12 +53,12 @@
             <div class="input-field col s12">
                 <i class="material-icons prefix">vpn_key</i>
                 <input 
-                id="private_key-text-area"
+                id="sk_text-area"
                 required="" 
                 aria-required="true" 
                 type="text" 
                 class="validate">
-                <label for="private_key-text-area">Private Key</label>
+                <label for="sk_text-area">Private Key</label>
             </div>
           </div>
 
@@ -148,6 +164,7 @@ import axios from 'axios'
 import storage from '../storage.js'
 import img from '../directives/v-image.js'
 import formatDate from '../directives/v-formatDate.js'
+import { ModelSelect } from 'vue-search-select'
 import $ from 'jquery'
 import cytoscape from 'cytoscape'
 import dagre from 'cytoscape-dagre';
@@ -168,6 +185,9 @@ export default {
     img: img,
     formatDate: formatDate
   },
+  components: {
+      ModelSelect
+  },
   data(){
     return{
       bookLoaded: false,
@@ -176,8 +196,12 @@ export default {
       userLoggedIn: storage.sessionId ? true : false,
       favoriteChecked: false,
       favorite: '',
+      // keeps nodes loaded so far
+      nodes: {},
       // keeps adjacent nodes for clicked node
       adjacentNodes: {},
+      versionCodes: [],
+      versionCode: "",
       colaLayout: {
         name: "cola",
         handleDisconnected: true,
@@ -206,9 +230,40 @@ export default {
         /**
          * return undefined if the source node version is > target node
          */
-        edgeType: function( sourceNode, targetNode ){
-          //console.log(sourceNode)
-          return 'flat';
+        edgeType: function( sourceNode, targetNode ) {
+          var source_data = sourceNode._private.data;
+          var target_data = targetNode._private.data;
+
+          if (source_data == undefined || 
+              target_data == undefined ||
+              source_data.version == undefined || 
+              target_data.version == undefined){
+            return undefined;
+          }
+
+          var source_version = source_data.version;
+          var target_version = target_data.version;
+
+          if (source_version !== 0 && target_version !== 0){
+            return undefined;
+          }
+
+          if (source_version === 0){
+            source_version = source_data.parent_version;
+          }else if (target_version === 0){
+            target_version = target_data.parent_version;
+          }
+          
+          var source_version_f = parseFloat(source_version);
+          var target_version_f = parseFloat(target_version);
+
+          console.log(source_version_f+" - "+target_version_f)
+
+          if (source_version_f < target_version_f){
+            return 'flat';
+          }
+
+          return undefined;
         },
       },
       menuLayout: {
@@ -220,7 +275,7 @@ export default {
             content: '<i class="material-icons">call_merge</i>',
             contentStyle: {"pointer-events": "all"},
             select: function(ele){
-              self.addNewNode(ele.data('id'), false);
+              self.addNewNode(ele.data('id'), ele.data('id'), false);
             },
             enabled: false
           },
@@ -238,7 +293,7 @@ export default {
             content: '<i class="material-icons">call_split</i>',
             contentStyle: {"pointer-events": "all"},
             select: function(ele){
-              self.addNewNode(ele.data('id'), true);
+              self.addNewNode(ele.data('id'), ele.data('version'), true);
             },
             enabled: false
           }
@@ -308,19 +363,29 @@ export default {
     }
   },
   methods: {
+    UISetup(){
+      var elems = document.querySelectorAll('select');
+      M.FormSelect.init(elems, {});
+
+      // setup listener for custom event to re-initialize on change
+      $('.materialSelect').on('contentChanged', function() {
+        var elems = document.querySelectorAll('select');
+        M.FormSelect.init(elems, {});
+      });
+    },
     registerEvents(){
-      $('#generate-key-pair').bind('click', function(e) {       
+      $('#generate-keys').bind('click', function(e) {     
         self.generateKeyPair();      
       }); 
 
       $('#show-dag').bind('click', function(e) {
-        if (this.book !== null){
+        if (self.book !== null){
           self.toggleClass('dag','open'); 
         }
       });
 
       $('#cancel-publish').bind('click', function(e) {
-        if (this.book == null){    
+        if (self.book == null){    
           eventHub.$emit('closeBookPopup');
         }else{
           self.publishCancel();
@@ -360,6 +425,7 @@ export default {
       this.pushNode(
         this.book.id, 
         this.book.asset_id,
+        this.book.version,
         this.book.metadata.chapter_title, 
         this.book.metadata.cover,
         true,
@@ -383,6 +449,8 @@ export default {
       console.log(data);
 
       var asset_id = data.asset_id;
+      var id = data.id;
+
       if (asset_id in this.adjacentNodes){
         return;
       }
@@ -397,7 +465,8 @@ export default {
       )
       .then(resp => {
           let data = resp.data;
-          console.log(data) 
+          self.adjacentNodes[asset_id] = data.results;
+          self.updateGraphData(id, data.results);
       })
       .catch(e => {
           console.log(e)
@@ -408,24 +477,36 @@ export default {
      * linked_books is a list of the children or parents
      * children is a boolean indicating whether linked_books are children on parents
      */
-    updateGraphData(book_id, linked_books, child_relationship) {
+    updateGraphData(book_id, linked_books) {
       for(var i = 0; i < linked_books.length; i++) {
         var book = linked_books[i]; 
 
         // put in the node
-        this.pushNode(book.id, book.asset_id, book.metadata.chapter_title, book.metadata.cover);
+        this.pushNode(
+          book.id, 
+          book.asset_id, 
+          book.version,
+          book.metadata.chapter_title, 
+          book.metadata.cover,
+          true,
+          true,
+          false
+        );
 
         // put in the edge
-        if (child_relationship){
-          this.pushEdge(book_id, book.id);
-        }else{
+        if (book.is_parent){
           this.pushEdge(book.id, book_id);
+        }else{
+          this.pushEdge(book_id, book.id);
         }
+
+        const layout = cy.makeLayout(this.dagreLayout);
+        layout.run();
       }
     },
-    pushNode(id, asset_id, title, ipfs_id=null, create_child=false, create_parent=false, publish=false){
+    pushNode(id, asset_id, version, title, ipfs_id=null, create_child=false, create_parent=false, publish=false, parent_version = 0){
       // put in the node
-      var node_data = this.getNodeData(id, asset_id, title);
+      var node_data = this.getNodeData(id, asset_id, version, title, parent_version);
       cy.add(node_data)
 
       this.pushMenu(id, create_child, create_parent, publish);
@@ -439,17 +520,19 @@ export default {
      * If child_relationship = true, id is the parent.
      * That means the source node is id and target is new_id.
      */
-    addNewNode(id, child_relationship = false){
+    addNewNode(id, version, child_relationship = false){
       var new_id = id+"-"+child_relationship
       
       this.pushNode(
         new_id,
         new_id,
+        0,
         "New Chapter",
         null,
         false,
         false,
-        true
+        true,
+        version
       );
 
       if (child_relationship){
@@ -461,7 +544,7 @@ export default {
       const layout = cy.makeLayout(this.dagreLayout);
       layout.run();
     },
-    getNodeData(id, asset_id, title){
+    getNodeData(id, asset_id, version, title, parent_version = 0){
       var node_data = {}
       node_data["data"] = {}
       // id is the transaction ID. unique for every node
@@ -470,6 +553,8 @@ export default {
       // this is not unique for every node since there can be different versions of one asset.
       node_data["data"]["asset_id"] = asset_id;
       node_data["data"]["title"] = title;
+      node_data["data"]["version"] = version;
+      node_data["data"]["parent_version"] = parent_version;
 
       return node_data;
     },
@@ -487,12 +572,12 @@ export default {
     },
     pushMenu(id, create_child=false, create_parent=false, publish=false){
       var menu =  JSON.parse(JSON.stringify(this.menuLayout));
-      console.log("push menu");
-      console.log(menu);
+      // console.log("push menu");
+      // console.log(menu);
       menu.selector = "#"+id;
 
       menu.commands[0].select = function(node){
-        self.addNewNode(node.data('id'), false);
+        self.addNewNode(node.data('id'), node.data('version'), false);
       }
 
       menu.commands[1].select = function(node){
@@ -501,7 +586,7 @@ export default {
       }
 
       menu.commands[2].select = function(node){
-        self.addNewNode(node.data('id'), true);
+        self.addNewNode(node.data('id'), node.data('version'), true);
       }
       
       if (create_parent){
@@ -582,12 +667,95 @@ export default {
     },
     showPublishChapter(node) {
       this.publishNode = node;
-      console.log(this.publishNode)
+      
+      // Now get the max parent version and min child version to limit version selection
+      // e.g. if 2 parent versions 1 and 2 and child version is 3,
+      // then the node will be limited to version between 2 and 3.
+      var node_id = node.data.id;
+      var edges = node.edges;
+      var max_parent_version = 0
+      var min_child_version = 0
+
+      for (var i=0;i<edges.length;i++){
+        var edge = edges[i];
+
+        var source_data = edge._private.source._private.data;
+        var target_data = edge._private.target._private.data;
+
+        if (node_id === source_data.asset_id){
+          var child_version = parseFloat(target_data.version);
+          if (min_child_version == 0 || child_version < min_child_version){ 
+            min_child_version = child_version;
+          }
+        }else{
+          var parent_version = parseFloat(source_data.version);
+          if (parent_version > max_parent_version) max_parent_version = parent_version;
+        }
+      }
+
+      alert(max_parent_version+" "+min_child_version);
+      this.populateSelectItems(max_parent_version, min_child_version);
       this.toggleClass('publish','open');
       this.toggleClass('dag','open');
       this.toggleClass('book__container','open');
     },
+    populateSelectItems(min, max){
+      // first remove all the options
+      $('#version_select')
+      .find('option')
+      .remove()
+      .end();
+
+      if (min == 0 && max == 0){
+        // add new value
+        var $newOpt = $("<option>").attr("value","1.0").text("1.0")
+        $("#version_select").append($newOpt);
+      }else{
+        // toString() removes any trailing zeros in the decimal
+        var min_l = min.toString();
+        var max_l = max.toString();
+
+        // find the number of shifts of decimal point to make these int's
+        // e.g. 1.35 would give 2 since the . should shift 2 steps right to make 135.
+        var min_l_d = min_l.indexOf(".");
+        if (min_l_d == -1) min_l_d = min_l.length - 1
+
+        var max_l_d = max_l.indexOf(".");
+        if (max_l_d == -1) max_l_d = max_l.length - 1
+
+        var min_d = min_l.length - min_l_d - 1;
+        var max_d = max_l.length - max_l_d - 1;
+
+        // This will be the multiplier to make these into numbers
+        var exp = Math.max(min_d, max_d) + 1;
+        var multiplier = Math.pow(10, exp);
+        
+        var min_int = min * multiplier;
+        var max_int = max * multiplier;
+        
+        //console.log(1.1*100+" - "+max_int+" - "+multiplier)
+
+        for (var i = min_int + 1; i < max_int; i++) {
+          var version = i/parseFloat(multiplier);
+          version = version.toFixed(exp);
+
+          var version_l = version.toString();
+          //console.log(i+" : "+version_l)
+          var $newOpt = $("<option>").attr("value",version_l).text(version_l);
+          $("#version_select").append($newOpt);
+        }
+      }
+
+      // fire custom event anytime you've updated select
+      $("#version_select").trigger('contentChanged');
+    },
     publishChapter() {
+      
+      if (self.book == null){
+        this.postData([],[]);
+        return;
+      }
+
       var node_id = this.publishNode.data.id;
       var edges = this.publishNode.edges;
       var parents = []
@@ -599,6 +767,9 @@ export default {
         var source = edge._private.source._private.data.asset_id;
         var target = edge._private.target._private.data.asset_id;
 
+        // when the new node is the source it means the edge is like:
+        // NN ----> ON
+        // NN (new node) is the parent and ON (old node) is the child
         if (node_id === source){
           children.push(target);
         }else{
@@ -609,7 +780,7 @@ export default {
       // console.log(parents);
       this.postData(parents, children);
     },
-    generateKeyPair(){
+    generateKeyPair() {
       const key_pair = nacl.sign.keyPair();
 
       var public_key = Base58.encode(key_pair["publicKey"]);
@@ -617,8 +788,8 @@ export default {
       // nacl private key has the last 32 bytes as the public key
       var private_key = Base58.encode(key_pair["secretKey"]);
 
-      $("#public_key-text-area").val(public_key);
-      $("#private_key-text-area").val(private_key);
+      $("#pk_text-area").val(public_key);
+      $("#sk_text-area").val(private_key);
       M.updateTextFields();
     },
     /**
@@ -627,7 +798,8 @@ export default {
      * We use ed2curve library to convert between the 2.
      * */
     postData(parents, children){
-      let edPrivateKey = $("#private_key-text-area").val();
+      let version = $("#version_select").val();
+      let edPrivateKey = $("#sk_text-area").val();
       let address = $("#address-text-area").val();
       let payment = $("#payment-text-area").val();
 
@@ -640,6 +812,7 @@ export default {
       const tx = driver.Transaction.makeCreateTransaction(
         // Define the asset to store.
         { 
+          version: version,
           parents: parents,
           children: children,
           payment_pointer: payment,
@@ -693,8 +866,13 @@ export default {
   },
   mounted() {
     this.registerEvents();
+    this.UISetup();
     if (this.book == null){
       this.toggleClass('publish','open');
+
+      // disable it first so that the refresh in populateSelectItems() make it so
+      $('.materialSelect').attr('disabled', 'disabled');
+      this.populateSelectItems(0,0);
     }else{
       this.prepareGraph();
     }
