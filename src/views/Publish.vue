@@ -3,9 +3,12 @@
         <books-list
             :type="'component'" 
             :mode="'collection'" 
-            :category="'popular'" 
+            :category="'published'" 
             :shortList="true"
-            :pageTitle="'Latest Books'">
+            :page="'publish'"
+            :key="public_key"
+            :pk="public_key"
+            :pageTitle="'Published Books'">
         </books-list>
         
         <div id="publish-modal9" class="modal">
@@ -18,94 +21,40 @@
             </div>
         </div>
 
-        <div id="publish-modal" class="modal">
+        <div id="search-modal" class="modal">
             <div class="modal-content">
-                <h4>New Chapter</h4>
+                <h4>Get Published</h4>
                 <div class="row">
-                <form class="col s12">
+                    <form id="search-form" class="col s12">
+                        <div class="row small-margin">
+                            <div class="input-field col s12">
+                                <blockquote>
+                    Please enter the public or private key of the documents you wish to retrieve. For more information click here.
+                                </blockquote>
+                            </div>
+                        </div>
 
-                    <div class="row small-margin">
-                    <div class="input-field col s12">
-                        <blockquote>
-            Please fill in your private key for encrypting your document, otherwise generate a new key pair. For more information click here.
-                        </blockquote>
-                    </div>
-                    </div>
-
-                    <div class="row">
-                    <div class="input-field col s12">
-                        <span id="generate-key-pair" class="prefix clickable">
-                        <i class="material-icons prefix tooltipped" data-position="bottom" data-tooltip="generate">public</i>
-                        </span>
-                        <input 
-                        disabled
-                        id="public_key-text-area"
-                        type="text" 
-                        class="validate">
-                        <label for="public_key-text-area">Public Key</label>
-                    </div>
-                    </div>
-
-                    <div class="row">
-                    <div class="input-field col s12">
-                        <i class="material-icons prefix">vpn_key</i>
-                        <input 
-                        id="private_key-text-area"
-                        required="" 
-                        aria-required="true" 
-                        type="text" 
-                        class="validate">
-                        <label for="private_key-text-area">Private Key</label>
-                    </div>
-                    </div>
-
-                    <div class="row small-margin">
-                    <div class="input-field col s12">
-                        <blockquote>
-            Get your wallet address for creation of this asset on Ethereum through metamask. For more information click here.
-                        </blockquote>
-                    </div>
-                    </div>
-
-                    <div class="row">
-                    <div class="input-field col s12">
-                        <i class="material-icons prefix">lock</i>
-                        <input 
-                        id="address-text-area"
-                        required="" 
-                        aria-required="true" 
-                        type="text" 
-                        class="validate">
-                        <label for="address-text-area">Wallet Address</label>
-                    </div>
-                    </div>
-
-                    <div class="row small-margin">
-                    <div class="input-field col s12">
-                        <blockquote>
-            Get your payment pointer from a webmonetization provider. For more information click here.
-                        </blockquote>
-                    </div>
-                    </div>
-                    
-                    <div class="row">
-                    <div class="input-field col s12">
-                        <i class="material-icons prefix">monetization_on</i>
-                        <input 
-                        id="payment-text-area"
-                        required="" 
-                        aria-required="true" 
-                        type="text"
-                        class="validate">
-                        <label for="payment-text-area">Payment Pointer</label>
-                    </div>
-                    </div>
-                </form>
+                        <div class="row">
+                            <div class="input-field col s12">
+                                <span id="generate-key-pair" class="prefix clickable">
+                                <i class="material-icons prefix tooltipped" data-position="bottom" data-tooltip="generate">public</i>
+                                </span>
+                                <input 
+                                id="public_key-text-area"
+                                required="" 
+                                aria-required="true" 
+                                type="text" >
+                                <label for="public_key-text-area" data-error="Please name.">Public or Private Key</label>
+                            </div>
+                        </div>
+                        <div class="h50px w100">
+                            <button type="button" id="cancel-search" class="modal-close btn waves-effect waves-light right margined-sides">Cancel</button>
+                            <button id="submit-search" class="btn waves-effect waves-light right margined-sides" type="submit">Submit</button>
+                        </div>
+                    </form>
                 </div>
             </div>
-            <div class="modal-footer">
-                <button id="submit-publication" class="btn waves-effect waves-light right" type="submit">Publish</button>
-            </div>
+            
         </div>
 
         <div class="fixed-action-btn">
@@ -113,6 +62,11 @@
                 <i class="large material-icons">mode_edit</i>
             </a>
             <ul>
+                <li>
+                    <a id="search-button" class="btn-floating red modal-trigger" href="#search-modal" >
+                        <i class="material-icons">search</i>
+                    </a>
+                </li>
                 <li>
                     <a id="publish-button" class="btn-floating blue" href="#">
                         <i class="material-icons">add</i>
@@ -127,15 +81,45 @@
 <script>
 import BooksList from '../components/BooksList.vue'
 import $ from 'jquery'
+import Base58 from 'base-58';
 
 var self;
 
 export default {
     components: { BooksList },
+    data(){
+        return {
+            show_header: true,
+            public_key: ''
+        }
+    },
     methods: {
+        populatePublicKey(){
+            var key = $("#public_key-text-area").val();
+            var decoded = Base58.decode(key);
+            var publicKey = key;
+
+            if (decoded.length === 64){
+                publicKey = Base58.encode(decoded.slice(32));
+            }else if (decoded.length !== 32){
+                alert("Please enter a valid key");
+                return false;
+            }
+
+            console.log("public key: "+publicKey)
+            this.public_key = '';
+            this.public_key = publicKey;
+            
+            return true;
+        },
         registerEvents(){
             $('#publish-button').bind('click', function(e) {       
                 self.openBookPopup(true);      
+            });
+
+            $("#search-form").submit(function () {
+                var reload = self.populatePublicKey();
+                return false;
             });
         },
         UISetup(){
@@ -164,11 +148,6 @@ export default {
         self = this;
         eventHub.$emit('showHeader', true);
         document.title = 'Books';
-    },
-    data(){
-        return {
-            show_header: true
-        }
     }
 }
 </script>

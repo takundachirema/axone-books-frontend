@@ -62,7 +62,8 @@
             </div>
           </div>
 
-          <div class="row small-margin">
+          <!-- The address will only be used when publishing asset on Ethereum   -->
+          <!--<div class="row small-margin">
             <div class="input-field col s12">
                 <blockquote>
     Get your wallet address for creation of this asset on Ethereum through metamask. For more information click here.
@@ -81,7 +82,7 @@
                 class="validate">
                 <label for="address-text-area">Wallet Address</label>
             </div>
-          </div>
+          </div> -->
 
           <div class="row small-margin">
             <div class="input-field col s12">
@@ -693,7 +694,7 @@ export default {
         }
       }
 
-      alert(max_parent_version+" "+min_child_version);
+      //alert(max_parent_version+" "+min_child_version);
       this.populateSelectItems(max_parent_version, min_child_version);
       this.toggleClass('publish','open');
       this.toggleClass('dag','open');
@@ -732,9 +733,13 @@ export default {
         
         var min_int = min * multiplier;
         var max_int = max * multiplier;
-        
-        //console.log(1.1*100+" - "+max_int+" - "+multiplier)
 
+        if (max_int == 0){
+          // We add the 1 so that if its perfect version e.g. 3.0 user has ability to choose 4.0
+          max_int = min_int + 1*multiplier + 1;
+        }
+        
+        console.log(min_int+" - "+max_int+" - "+multiplier)
         for (var i = min_int + 1; i < max_int; i++) {
           var version = i/parseFloat(multiplier);
           version = version.toFixed(exp);
@@ -800,7 +805,7 @@ export default {
     postData(parents, children){
       let version = $("#version_select").val();
       let edPrivateKey = $("#sk_text-area").val();
-      let address = $("#address-text-area").val();
+      //let address = $("#address-text-area").val();
       let payment = $("#payment-text-area").val();
 
       var api_url = process.env.VUE_APP_BIGCHAINDB_API;
@@ -812,6 +817,7 @@ export default {
       const tx = driver.Transaction.makeCreateTransaction(
         // Define the asset to store.
         { 
+          public_key: edPublicKey,
           version: version,
           parents: parents,
           children: children,
@@ -819,8 +825,7 @@ export default {
           published: new Date().toString()
         },
         // Metadata contains information about the book.
-        { 
-          owner: address,
+        {
           tags: "Axone Books",
           published: new Date().toString()
         },

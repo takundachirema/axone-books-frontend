@@ -44,7 +44,7 @@ export default {
     methods: {
         getBook() {
             axios.post(
-                'http://localhost:3000/api/document',
+                'http://localhost:3000/api/documents',
                 {
                     mongodb_url: process.env.VUE_APP_BIGCHAINDB_MONGO_DB,
                     id: this.id

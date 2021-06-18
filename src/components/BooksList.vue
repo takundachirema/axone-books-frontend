@@ -42,7 +42,7 @@ const assert = require('assert');
 let removed;
 
 export default {
-  props: ['type', 'mode', 'category', 'shortList'],
+  props: ['pk','page','pageTitle','type', 'mode', 'category', 'shortList'],
   components: { BooksListItem },
   beforeRouteLeave (to, from, next) {
     if(from.name == 'search'){
@@ -61,9 +61,6 @@ export default {
     }
   },
   computed: {
-    pageTitle(){
-      return this.listTitle + storage.pageTitlePostfix;
-    },
     query(){
       return this.$route.params.query || '';
     },
@@ -86,12 +83,13 @@ export default {
     }
   },
   methods: {
-    getLatestBooks(){
+    getBooks(url, parameters = {}){
+      
+      parameters["mongodb_url"] = process.env.VUE_APP_BIGCHAINDB_MONGO_DB;
+
       axios.post(
-        'http://localhost:3000/api/documents/latest',
-        {
-          mongodb_url: process.env.VUE_APP_BIGCHAINDB_MONGO_DB
-        }
+        url,
+        parameters
       )
       .then(resp => {
           let data = resp.data;
@@ -154,7 +152,13 @@ export default {
     }
   },
   created(){
-    this.getLatestBooks();
+    if (this.page === "library"){
+      this.getBooks('http://localhost:3000/api/documents/latest');
+    }else if (this.page === "publish") {
+      if (this.pk){
+        this.getBooks('http://localhost:3000/api/documents/public_key',{"public_key":this.pk});
+      }
+    }
   }
 }
 </script>

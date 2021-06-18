@@ -5,6 +5,7 @@
             :mode="'collection'" 
             :category="'popular'" 
             :shortList="true"
+            :page="'library'"
             :pageTitle="'Latest Books'">
         </books-list>
     </div>

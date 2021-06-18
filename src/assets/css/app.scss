@@ -270,9 +270,8 @@ footer#custom-footer {
 
 .modal{ 
     width: 60% !important ; 
-    max-height: 90% !important;
-    height: 85% !important ; 
-    overflow-y: scroll !important;
+    max-height: 60% !important;
+    height: 85% !important ;
     outline: none !important;
     .modal-content, .modal-footer {
         outline: none !important;
@@ -358,16 +357,16 @@ div#custom-home {
 }
 
 .margined {
-    margin: 1em;
+    margin: 1em !important;
 }
 
 .margined-s{
-    margin: 0.5em;
+    margin: 0.5em !important;
 }
 
 .margined-sides{
-    margin-right: 0.5em;
-    margin-left: 0.5em;
+    margin-right: 0.5em !important;
+    margin-left: 0.5em !important;
 }
 
 .padding {
