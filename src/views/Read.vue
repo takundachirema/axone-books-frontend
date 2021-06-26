@@ -2,11 +2,10 @@
     <div class="pager-container">
         <!--<input v-model.number="page" type="number" style="width: 5em"> /{{numPages}} -->
         <div class="pager">
-            <div class="nav-left"></div>
+            <div id="nav-left" class="nav-left"></div>
             <pdf
                 ref="pdf" 
-                style="width: 100%; border: 1px solid #4db6ac" 
-                :key="i"
+                style="width: 100%;"
                 :src="src" 
                 :page="page"
                 @password="password" 
@@ -15,18 +14,55 @@
                 @num-pages="numPages = $event" 
                 @link-clicked="page = $event">
             </pdf>
-            <div class="nav-right"></div>
+            <div id="nav-right" class="nav-right"></div>
         </div>
 
-        <footer class="footer">
-            <div class="page-nav row">
-                <div class="input-field col s1">
-                <i class="material-icons prefix">search</i>
-                <input id="icon_prefix header__search-input" type="text" @keyup.enter="search">
-                <label for="icon_prefix">Page</label>
+        <div id="page-modal" class="modal modal__small">
+            <div class="modal-content">
+                <div class="row">
+                    <div id="page-form" class="col s12">
+                        <div class="row small-margin">
+                            <div class="input-field col s12">
+                                <blockquote>
+                    Enter the page number and press return
+                                </blockquote>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="input-field col s12">
+                                <span id="generate-key-pair" class="prefix">
+                                    <i class="material-icons prefix">pages</i>
+                                </span>
+                                <input
+                                    id="page-text-area"
+                                    type="number"
+                                    min="1" 
+                                    :max="numPages"
+                                    :value="page">
+                                <label for="page-text-area" class="active">Book Page</label>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
-        </footer>
+        </div>
+        <div class="fixed-action-btn">
+            <a 
+                style="font-family: Pattaya" 
+                class="btn-floating btn-large green modal-trigger" 
+                href="#page-modal">
+                <i class="large">{{page}}</i>
+            </a>
+            
+            <ul>
+                <li>
+                    <a id="search-button" class="btn-floating red modal-trigger" href="#search-modal" >
+                        <i class="material-icons">search</i>
+                    </a>
+                </li>
+            </ul>
+        </div>
     </div>
 </template>
 
@@ -35,6 +71,10 @@
 import BookReader from '../components/BookReader.vue'
 import axios from 'axios'
 import pdf from 'vue-pdf'
+import $ from 'jquery'
+
+var self;
+var pageModal;
 
 export default {
     components: { 
@@ -42,6 +82,52 @@ export default {
         pdf
     },
     methods: {
+        registerEvents(){
+            $('#nav-left').bind('click', function(e) {
+                if (self.page > 1){
+                    self.page = self.page - 1;
+                    $(window).scrollTop(0);
+                }    
+            }); 
+
+            $('#nav-right').bind('click', function(e) {     
+                if (self.page < self.numPages){
+                    self.page = self.page + 1;
+                    $(window).scrollTop(0);
+                }    
+            }); 
+
+            $('#page-text-area').keypress(function(e){
+                if (e.key === 'Enter') {
+                    var number = parseInt($('#page-text-area').val());
+
+                    if (number < 1){
+                        self.page = 1;
+                    }else if (number > self.numPages){
+                        self.page = self.numPages;
+                    }else{
+                        self.page = number;
+                    }
+
+                    pageModal.close();
+                }
+            });
+        },
+        UISetup(){
+            elems = document.querySelectorAll('.fixed-action-btn');
+            M.FloatingActionButton.init(elems, {
+                direction: 'up'
+            });
+
+            var elems = document.querySelectorAll('.tooltipped');
+            M.Tooltip.init(elems, {});
+
+            elems = document.querySelectorAll('.modal');
+            var instances = M.Modal.init(elems, {
+                preventScrolling: false
+            });
+            pageModal = instances[0];
+        },
         getBook() {
             axios.post(
                 'http://localhost:3000/api/documents',
@@ -52,7 +138,8 @@ export default {
             )
             .then(resp => {
                 let data = resp.data;
-                var url = 'data:application/pdf;base64,' + data.results;
+                this.numPages = data.pages;
+                var url = 'data:application/pdf;base64,' + data.document;
                 this.src = url
                 this.pdfList.push(url)
             })
@@ -77,13 +164,20 @@ export default {
     },
     mounted(){
         this.show_header=false;
+        this.registerEvents();
+        this.UISetup();
     },
     created(){
-        eventHub.$emit('showHeader', false);
+        self = this;
         this.id = this.$route.params.id;
         this.title = this.$route.params.title;
         document.title = this.title;
+        eventHub.$emit('showHeader', false);
+        eventHub.$emit('hideMenu', 2, false);
         this.getBook()
+    },
+    destroyed(){
+        eventHub.$emit('hideMenu', 2, true);
     },
     data(){
         return {
@@ -91,18 +185,10 @@ export default {
             id: 0,
             title: '',
             book: {},
-            pdfList: [
-                '',
-                'https://cdn.mozilla.net/pdfjs/tracemonkey.pdf',
-                'https://cdn.rawgit.com/mozilla/pdf.js/c6e8ca86/test/pdfs/freeculture.pdf',
-                'https://cdn.rawgit.com/mozilla/pdf.js/c6e8ca86/test/pdfs/annotation-link-text-popup.pdf',
-                'https://cdn.rawgit.com/mozilla/pdf.js/c6e8ca86/test/pdfs/calrgb.pdf',
-                'https://cdn.rawgit.com/sayanee/angularjs-pdf/68066e85/example/pdf/relativity.protected.pdf',
-                'data:application/pdf;base64,JVBERi0xLjUKJbXtrvsKMyAwIG9iago8PCAvTGVuZ3RoIDQgMCBSCiAgIC9GaWx0ZXIgL0ZsYXRlRGVjb2RlCj4+CnN0cmVhbQp4nE2NuwoCQQxF+/mK+wMbk5lkHl+wIFislmIhPhYEi10Lf9/MVgZCAufmZAkMppJ6+ZLUuFWsM3ZXxvzpFNaMYjEriqpCtbZSBOsDzw0zjqPHZYtTrEmz4eto7/0K54t7GfegOGCBbBdDH3+y2zsMsVERc9SoRkXORqKGJupS6/9OmMIUfgypJL4KZW5kc3RyZWFtCmVuZG9iago0IDAgb2JqCiAgIDEzOAplbmRvYmoKMiAwIG9iago8PAogICAvRXh0R1N0YXRlIDw8CiAgICAgIC9hMCA8PCAvQ0EgMC42MTE5ODcgL2NhIDAuNjExOTg3ID4+CiAgICAgIC9hMSA8PCAvQ0EgMSAvY2EgMSA+PgogICA+Pgo+PgplbmRvYmoKNSAwIG9iago8PCAvVHlwZSAvUGFnZQogICAvUGFyZW50IDEgMCBSCiAgIC9NZWRpYUJveCBbIDAgMCA1OTUuMjc1NTc0IDg0MS44ODk3NzEgXQogICAvQ29udGVudHMgMyAwIFIKICAgL0dyb3VwIDw8CiAgICAgIC9UeXBlIC9Hcm91cAogICAgICAvUyAvVHJhbnNwYXJlbmN5CiAgICAgIC9DUyAvRGV2aWNlUkdCCiAgID4+CiAgIC9SZXNvdXJjZXMgMiAwIFIKPj4KZW5kb2JqCjEgMCBvYmoKPDwgL1R5cGUgL1BhZ2VzCiAgIC9LaWRzIFsgNSAwIFIgXQogICAvQ291bnQgMQo+PgplbmRvYmoKNiAwIG9iago8PCAvQ3JlYXRvciAoY2Fpcm8gMS4xMS4yIChodHRwOi8vY2Fpcm9ncmFwaGljcy5vcmcpKQogICAvUHJvZHVjZXIgKGNhaXJvIDEuMTEuMiAoaHR0cDovL2NhaXJvZ3JhcGhpY3Mub3JnKSkKPj4KZW5kb2JqCjcgMCBvYmoKPDwgL1R5cGUgL0NhdGFsb2cKICAgL1BhZ2VzIDEgMCBSCj4+CmVuZG9iagp4cmVmCjAgOAowMDAwMDAwMDAwIDY1NTM1IGYgCjAwMDAwMDA1ODAgMDAwMDAgbiAKMDAwMDAwMDI1MiAwMDAwMCBuIAowMDAwMDAwMDE1IDAwMDAwIG4gCjAwMDAwMDAyMzAgMDAwMDAgbiAKMDAwMDAwMDM2NiAwMDAwMCBuIAowMDAwMDAwNjQ1IDAwMDAwIG4gCjAwMDAwMDA3NzIgMDAwMDAgbiAKdHJhaWxlcgo8PCAvU2l6ZSA4CiAgIC9Sb290IDcgMCBSCiAgIC9JbmZvIDYgMCBSCj4+CnN0YXJ0eHJlZgo4MjQKJSVFT0YK',
-            ],
+            pdfList: [],
             src:'',
             page: 1,
-            numPages: 0,
+            numPages: 3,
             rotate: 0
         }
     }

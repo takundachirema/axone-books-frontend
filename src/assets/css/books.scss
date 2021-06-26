@@ -91,6 +91,14 @@
   display: none;
 }
 
+
+.id_container {
+  background: white;
+  border: $c-green;
+  border-radius: 10px;
+  border-width: 2px !important;
+}
+
 .books-item {
     &__link{
       text-decoration: none;
@@ -124,6 +132,8 @@
       font-size: 11px;
       letter-spacing: 0.5px;
       transition: color 0.5s ease;
+      text-align: center;
+      overflow-wrap: break-word;
       @include mobile-ls-min{
         font-size: 12px;
       }
@@ -368,12 +378,14 @@
           @include tablet-min{
             font-size: 30px;
           }
-          span{
+          span {
             display: block;
             font-size: 16px;
             font-weight: 300;
             color: rgba($c-white, 0.7);
             margin-top: 10px;
+            overflow-wrap: break-word;
+            text-align: center;
           }
         }
       }

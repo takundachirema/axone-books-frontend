@@ -6,7 +6,7 @@
       :collapsed="true"
       @item-click="onItemClick">
       <div slot="header" class="top-menu-item">
-        <img src="./assets/images/bookshelf.png">
+        <img src="./assets/images/book_shelf.png">
       </div>
     </sidebar-menu>
     <router-view :data="getData()"/>
@@ -78,6 +78,13 @@
       },
       showHeader(show) {
         this.show_header = show;
+      },
+      hideMenu(number, hide){
+        this.menu[number].hidden = hide;
+      },
+      selectMenu(number, url){
+        this.menu[number].hidden = false;
+        this.menu[number].child.push({href: url});
       }
     },
     mounted () {
@@ -93,6 +100,8 @@
       eventHub.$on('requestToken', this.requestToken);
       eventHub.$on('setUserStatus', this.setUserStatus);
       eventHub.$on('showHeader', this.showHeader);
+      eventHub.$on('hideMenu', this.hideMenu);
+      eventHub.$on('selectMenu', this.selectMenu);
       eventHub.$on('storeBooks', this.storeBooks);
       if (this.isTouchDevice()) {
         document.querySelector('body').classList.add('touch');
@@ -120,7 +129,10 @@
           {
             href: '/read',
             title: 'Read',
-            icon: 'fa fa-book-reader'
+            hidden: true,
+            icon: 'fa fa-book-reader',
+            class: 'vsm--link_active',
+            child: []
           },
           {
             href: '/publish',

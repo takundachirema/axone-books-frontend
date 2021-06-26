@@ -106,7 +106,9 @@ export default {
                 return false;
             }
 
-            console.log("public key: "+publicKey)
+            // store into local storage
+            localStorage.setItem("public_key", publicKey);
+            
             this.public_key = '';
             this.public_key = publicKey;
             
@@ -143,6 +145,7 @@ export default {
     mounted(){
         this.UISetup();
         this.registerEvents();
+        this.public_key = localStorage.getItem('public_key');
     },
     created(){
         self = this;

@@ -118,27 +118,65 @@
         <div class="book__wrap book__wrap--header" :class="{'book__wrap--page': type=='page'}">
           <figure class="book__poster">
             <img v-if="bookPosterSrc" class="book__img" src="../assets/images/placeholder.png" v-img="bookPosterSrc">
-            <img v-if="!bookPosterSrc" class="books-item__img is-loaded" src="../assets/images/no-image.png">
+            <img v-if="!bookPosterSrc" class="books-item__img is-loaded" src="../assets/images/book_cover.jpg">
           </figure>
           <div class="book__title">
-            <h1 class="book__title-text">
+            <h1 v-if="book.metadata.book_title" class="book__title-text">
               {{ book.metadata.book_title }}
               <span v-if="book.metadata.chapter_title">{{ book.metadata.chapter_title }}</span>
             </h1>
+            
+            <h1 v-if="!book.metadata.book_title" class="book__title-text">
+              Transaction ID
+              <div class="input-field col s12 id_container">
+                <i 
+                  id="copy_id" 
+                  class="material-icons prefix clickable tooltipped"
+                  data-position="left" 
+                  data-tooltip="Copy Id">
+                    content_copy
+                </i>
+                <input 
+                  readonly 
+                  id="transaction_id" 
+                  :value="book.id" 
+                  type="text">
+              </div>
+            </h1>
+            
           </div>
         </div>
       </header>
       <div class="book__main">
         <div class="book__wrap book__wrap--main" :class="{'book__wrap--page': type=='page'}">
           <div class="book__actions" >
-            <button id="read" class="btn waves-effect waves-light" @click.prevent="readBook()">Read</button>
+            <button v-if="book.transaction_type !== 'CREATE'" id="read" class="btn waves-effect waves-light" @click.prevent="readBook()">Read</button>
+            <button v-if="book.transaction_type == 'CREATE'" id="edit" class="btn waves-effect waves-light" @click.prevent="editBook()">Edit</button>
+            <div v-if="book.transaction_type !== 'CREATE'" class="input-field col s12 id_container">
+              <i 
+                id="copy_id" 
+                class="material-icons prefix clickable tooltipped"
+                data-position="left" 
+                data-tooltip="Copy Id">
+                  content_copy
+              </i>
+              <input 
+                readonly 
+                id="transaction_id" 
+                :value="book.id" 
+                type="text"
+                >
+            </div>
           </div>
           <div class="book__info">
             <div v-if="book.metadata.blurb" class="book__description">
               {{ book.metadata.blurb }}
             </div>
+            <div v-if="!book.metadata.blurb" class="book__description">
+              Please click the Edit Button and add the Axone addon for Google Docs to publish your document after editing.
+            </div>
             <div class="book__details">
-              <div v-if="book.metadata.genres.length" class="book__details-block">
+              <div v-if="book.metadata.genres" class="book__details-block">
                 <h2 class="book__details-title">
                   Genres
                 </h2>
@@ -368,6 +406,9 @@ export default {
       var elems = document.querySelectorAll('select');
       M.FormSelect.init(elems, {});
 
+      elems = document.querySelectorAll('.tooltipped');
+      M.Tooltip.init(elems, {});
+
       // setup listener for custom event to re-initialize on change
       $('.materialSelect').on('contentChanged', function() {
         var elems = document.querySelectorAll('select');
@@ -380,7 +421,7 @@ export default {
       }); 
 
       $('#show-dag').bind('click', function(e) {
-        if (self.book !== null){
+        if (self.book !== null && self.book.transaction_type !== "CREATE"){
           self.toggleClass('dag','open'); 
         }
       });
@@ -396,6 +437,11 @@ export default {
       $("#publish-form").submit(function () {
         self.publishChapter();
         return false;
+      });
+
+      $("#copy_id").bind('click', function(e) {
+        $("#transaction_id").select();
+        document.execCommand('copy');
       });
     },
     prepareGraph() {
@@ -625,7 +671,11 @@ export default {
     },
     readBook(){
       let route = this.$router.resolve('/read');
+      eventHub.$emit('selectMenu', 2, '/read/'+this.book.id+'/'+this.book.metadata.book_title);
       window.open(route.href+"/"+this.book.id+"/"+this.book.metadata.book_title, '_blank');
+    },
+    editBook(){
+      window.open("https://docs.google.com/document/create", '_blank');
     },
     showBook(){
       this.bookLoaded = true;
@@ -878,7 +928,7 @@ export default {
       // disable it first so that the refresh in populateSelectItems() make it so
       $('.materialSelect').attr('disabled', 'disabled');
       this.populateSelectItems(0,0);
-    }else{
+    }else if (this.book.transaction_type !== "CREATE"){
       this.prepareGraph();
     }
   },
