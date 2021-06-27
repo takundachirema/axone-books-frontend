@@ -671,7 +671,6 @@ export default {
     },
     readBook(){
       let route = this.$router.resolve('/read');
-      eventHub.$emit('selectMenu', 2, '/read/'+this.book.id+'/'+this.book.metadata.book_title);
       window.open(route.href+"/"+this.book.id+"/"+this.book.metadata.book_title, '_blank');
     },
     editBook(){
@@ -732,7 +731,7 @@ export default {
 
         var source_data = edge._private.source._private.data;
         var target_data = edge._private.target._private.data;
-
+        
         if (node_id === source_data.asset_id){
           var child_version = parseFloat(target_data.version);
           if (min_child_version == 0 || child_version < min_child_version){ 
@@ -751,6 +750,7 @@ export default {
       this.toggleClass('book__container','open');
     },
     populateSelectItems(min, max){
+      
       // first remove all the options
       $('#version_select')
       .find('option')

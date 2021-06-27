@@ -43,8 +43,9 @@
                                 id="public_key-text-area"
                                 required="" 
                                 aria-required="true" 
-                                type="text" >
-                                <label for="public_key-text-area" data-error="Please name.">Public or Private Key</label>
+                                type="text"
+                                :value="public_key" >
+                                <label class="active" for="public_key-text-area">Public or Private Key</label>
                             </div>
                         </div>
                         <div class="h50px w100">
