@@ -3,7 +3,7 @@
     <a class="books-item__link" :class="{'no-image': noImage}" :href="'/book/' + book.id" @click.prevent="openBookPopup(true)">
       <figure class="books-item__poster">
         <img v-if="!noImage" class="books-item__img" src="../assets/images/placeholder.png" v-img="poster()" alt="">
-        <img v-if="noImage" class="books-item__img is-loaded" src="../assets/images/book_shelf.png" alt="">
+        <img v-if="noImage" class="books-item__img is-loaded" src="../assets/images/book_cover.jpg" alt="">
       </figure>
       <div class="books-item__content">
         <p v-if="book.metadata.book_title" class="books-item__title">{{ book.metadata.book_title }}</p>

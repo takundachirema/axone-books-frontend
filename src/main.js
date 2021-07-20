@@ -23,12 +23,16 @@ import './assets/js/zingchart-navpie.min.js';
 
 import { BootstrapVue, IconsPlugin } from 'bootstrap-vue'
 import VueTippy, { TippyComponent } from "vue-tippy";
+import Notifications from 'vue-notification'
+import VueMeta from 'vue-meta'
 
 window.eventHub = new Vue();
 
 Vue.use(VueTippy);
 Vue.use(BootstrapVue)
 Vue.use(IconsPlugin)
+Vue.use(Notifications)
+Vue.use(VueMeta)
 Vue.use(VueRouter)
 Vue.use(VueSidebarMenu)
 Vue.component('zinggrid', ZingGrid)

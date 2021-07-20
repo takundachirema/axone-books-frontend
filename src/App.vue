@@ -1,5 +1,6 @@
 <template>
   <div id="app">
+    <notifications group="message" />
     <sidebar-menu
       :menu="menu"
       :show-one-child="true"
@@ -38,7 +39,7 @@
       storeBooks(books){
         //alert("store books")
         for (var i=0;i<books.length;i++){
-          //alert(books[i].metadata.title);
+          console.log(JSON.stringify(books[i]));
           localStorage.setItem(books[i].id,JSON.stringify(books[i]))
         }
       },
@@ -85,6 +86,18 @@
       selectMenu(number, url){
         this.menu[number].hidden = false;
         this.menu[number].child.push({href: url});
+      },
+      /**
+       * type: error, warn, success
+       */
+      showMessage(type, title, message, duration=4000){
+        this.$notify({
+          group: 'message',
+          type: type,
+          title: title,
+          duration: duration,
+          text: message
+        });
       }
     },
     mounted () {
@@ -103,6 +116,7 @@
       eventHub.$on('hideMenu', this.hideMenu);
       eventHub.$on('selectMenu', this.selectMenu);
       eventHub.$on('storeBooks', this.storeBooks);
+      eventHub.$on('showMessage', this.showMessage);
       if (this.isTouchDevice()) {
         document.querySelector('body').classList.add('touch');
       }

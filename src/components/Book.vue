@@ -105,6 +105,41 @@
             </div>
           </div>
 
+          <div class="row small-margin">
+            <div class="input-field col s12">
+                <blockquote>
+    This is your royalty fee payment based on the chapters you have referenced. For more information click here.
+                </blockquote>
+            </div>
+          </div>
+
+          <div class="row small-margin">
+            <div class="col s12">
+              <progress-bar bar-color="#dc720f" :val="royalty_paid" :text="royalty_paid+'%'"></progress-bar>
+            </div>
+          </div>
+
+          <div class="row small-margin">
+            <div class="input-field col s12">
+                <blockquote>
+    Set your royalty fee for chapters that will reference your chapter. For more information click here.
+                </blockquote>
+            </div>
+          </div>
+          
+          <div class="row">
+            <div class="input-field col s12">
+                <i class="material-icons prefix"><b style="font-weight: 900">%</b></i>
+                <input 
+                  id="royalty-text-area"
+                  required=""
+                  aria-required="true" 
+                  type="number"
+                  value="5">
+                <label for="payment-text-area" class="active">Royalty Fee</label>
+            </div>
+          </div>
+
           <div class="h50px w100">
             <button type="button" id="cancel-publish" class="btn waves-effect waves-light right margined-sides">Cancel</button>
             <button id="submit-publication" class="btn waves-effect waves-light right margined-sides" type="submit">Publish</button>
@@ -211,6 +246,7 @@ import edgehandles from 'cytoscape-edgehandles';
 import cxtmenu from 'cytoscape-cxtmenu';
 import Base58 from 'base-58';
 import nacl from "tweetnacl";
+import ProgressBar from 'vue-simple-progress'
 
 const driver = require('bigchaindb-driver')
 
@@ -225,7 +261,8 @@ export default {
     formatDate: formatDate
   },
   components: {
-      ModelSelect
+      ModelSelect,
+      ProgressBar
   },
   data(){
     return{
@@ -235,6 +272,7 @@ export default {
       userLoggedIn: storage.sessionId ? true : false,
       favoriteChecked: false,
       favorite: '',
+      royalty_paid: '10',
       // keeps nodes loaded so far
       nodes: {},
       // keeps adjacent nodes for clicked node
@@ -298,7 +336,7 @@ export default {
 
           console.log(source_version_f+" - "+target_version_f)
 
-          if (source_version_f < target_version_f){
+          if (source_version_f <= target_version_f){
             return 'flat';
           }
 
@@ -443,6 +481,16 @@ export default {
         $("#transaction_id").select();
         document.execCommand('copy');
       });
+
+      $('#royalty-text-area').keyup(function(event) {
+        var number = parseInt($('#royalty-text-area').val());
+        console.log(number);
+        if (Number.isNaN(number)){
+          $('#royalty-text-area').val("");
+        }else if (number > 100){
+          $('#royalty-text-area').val(Math.floor(number/10));
+        }
+      });
     },
     prepareGraph() {
 
@@ -473,6 +521,7 @@ export default {
         this.book.id, 
         this.book.asset_id,
         this.book.version,
+        this.book.metadata.royalty,
         this.book.metadata.chapter_title, 
         this.book.metadata.cover,
         true,
@@ -513,6 +562,7 @@ export default {
       .then(resp => {
           let data = resp.data;
           self.adjacentNodes[asset_id] = data.results;
+          console.log(data.results)
           self.updateGraphData(id, data.results);
       })
       .catch(e => {
@@ -533,6 +583,7 @@ export default {
           book.id, 
           book.asset_id, 
           book.version,
+          book.metadata.royalty,
           book.metadata.chapter_title, 
           book.metadata.cover,
           true,
@@ -551,9 +602,9 @@ export default {
         layout.run();
       }
     },
-    pushNode(id, asset_id, version, title, ipfs_id=null, create_child=false, create_parent=false, publish=false, parent_version = 0){
+    pushNode(id, asset_id, version, royalty, title, ipfs_id=null, create_child=false, create_parent=false, publish=false, parent_version = 0){
       // put in the node
-      var node_data = this.getNodeData(id, asset_id, version, title, parent_version);
+      var node_data = this.getNodeData(id, asset_id, version, royalty, title, parent_version);
       cy.add(node_data)
 
       this.pushMenu(id, create_child, create_parent, publish);
@@ -574,6 +625,7 @@ export default {
         new_id,
         new_id,
         0,
+        0,
         "New Chapter",
         null,
         false,
@@ -591,7 +643,7 @@ export default {
       const layout = cy.makeLayout(this.dagreLayout);
       layout.run();
     },
-    getNodeData(id, asset_id, version, title, parent_version = 0){
+    getNodeData(id, asset_id, version, royalty, title, parent_version = 0){
       var node_data = {}
       node_data["data"] = {}
       // id is the transaction ID. unique for every node
@@ -601,6 +653,7 @@ export default {
       node_data["data"]["asset_id"] = asset_id;
       node_data["data"]["title"] = title;
       node_data["data"]["version"] = version;
+      node_data["data"]["royalty"] = royalty;
       node_data["data"]["parent_version"] = parent_version;
 
       return node_data;
@@ -725,25 +778,38 @@ export default {
       var edges = node.edges;
       var max_parent_version = 0
       var min_child_version = 0
+      var royalty_total =0;
 
       for (var i=0;i<edges.length;i++){
         var edge = edges[i];
 
         var source_data = edge._private.source._private.data;
         var target_data = edge._private.target._private.data;
-        
+
+        console.log("versions: "+target_data.version+" "+source_data.version)
+
         if (node_id === source_data.asset_id){
           var child_version = parseFloat(target_data.version);
+          royalty_total += parseInt(target_data.royalty);
           if (min_child_version == 0 || child_version < min_child_version){ 
             min_child_version = child_version;
           }
         }else{
           var parent_version = parseFloat(source_data.version);
+          royalty_total += parseInt(source_data.royalty);
           if (parent_version > max_parent_version) max_parent_version = parent_version;
         }
       }
 
-      //alert(max_parent_version+" "+min_child_version);
+      if (royalty_total > 100){
+        eventHub.$emit(
+          'showMessage',
+          'error',
+          'Royalty must be less than 100%. Please reference fewer nodes.');
+        return;
+      }
+      
+      this.royalty_paid = royalty_total;
       this.populateSelectItems(max_parent_version, min_child_version);
       this.toggleClass('publish','open');
       this.toggleClass('dag','open');
@@ -807,7 +873,7 @@ export default {
     publishChapter() {
       
       if (self.book == null){
-        this.postData([],[]);
+        this.postData([],[],[],[]);
         return;
       }
 
@@ -815,25 +881,29 @@ export default {
       var edges = this.publishNode.edges;
       var parents = []
       var children = []
+      var parents_txns = []
+      var children_txns = []
 
       for (var i=0;i<edges.length;i++){
         var edge = edges[i];
 
-        var source = edge._private.source._private.data.asset_id;
-        var target = edge._private.target._private.data.asset_id;
+        var source_data = edge._private.source._private.data;
+        var target_data = edge._private.target._private.data;
 
         // when the new node is the source it means the edge is like:
         // NN ----> ON
         // NN (new node) is the parent and ON (old node) is the child
-        if (node_id === source){
-          children.push(target);
+        if (node_id === source_data.asset_id){
+          children.push(target_data.asset_id);
+          children_txns.push(target_data.id)
         }else{
-          parents.push(source);
+          parents.push(source_data.asset_id);
+          parents_txns.push(source_data.id);
         }
       }
       // console.log(children);
       // console.log(parents);
-      this.postData(parents, children);
+      this.postData(parents, children, parents_txns, children_txns);
     },
     generateKeyPair() {
       const key_pair = nacl.sign.keyPair();
@@ -852,11 +922,12 @@ export default {
      * CV key pairs can be used for encryption.
      * We use ed2curve library to convert between the 2.
      * */
-    postData(parents, children){
+    postData(parents, children, parents_txns, children_txns){
       let version = $("#version_select").val();
       let edPrivateKey = $("#sk_text-area").val();
       //let address = $("#address-text-area").val();
       let payment = $("#payment-text-area").val();
+      let royalty_fee = parseInt($("#royalty-text-area").val()) || 0;
 
       var api_url = process.env.VUE_APP_BIGCHAINDB_API;
 
@@ -871,12 +942,15 @@ export default {
           version: version,
           parents: parents,
           children: children,
-          payment_pointer: payment,
+          parents_transactions: parents_txns,
+          children_transactions: children_txns,
           published: new Date().toString()
         },
         // Metadata contains information about the book.
         {
           tags: "Axone Books",
+          payment_pointer: payment,
+          royalty: royalty_fee,
           published: new Date().toString()
         },
         // A transaction needs an output
