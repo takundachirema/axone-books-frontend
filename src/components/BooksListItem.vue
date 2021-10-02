@@ -17,7 +17,7 @@
 import img from '../directives/v-image.js'
 
 export default {
-  props: ['book'],
+  props: ['pk','book'],
   directives: {
     img: img
   },
@@ -38,7 +38,7 @@ export default {
       }
     },
     openBookPopup(event){
-      eventHub.$emit('openBookPopup', this.book, event);
+      eventHub.$emit('openBookPopup', this.book, this.pk, event);
     }
   }
 }

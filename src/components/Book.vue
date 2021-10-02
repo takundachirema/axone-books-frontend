@@ -62,28 +62,6 @@
             </div>
           </div>
 
-          <!-- The address will only be used when publishing asset on Ethereum   -->
-          <!--<div class="row small-margin">
-            <div class="input-field col s12">
-                <blockquote>
-    Get your wallet address for creation of this asset on Ethereum through metamask. For more information click here.
-                </blockquote>
-            </div>
-          </div>
-
-          <div class="row">
-            <div class="input-field col s12">
-                <i class="material-icons prefix">lock</i>
-                <input 
-                id="address-text-area"
-                required="" 
-                aria-required="true" 
-                type="text" 
-                class="validate">
-                <label for="address-text-area">Wallet Address</label>
-            </div>
-          </div> -->
-
           <div class="row small-margin">
             <div class="input-field col s12">
                 <blockquote>
@@ -186,6 +164,7 @@
         <div class="book__wrap book__wrap--main" :class="{'book__wrap--page': type=='page'}">
           <div class="book__actions" >
             <button v-if="book.transaction_type !== 'CREATE'" id="read" class="btn waves-effect waves-light" @click.prevent="readBook()">Read</button>
+            <!--<button v-if="pk !== undefined" id="transfer" class="btn waves-effect waves-light margined orange" @click.prevent="transferBook()">Transfer</button> -->
             <button v-if="book.transaction_type == 'CREATE'" id="edit" class="btn waves-effect waves-light" @click.prevent="editBook()">Edit</button>
             <div v-if="book.transaction_type !== 'CREATE'" class="input-field col s12 id_container">
               <i 
@@ -255,7 +234,7 @@ var self;
 var publishNode;
 
 export default {
-  props: ['book', 'type'],
+  props: ['pk','book', 'type'],
   directives: {
     img: img,
     formatDate: formatDate
@@ -917,6 +896,22 @@ export default {
       $("#sk_text-area").val(private_key);
       M.updateTextFields();
     },
+    transferBook(){
+      alert(this.pk);
+      conn.getTransaction(transaction_id)
+      .then(txCreated => {
+          console.log('txn created', txCreated, 'received')
+          const tx = BigchainDB.Transaction.makeTransferTransaction(
+            [{ tx: txCreated, output_index: 0 }],
+            [ BigchainDB.Transaction.makeOutput(
+                BigchainDB.Transaction.makeEd25519Condition(edPublicKey))
+            ],
+            asset_metadata
+          )
+
+          postTransaction (conn, tx, edPrivateKey_32);
+      })
+    },
     /**
      * ED key pair is only for signing.
      * CV key pairs can be used for encryption.
@@ -937,8 +932,7 @@ export default {
       // Construct a transaction payload
       const tx = driver.Transaction.makeCreateTransaction(
         // Define the asset to store.
-        { 
-          public_key: edPublicKey,
+        {
           version: version,
           parents: parents,
           children: children,
@@ -948,6 +942,7 @@ export default {
         },
         // Metadata contains information about the book.
         {
+          document_pk: edPublicKey,
           tags: "Axone Books",
           payment_pointer: payment,
           royalty: royalty_fee,

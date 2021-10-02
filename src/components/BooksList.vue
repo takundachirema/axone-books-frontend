@@ -13,7 +13,8 @@
           class="books__item" 
           v-for="(book) in books" 
           :book="book"
-          :key="book.id">
+          :key="book.id"
+          :pk="pk">
         </books-list-item>
       </ul>
       <div class="books__nav" v-if="!shortList" :class="{'is-hidden' : currentPage == pages}">

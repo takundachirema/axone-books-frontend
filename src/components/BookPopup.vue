@@ -1,7 +1,7 @@
 <template>
   <div class="book-popup" @click="$emit('close')">
     <div class="book-popup__box" @click.stop>
-      <book :book="book"></book>
+      <book :book="book" :pk="pk"></book>
       <button class="book-popup__close" @click="$emit('close')"></button>
     </div>
   </div>
@@ -11,7 +11,7 @@
 import Book from './Book.vue';
 
 export default {
-  props: ['book'],
+  props: ['pk','book'],
   components: { Book },
   created(){
     window.addEventListener('keyup', function(e){

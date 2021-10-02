@@ -12,7 +12,7 @@
     </sidebar-menu>
     <router-view :data="getData()"/>
     
-    <book-popup v-if="bookPopupIsVisible" @close="closeBookPopup" :book="book"></book-popup>
+    <book-popup v-if="bookPopupIsVisible" @close="closeBookPopup" :book="book" :pk="pk"></book-popup>
 
     <header v-show="show_header" class="header">
       <div class="header__search row">
@@ -43,13 +43,14 @@
           localStorage.setItem(books[i].id,JSON.stringify(books[i]))
         }
       },
-      openBookPopup(book, newBookPopup){
+      openBookPopup(book, pk, newBookPopup){
         if(newBookPopup){
           storage.backTitle = document.title;
         }
         storage.createBookPopup = newBookPopup;
         this.bookPopupIsVisible = true;
         this.book = book;
+        this.pk = pk;
         document.querySelector('body').classList.add('hidden');
       },
       closeBookPopup(){
@@ -126,6 +127,7 @@
         bookPopupIsVisible: false,
         bookPopupHistoryVisible: false,
         book: {},
+        pk: '',
         searchQuery: '',
         loading: true,
         show_header: false,
