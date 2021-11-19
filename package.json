@@ -38,7 +38,6 @@
     "module": "^1.2.5",
     "moment": "^2.27.0",
     "mongodb": "^3.6.2",
-    "mongodb-client-encryption": "^1.2.3",
     "mongoose": "^5.10.2",
     "morgan": "^1.10.0",
     "numeral": "^2.0.4",

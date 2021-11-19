@@ -13,14 +13,26 @@ This repository contains the Client and Server code for Axone books.
 
 ### Run these to create the text indexes
 
-
-
 ## Project setup
 
 ### Installing Dependencies
 To setup and install the necessary packages and modules required to run the dashboard, run the command below in both the root directory of the project and the folder `dev-server`.
 ```
     npm install
+```
+node-sass 4.14.1 requires node version 14.8.1
+Install it using these commands
+```
+    sudo npm cache clean -f
+    sudo npm install -g n
+    sudo n 14.18.1
+```
+
+Install docker and docker compose
+Clone the bigchaindb git repository
+cd into the repo and run
+```
+    sudo make run
 ```
 
 ### Compiling and serving the dashboard
