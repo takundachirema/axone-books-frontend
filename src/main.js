@@ -12,6 +12,7 @@ import About from './views/About.vue'
 import Library from './views/Library.vue'
 import Publish from './views/Publish.vue'
 import Read from './views/Read.vue'
+import Explore from './views/Explore.vue'
 
 import 'materialize-css/dist/css/materialize.min.css'
 import 'material-design-icons/iconfont/material-icons.css'
@@ -58,6 +59,11 @@ const router = new VueRouter({
       path: '/publish',
       name: 'Publish',
       component: Publish
+    },
+    {
+      path: '/explore/:id/:title',
+      name: 'Explore',
+      component: Explore
     },
     {
       path: '/about',

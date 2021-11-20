@@ -5,6 +5,7 @@
       :menu="menu"
       :show-one-child="true"
       :collapsed="true"
+      :hideToggle="true"
       @item-click="onItemClick">
       <div slot="header" class="top-menu-item">
         <img src="./assets/images/book_shelf.png">
@@ -12,7 +13,14 @@
     </sidebar-menu>
     <router-view :data="getData()"/>
     
-    <book-popup v-if="bookPopupIsVisible" @close="closeBookPopup" :book="book" :pk="pk"></book-popup>
+    <book-popup 
+      v-if="bookPopupIsVisible" 
+      @close="closeBookPopup" 
+      :book="book" 
+      :pk="pk"
+      :node="node"
+      >
+    </book-popup>
 
     <header v-show="show_header" class="header">
       <div class="header__search row">
@@ -43,14 +51,11 @@
           localStorage.setItem(books[i].id,JSON.stringify(books[i]))
         }
       },
-      openBookPopup(book, pk, newBookPopup){
-        if(newBookPopup){
-          storage.backTitle = document.title;
-        }
-        storage.createBookPopup = newBookPopup;
+      openBookPopup(book, pk, node) {
         this.bookPopupIsVisible = true;
         this.book = book;
         this.pk = pk;
+        this.node=node;
         document.querySelector('body').classList.add('hidden');
       },
       closeBookPopup(){
@@ -151,15 +156,18 @@
             child: []
           },
           {
+            href: '/explore',
+            title: 'Explore',
+            hidden: true,
+            icon: 'fa fa-cogs',
+            class: 'vsm--link_active',
+            child: []
+          },
+          {
             href: '/publish',
             title: 'Publish',
             icon: 'fa fa-globe'
-          },
-          {
-            href: '/about',
-            title: 'About',
-            icon: 'fa fa-info-circle'
-          },
+          }
         ]
       }
     }

@@ -301,7 +301,6 @@ export default {
         this.getBookMetadata();
         this.getPaymentPointers();
         window.addEventListener("load", this.onWindowLoad);
-        //this.getBook()
     },
     destroyed(){
         eventHub.$emit('hideMenu', 2, true);
