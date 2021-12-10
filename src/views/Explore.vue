@@ -286,7 +286,7 @@ export default {
 
       // Get adjacent nodes /documents/adjacent
       axios.post(
-        'http://localhost:3000/api/documents/adjacent',
+        'documents/adjacent',
         {
           mongodb_url: process.env.VUE_APP_BIGCHAINDB_MONGO_DB,
           asset_id: asset_id

@@ -43,7 +43,7 @@ const assert = require('assert');
 let removed;
 
 export default {
-  props: ['pk','page','pageTitle','type', 'mode', 'category', 'shortList'],
+  props: ['pk','page','pageTitle','type', 'mode', 'category', 'shortList','searchQuery'],
   components: { BooksListItem },
   beforeRouteLeave (to, from, next) {
     if(from.name == 'search'){
@@ -148,16 +148,22 @@ export default {
     }
   },
   watch: {
-    query(value){
-      this.fetchCategory(value);
+    searchQuery(value){
+      if (this.page === "library"){
+        this.getBooks('documents/search', {"search_text":value});
+      }else if (this.page === "publish") {
+        if (this.pk){
+          this.getBooks('documents/search',{"search_text":value, "public_key":this.pk});
+        }
+      }
     }
   },
   created(){
     if (this.page === "library"){
-      this.getBooks('http://localhost:3000/api/documents/latest');
+      this.getBooks('documents/latest');
     }else if (this.page === "publish") {
       if (this.pk){
-        this.getBooks('http://localhost:3000/api/documents/public_key',{"public_key":this.pk});
+        this.getBooks('documents/public_key',{"public_key":this.pk});
       }
     }
   }

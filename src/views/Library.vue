@@ -6,7 +6,8 @@
             :category="'popular'" 
             :shortList="true"
             :page="'library'"
-            :pageTitle="'Latest Books'">
+            :pageTitle="'Latest Books'"
+            :searchQuery="searchQuery">
         </books-list>
     </div>
 </template>
@@ -15,13 +16,20 @@
 import BooksList from '../components/BooksList.vue'
 
 export default {
+    props: ['searchQuery'],
     components: { BooksList },
     created(){
         eventHub.$emit('showHeader', true);
         document.title = 'Books';
     },
+    watch: { 
+        search: function(newVal, oldVal) {
+            this.searchQuery=newVal;
+        }
+    },
     data(){
         return {
+            searchQuery: '',
             show_header: true
         }
     }

@@ -189,7 +189,7 @@ export default {
         },
         getPaymentPointers(){
             axios.post(
-                'http://localhost:3000/api/documents/payments',
+                'documents/payments',
                 {
                     mongodb_url: process.env.VUE_APP_BIGCHAINDB_MONGO_DB,
                     transaction_id: this.id,
@@ -245,7 +245,7 @@ export default {
             );
 
             axios.post(
-                'http://localhost:3000/api/documents',
+                'documents',
                 {
                     mongodb_url: process.env.VUE_APP_BIGCHAINDB_MONGO_DB,
                     id: this.id

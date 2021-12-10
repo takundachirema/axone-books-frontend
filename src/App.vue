@@ -11,7 +11,8 @@
         <img src="./assets/images/book_shelf.png">
       </div>
     </sidebar-menu>
-    <router-view :data="getData()"/>
+
+    <router-view :searchQuery="searchText"/>
     
     <book-popup 
       v-if="bookPopupIsVisible" 
@@ -26,7 +27,7 @@
       <div class="header__search row">
         <div class="input-field col s1">
           <i class="material-icons prefix">search</i>
-          <input id="icon_prefix header__search-input" type="text" @keyup.enter="search">
+          <input id="icon_prefix header__search-input" type="text" v-model.trim="searchQuery" @keyup.enter="search">
           <label for="icon_prefix">search for book...</label>
         </div>
       </div>
@@ -43,7 +44,11 @@
     name: 'App',
     components: {BookPopup},
     methods: {
-      getData(){ },
+      search() {
+        if (this.searchQuery){
+          this.searchText = this.searchQuery
+        }
+      },
       storeBooks(books){
         //alert("store books")
         for (var i=0;i<books.length;i++){
@@ -62,7 +67,7 @@
         storage.createBookPopup = false;
         this.bookPopupIsVisible = false;
         document.querySelector('body').classList.remove('hidden');
-        window.history.back();
+        //window.history.back();
       },
       onToggleCollapse (collapsed) {
         this.collapsed = collapsed
@@ -134,6 +139,7 @@
         book: {},
         pk: '',
         searchQuery: '',
+        searchText: '',
         loading: true,
         show_header: false,
         menu: [

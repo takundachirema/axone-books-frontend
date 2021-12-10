@@ -8,7 +8,8 @@
             :page="'publish'"
             :key="public_key"
             :pk="public_key"
-            :pageTitle="'Published Books'">
+            :pageTitle="'Published Books'"
+            :searchQuery="searchQuery">
         </books-list>
         
         <div id="publish-modal9" class="modal">
@@ -87,9 +88,11 @@ import Base58 from 'base-58';
 var self;
 
 export default {
+    props: ['searchQuery'],
     components: { BooksList },
     data(){
         return {
+            searchQuery: '',
             show_header: true,
             public_key: ''
         }

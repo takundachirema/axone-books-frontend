@@ -6,8 +6,8 @@
         <img v-if="noImage" class="books-item__img is-loaded" src="../assets/images/book_cover.jpg" alt="">
       </figure>
       <div class="books-item__content">
-        <p v-if="book.metadata.book_title" class="books-item__title">{{ book.metadata.book_title }}</p>
-        <p v-if="!book.metadata.book_title" class="books-item__title">New Untitled Book</p>
+        <p v-if="book.metadata.chapter_title" class="books-item__title">{{ book.metadata.chapter_title }}</p>
+        <p v-if="!book.metadata.chapter_title" class="books-item__title">New Untitled Book</p>
       </div>
     </a>
   </li>

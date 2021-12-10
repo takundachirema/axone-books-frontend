@@ -7,6 +7,7 @@ import 'zingchart/es6'
 import ZingChartVue from 'zingchart-vue'
 import ZingGrid from 'zinggrid'
 import VueRouter from 'vue-router'
+import axios from 'axios'
 
 import About from './views/About.vue'
 import Library from './views/Library.vue'
@@ -41,6 +42,8 @@ Vue.component('zingchart', ZingChartVue)
 Vue.component("tippy", TippyComponent);
 
 Vue.config.productionTip = false
+
+axios.defaults.baseURL = process.env.VUE_APP_API_BASE_URL;
 
 const router = new VueRouter({
   mode: 'history',
