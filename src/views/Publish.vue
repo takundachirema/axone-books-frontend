@@ -22,7 +22,7 @@
             </div>
         </div>
 
-        <div id="search-modal" class="modal">
+        <div id="search-modal" class="modal modal__medium">
             <div class="modal-content">
                 <h4>Get Published</h4>
                 <div class="row">
@@ -30,7 +30,9 @@
                         <div class="row small-margin">
                             <div class="input-field col s12">
                                 <blockquote>
-                    Please enter the public or private key of the documents you wish to retrieve. For more information click here.
+                                    Please enter the public or private key of the documents 
+                                    you wish to retrieve. For more information click 
+                                    <a href="./info/#keys" target="_blank">here</a>.
                                 </blockquote>
                             </div>
                         </div>

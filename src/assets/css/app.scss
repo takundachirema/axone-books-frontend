@@ -350,9 +350,20 @@ footer#custom-footer {
     }
 }
 
-.modal__small{ 
+.modal__small {
     width: 40% !important ; 
     height: 40% !important ;
+    outline: none !important;
+    .modal-content, .modal-footer {
+        outline: none !important;
+        border-bottom: 0px !important;
+        border-radius: 0px !important;
+    }
+}
+
+.modal__medium { 
+    width: 40% !important ; 
+    height: 55% !important ;
     outline: none !important;
     .modal-content, .modal-footer {
         outline: none !important;

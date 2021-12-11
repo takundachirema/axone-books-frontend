@@ -45,12 +45,9 @@
     components: {BookPopup},
     methods: {
       search() {
-        if (this.searchQuery){
-          this.searchText = this.searchQuery
-        }
+        this.searchText = this.searchQuery
       },
       storeBooks(books){
-        //alert("store books")
         for (var i=0;i<books.length;i++){
           console.log(JSON.stringify(books[i]));
           localStorage.setItem(books[i].id,JSON.stringify(books[i]))
@@ -173,6 +170,11 @@
             href: '/publish',
             title: 'Publish',
             icon: 'fa fa-globe'
+          },
+          {
+            href: '/info',
+            title: 'Information',
+            icon: 'fa fa-info'
           }
         ]
       }

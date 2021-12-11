@@ -10,6 +10,7 @@ import VueRouter from 'vue-router'
 import axios from 'axios'
 
 import About from './views/About.vue'
+import Information from './views/Information.vue'
 import Library from './views/Library.vue'
 import Publish from './views/Publish.vue'
 import Read from './views/Read.vue'
@@ -67,6 +68,11 @@ const router = new VueRouter({
       path: '/explore/:id/:title',
       name: 'Explore',
       component: Explore
+    },
+    {
+      path: '/info',
+      name: 'Info',
+      component: Information
     },
     {
       path: '/about',

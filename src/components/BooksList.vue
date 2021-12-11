@@ -114,9 +114,6 @@ export default {
           console.log(e)
       })
     },
-    populateList(){
-
-    },
     fetchCategory(){
       axios.get(this.request)
       .then(function(resp) {
@@ -140,32 +137,37 @@ export default {
         this.$router.push({ name: '404' });
       }.bind(this));
     },
-    loadMore(){
-
-    },
-    updateFavorite(){
-
-    }
-  },
-  watch: {
-    searchQuery(value){
+    searchBooks(searchQuery){
       if (this.page === "library"){
-        this.getBooks('documents/search', {"search_text":value});
+        this.getBooks('documents/search', {"search_text":searchQuery});
       }else if (this.page === "publish") {
         if (this.pk){
-          this.getBooks('documents/search',{"search_text":value, "public_key":this.pk});
+          this.getBooks('documents/search',{"search_text":searchQuery, "public_key":this.pk});
+        }
+      }
+    },
+    loadBooks(){
+      if (this.page === "library"){
+        this.getBooks('documents/latest');
+      }else if (this.page === "publish") {
+        if (this.pk){
+          this.getBooks('documents/public_key',{"public_key":this.pk});
         }
       }
     }
   },
-  created(){
-    if (this.page === "library"){
-      this.getBooks('documents/latest');
-    }else if (this.page === "publish") {
-      if (this.pk){
-        this.getBooks('documents/public_key',{"public_key":this.pk});
+  watch: {
+    searchQuery(searchQuery){
+      //alert("search:"+searchQuery+"*")
+      if (searchQuery){
+        this.searchBooks(searchQuery)
+      }else{
+        this.loadBooks()
       }
     }
+  },
+  created(){
+    this.loadBooks()
   }
 }
 </script>

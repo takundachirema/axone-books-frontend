@@ -6,7 +6,9 @@
           <div class="row small-margin">
             <div class="input-field col s12">
                 <blockquote>
-  Please select the document version. For more information click here.
+                  Please select the document version. 
+                  For more information click
+                  <a href="./info/#versions" target="_blank">here</a>.
                 </blockquote>
             </div>
           </div>
@@ -22,7 +24,9 @@
           <div class="row small-margin">
             <div class="input-field col s12">
                 <blockquote>
-    Please fill in your private key for encrypting your document, otherwise generate a new key pair. For more information click here.
+                  Please fill in your private key for encrypting your document, 
+                  otherwise generate a new key pair. For more information click 
+                  <a href="./info/#keys" target="_blank">here</a>.
                 </blockquote>
             </div>
           </div>
@@ -57,7 +61,9 @@
           <div class="row small-margin">
             <div class="input-field col s12">
                 <blockquote>
-    Get your payment pointer from a webmonetization provider. For more information click here.
+                  Get your payment pointer from a webmonetization provider. 
+                  For more information click 
+                  <a href="./info/#webmonetization" target="_blank">here</a>.
                 </blockquote>
             </div>
           </div>
@@ -78,7 +84,9 @@
           <div class="row small-margin">
             <div class="input-field col s12">
                 <blockquote>
-    This is your royalty fee payment based on the chapters you have referenced. For more information click here.
+                  This is your royalty fee payment based on the chapters you have referenced. 
+                  For more information click
+                  <a href="./info/#royalty" target="_blank">here</a>.
                 </blockquote>
             </div>
           </div>
@@ -92,7 +100,9 @@
           <div class="row small-margin">
             <div class="input-field col s12">
                 <blockquote>
-    Set your royalty fee for chapters that will reference your chapter. For more information click here.
+                  Set your royalty fee for chapters that will reference your chapter. 
+                  For more information click
+                  <a href="./info/#royalty" target="_blank">here</a>.
                 </blockquote>
             </div>
           </div>
@@ -138,7 +148,7 @@
                   id="copy_id" 
                   class="material-icons prefix clickable tooltipped"
                   data-position="left" 
-                  data-tooltip="Copy Id">
+                  data-tooltip="Copy Tranaction Id">
                     content_copy
                 </i>
                 <input 
@@ -158,12 +168,13 @@
             <button v-if="book.transaction_type !== 'CREATE'" id="read" class="btn waves-effect waves-light" @click.prevent="readBook()">Read</button>
             <button v-if="book.transaction_type !== 'CREATE'" id="transfer" class="btn waves-effect waves-light margined orange" @click.prevent="exploreBook()">Explore</button>
             <button v-if="book.transaction_type == 'CREATE'" id="edit" class="btn waves-effect waves-light" @click.prevent="editBook()">Edit</button>
-            <div v-if="book.transaction_type !== 'CREATE'" class="input-field col s12 id_container">
+            
+            <div v-if="book.transaction_type !== 'CREATE'" class="input-field s12 id_container">
               <i 
                 id="copy_id" 
                 class="material-icons prefix clickable tooltipped"
                 data-position="left" 
-                data-tooltip="Copy Id">
+                data-tooltip="Copy Tranaction Id">
                   content_copy
               </i>
               <input 
@@ -172,6 +183,13 @@
                 :value="book.id" 
                 type="text"
                 >
+              <i 
+                id="transactions_info"
+                class="material-icons prefix clickable tooltipped"
+                data-position="left" 
+                data-tooltip="Learn More">
+                  info_outline
+              </i>
             </div>
           </div>
           <div class="book__info">
@@ -211,19 +229,13 @@ import img from '../directives/v-image.js'
 import formatDate from '../directives/v-formatDate.js'
 import { ModelSelect } from 'vue-search-select'
 import $ from 'jquery'
-import cytoscape from 'cytoscape'
-import dagre from 'cytoscape-dagre';
-import edgehandles from 'cytoscape-edgehandles';
-import cxtmenu from 'cytoscape-cxtmenu';
 import Base58 from 'base-58';
 import nacl from "tweetnacl";
 import ProgressBar from 'vue-simple-progress'
 
 const driver = require('bigchaindb-driver')
 
-var cy;
 var self;
-var publishNode;
 
 export default {
   props: ['pk','book', 'type', 'node'],
@@ -285,6 +297,11 @@ export default {
       $("#copy_id").bind('click', function(e) {
         $("#transaction_id").select();
         document.execCommand('copy');
+      });
+
+      $("#transactions_info").bind('click', function(e) {
+        let route = self.$router.resolve('/info/#transactions');
+        window.open(route.href, '_blank');
       });
 
       $('#royalty-text-area').keyup(function(event) {
