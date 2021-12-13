@@ -11,6 +11,20 @@ This repository contains the Client and Server code for Axone books.
 - Then run: show collections
 - Then now you can query from any of the collections
 
+## Google Cloud Bigchaindb Node
+- Setup the VM instance: https://cloud.google.com/compute/docs/quickstart-linux
+- SSH connect to it with following steps:
+- Install google skd: https://cloud.google.com/sdk/docs/quickstart
+- Download using the curl command (go to home directory as recommended) it's easier.
+- Unzip the folder: tar -zxf google-cloud-sdk-*
+- Then run: ./google-cloud-sdk/install.sh
+- Then run: ./google-cloud-sdk/bin/gcloud init
+
+## Install Docker and Docker compose
+- https://www.digitalocean.com/community/tutorials/how-to-install-and-use-docker-on-ubuntu-20-04
+-https://www.digitalocean.com/community/tutorials/how-to-install-and-use-docker-compose-on-ubuntu-20-04
+- Install make if not found: sudo apt-get install -y make
+
 ### Run these to create the text indexes
 
 ## Project setup

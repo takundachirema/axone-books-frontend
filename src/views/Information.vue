@@ -37,8 +37,10 @@
                         <br><br>
                         Please <b>DO NOT LOSE</b> your
                         private key as it is not recoverable and you lose the priviledge to 
-                        edit your chapter. For more information on public key cryptography
-                        click 
+                        edit your chapter. <b>NOTE</b> We use the Ed25519 signatures with the
+                        private key having the public key in it as the last 32 bits. Therefore
+                        you only need to know you private key, the public key can be derived from
+                        your private key. For more information on public key cryptography click 
                         <a href="https://en.wikipedia.org/wiki/Public-key_cryptography" target="_blank">
                         here
                         </a>.

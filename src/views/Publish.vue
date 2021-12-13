@@ -30,7 +30,8 @@
                         <div class="row small-margin">
                             <div class="input-field col s12">
                                 <blockquote>
-                                    Please enter the public or private key of the documents 
+                                    Please enter the public key (if it's another author or you know your public key)
+                                    or private key (if it's for your books) of the documents 
                                     you wish to retrieve. For more information click 
                                     <a href="./info/#keys" target="_blank">here</a>.
                                 </blockquote>
