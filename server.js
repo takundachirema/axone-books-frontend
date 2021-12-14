@@ -3,7 +3,8 @@ const app = express();
 
 app.use(express.static('prod-server'));
 
+var port = process.env.PORT || 8080
 
-app.listen(3000, function () {
-  console.log('App listening on port 3000');
+app.listen(port, function () {
+  console.log('App listening on port '+port);
 });
