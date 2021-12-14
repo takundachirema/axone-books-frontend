@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
-    "build": "xport NODE_ENV=production && nodemon prod-server/index.js && vue-cli-service build && babel dev-server --out-dir prod-server",
+    "build": "vue-cli-service build --dest prod-server",
     "lint": "vue-cli-service lint",
     "dev": "concurrently \"babel dev-server --out-dir prod-server --watch\" \"nodemon prod-server/index.js\" \"npm run serve\" "
   },
@@ -13,7 +13,6 @@
     "@ckeditor/ckeditor5-build-decoupled-document": "^26.0.0",
     "@ckeditor/ckeditor5-comments": "^26.0.0",
     "@ckeditor/ckeditor5-pagination": "^26.0.0",
-    "@std/esm": "^0.26.0",
     "axios": "^0.20.0",
     "base-58": "^0.0.1",
     "bigchaindb-driver": "^4.2.2",
@@ -68,10 +67,13 @@
     "@vue/cli-plugin-vuex": "~4.5.0",
     "@vue/cli-service": "~4.5.0",
     "babel-eslint": "^10.1.0",
+    "cross-env": "^7.0.3",
     "eslint": "^6.7.2",
     "eslint-plugin-vue": "^6.2.2",
     "node-sass": "^4.14.1",
+    "nodemon": "^2.0.15",
     "sass-loader": "^6.0.7",
-    "vue-template-compiler": "^2.6.11"
+    "vue-template-compiler": "^2.6.11",
+    "webpack-cli": "^4.9.1"
   }
 }
