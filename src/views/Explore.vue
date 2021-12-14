@@ -505,6 +505,5 @@ export default {
   @import '../assets/css/variables';
   @import '../assets/css/media-queries';
   @import '../assets/css/app';
-  @import '../assets/css/templatemo-style';
   @import '../assets/css/books';
 </style>
