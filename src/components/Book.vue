@@ -355,6 +355,12 @@ export default {
       $emit('close');
     },
     showPublishChapter(node) {
+
+      if (!node){
+        this.populateSelectItems(0, 0);
+        return;
+      }
+
       this.publishNode = node;
       
       // Now get the max parent version and min child version to limit version selection
@@ -601,10 +607,7 @@ export default {
     this.UISetup();
     if (this.book == null){
       this.toggleClass('publish','open');
-      
-      if (this.node !== null){
-        this.showPublishChapter(this.node);
-      }
+      this.showPublishChapter(this.node);
     }else if (this.book.transaction_type !== "CREATE"){
       this.prepareGraph();
     }
