@@ -1,4 +1,9 @@
 module.exports = {
     runtimeCompiler: true,
-    lintOnSave: false
+    lintOnSave: false,
+    configureWebpack: {
+        devServer: {
+          historyApiFallback: true
+        }
+    }
 }
