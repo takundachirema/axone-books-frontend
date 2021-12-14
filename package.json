@@ -6,7 +6,7 @@
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build --dest prod-server",
     "lint": "vue-cli-service lint",
-    "dev": "concurrently \"babel dev-server --out-dir prod-server --watch\" \"nodemon prod-server/index.js\" \"npm run serve\" "
+    "start": "node server.js"
   },
   "dependencies": {
     "@ckeditor/ckeditor5-build-classic": "^26.0.0",
@@ -30,6 +30,7 @@
     "cytoscape-edgehandles": "^3.6.0",
     "cytoscape-klay": "^3.1.4",
     "dns": "^0.2.2",
+    "express": "^4.17.1",
     "flipbook-vue": "^0.10.2",
     "jquery": "^3.6.0",
     "material-design-icons": "^3.0.1",
