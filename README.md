@@ -20,10 +20,42 @@ This repository contains the Client and Server code for Axone books.
 - Then run: ./google-cloud-sdk/install.sh
 - Then run: ./google-cloud-sdk/bin/gcloud init
 
-## Install Docker and Docker compose
+## Google Cloud VM Setup Docker compose
 - https://www.digitalocean.com/community/tutorials/how-to-install-and-use-docker-on-ubuntu-20-04
 -https://www.digitalocean.com/community/tutorials/how-to-install-and-use-docker-compose-on-ubuntu-20-04
 - Install make if not found: sudo apt-get install -y make
+- Clone bigchaindb repo
+
+```
+git clone https://github.com/bigchaindb/bigchaindb.git
+cd bigchaindb
+make run
+```
+
+### Setup SSL
+
+- Install nginx: 
+```
+sudo apt update
+sudo apt install nginx
+```
+- update the http and https to redirect to port 9984:
+```
+sudo nano /etc/nginx/sites-enabled/default
+```
+- Then paste this:
+```
+server {
+    ...
+    location / {
+        proxy_pass http://127.0.0.1:9984;
+    }
+    ...
+```
+- Then reload nginx:
+```
+sudo service nginx reload
+```
 
 ### Run these to create the text indexes
 
