@@ -55,7 +55,8 @@
                         <div class="row small-margin">
                             <div class="input-field col s12">
                                 <blockquote>
-                    Web Monetization State. For more information click here.
+                                    Web Monetization State. For more information click 
+                                    <a href="./info/#webmonetization" target="_blank">here</a>.
                                 </blockquote>
                             </div>
                         </div>
@@ -77,7 +78,8 @@
                         <div class="row small-margin">
                             <div class="input-field col s12">
                                 <blockquote>
-                    Payment Pointer. For more information click here.
+                                    Payment Pointer. For more information click
+                                    <a href="./info/#webmonetization" target="_blank">here</a>.
                                 </blockquote>
                             </div>
                         </div>
@@ -273,7 +275,7 @@ export default {
                     'warn',
                     'Web Monetization',
                     'Please enable Web Monetization',
-                    2000
+                    10000
                 );
             } else {
                 document.monetization.addEventListener('monetizationstart', this.getBook())

@@ -10,6 +10,9 @@ import VueRouter from 'vue-router'
 import axios from 'axios'
 
 import About from './views/About.vue'
+import Privacy from './views/Privacy.vue'
+import Service from './views/Service.vue'
+import Tutorial from './views/Tutorial.vue'
 import Information from './views/Information.vue'
 import Library from './views/Library.vue'
 import Publish from './views/Publish.vue'
@@ -75,9 +78,19 @@ const router = new VueRouter({
       component: Information
     },
     {
-      path: '/about',
-      name: 'About',
-      component: About
+      path: '/tutorial',
+      name: 'Tutorial',
+      component: Tutorial
+    },
+    {
+      path: '/privacy',
+      name: 'Privacy Policy',
+      component: Privacy
+    },
+    {
+      path: '/service',
+      name: 'Service Agreement',
+      component: Service
     }
   ]
 })

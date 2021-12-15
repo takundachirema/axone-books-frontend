@@ -60,11 +60,13 @@
         this.node=node;
         document.querySelector('body').classList.add('hidden');
       },
-      closeBookPopup(){
+      closeBookPopup(reload=false){
         storage.createBookPopup = false;
         this.bookPopupIsVisible = false;
         document.querySelector('body').classList.remove('hidden');
-        //window.history.back();
+        if (reload){
+          window.location.reload();
+        }
       },
       onToggleCollapse (collapsed) {
         this.collapsed = collapsed
@@ -174,7 +176,21 @@
           {
             href: '/info',
             title: 'Information',
-            icon: 'fa fa-info'
+            icon: 'fa fa-info',
+            child: [
+              {
+                  href: '/tutorial',
+                  title: 'Tutorial'
+              },
+              {
+                  href: '/privacy',
+                  title: 'Privacy'
+              },
+              {
+                  href: '/service',
+                  title: 'Service'
+              }
+            ]
           }
         ]
       }

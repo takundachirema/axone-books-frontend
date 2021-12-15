@@ -148,7 +148,7 @@
                   id="copy_id" 
                   class="material-icons prefix clickable tooltipped"
                   data-position="left" 
-                  data-tooltip="Copy Tranaction Id">
+                  data-tooltip="Copy Transaction Id">
                     content_copy
                 </i>
                 <input 
@@ -577,7 +577,15 @@ export default {
 
       conn.postTransactionCommit(txSigned)
         .then(res => {
-            console.log('Transaction', txSigned.id, 'accepted')
+          localStorage.setItem("public_key", edPublicKey);
+          eventHub.$emit(
+            'showMessage',
+            'success',
+            'Publishing',
+            'Successfully Published!',
+            3000
+          );
+          eventHub.$emit('closeBookPopup',true);
         })
     },
     toggleClass(class_name, class_change){
