@@ -2,6 +2,7 @@ const express = require('express');
 const path = require('path');
 const app = express();
 const history = require('connect-history-api-fallback');
+
 var port = process.env.PORT || 8080 
 
 const staticFileMiddleware = express.static(path.join(__dirname + '/prod-server'));

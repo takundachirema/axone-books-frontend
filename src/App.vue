@@ -8,7 +8,7 @@
       :hideToggle="true"
       @item-click="onItemClick">
       <div slot="header" class="top-menu-item">
-        <img src="./assets/images/book_shelf.png">
+        <img src="./assets/images/logo_128x128.png">
       </div>
     </sidebar-menu>
 
