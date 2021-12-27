@@ -19,6 +19,13 @@ html, body, #app{
     margin-left: 30px;
 }
 
+li {
+    font-size: 14px;
+    margin-left: 20px;
+    fill: black;
+    list-style-type: disc !important;
+ }
+
 input[type="image"]:focus {
     outline: none;
 }
