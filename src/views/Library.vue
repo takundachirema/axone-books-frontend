@@ -20,7 +20,7 @@ export default {
     components: { BooksList },
     created(){
         eventHub.$emit('showHeader', true);
-        document.title = 'Books';
+        document.title = 'Library';
     },
     watch: { 
         search: function(newVal, oldVal) {

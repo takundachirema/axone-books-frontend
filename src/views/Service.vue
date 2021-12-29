@@ -205,7 +205,7 @@ export default {
     mounted() {},
     created(){
         eventHub.$emit('showHeader', false);
-        document.title = 'Information';
+        document.title = 'Terms and Conditions';
     },
     methods: {
         UISetup(){}

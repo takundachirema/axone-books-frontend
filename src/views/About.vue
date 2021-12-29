@@ -64,6 +64,27 @@
                     </div>
                     <div class="col-md-3">
                         <div class="flip-container" ontouchstart="this.classList.toggle('hover');">
+                            <div class="flipper fourth-service">
+                                <div class="front">
+                                    <div class="icon">
+                                        <i class="large material-icons">linear_scale</i>
+                                    </div>
+                                    <h4>Collaborate</h4>
+                                </div>
+                                <div class="back">
+                                    <p>
+                                        Are you stuck after the first chapter of your book? Publish it on
+                                        Axone and let other talented authors continue your book! You can
+                                        continue your book on another completely different and unique path
+                                        after you find somemore inspiration! You get royalties from every
+                                        author that directly continues from your chapter!
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="flip-container" ontouchstart="this.classList.toggle('hover');">
                             <div class="flipper second-service">
                                 <div class="front">
                                     <div class="icon">
@@ -103,27 +124,6 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-3">
-                        <div class="flip-container" ontouchstart="this.classList.toggle('hover');">
-                            <div class="flipper fourth-service">
-                                <div class="front">
-                                    <div class="icon">
-                                        <i class="large material-icons">linear_scale</i>
-                                    </div>
-                                    <h4>Collaborate</h4>
-                                </div>
-                                <div class="back">
-                                    <p>
-                                        Are you stuck after the first chapter of your book? Publish it on
-                                        Axone and let other talented authors continue your book! You can
-                                        continue your book on another completely different and unique path
-                                        after you find somemore inspiration! You get royalties from every
-                                        author that directly continues from your chapter!
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
                 </div>
             </div>
         </section>
@@ -149,7 +149,7 @@ export default {
     mounted() {},
     created(){
         eventHub.$emit('showHeader', false);
-        document.title = 'Information';
+        document.title = 'Home';
     },
     methods: {
         UISetup(){}

@@ -157,7 +157,7 @@ export default {
     created(){
         self = this;
         eventHub.$emit('showHeader', true);
-        document.title = 'Books';
+        document.title = 'Publish';
     }
 }
 </script>
