@@ -54,6 +54,11 @@ const router = new VueRouter({
   routes: [
     {
       path: '/',
+      name: 'Home',
+      component: About
+    },
+    {
+      path: '/library',
       name: 'Library',
       component: Library
     },

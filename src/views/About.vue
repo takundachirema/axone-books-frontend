@@ -1,146 +1,164 @@
 <template>
     <div id="app">
-        <section class="row tm-section tm-col-md-reverse">
-            <div class="col-sm-12 col-md-12 col-lg-6 col-xl-6 p-0">
-                <div class="tm-flex-center p-5 tm-bg-color-secondary">
-                    <div class="tm-max-w-400 tm-flex-center tm-flex-col">
-                        <img src="../assets/images/AIFMRM_nav.png" alt="Image" class="rounded-circle mb-4">
-                        <p class="tm-text-color-white tm-font-thin mb-0"></p>
+        <section class="banner" id="top">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-md-8">
+                        <div class="left-banner-content">
+                            <div class="text-content">
+                                <div class="">
+                                    <div class="logo"><a href="./library"><img src="../assets/images/logo_orange_circle.png" alt=""></a></div>
+                                </div>
+                                <h1>Write | Own | Collaborate</h1>
+                                <div class="white-border-button">
+                                    <a href="#services-section" class="scroll-link" data-id="services-section">Discover More</a>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                </div>
-            </div>
-
-            <div class="col-sm-12 col-md-12 col-lg-6 col-xl-6">
-                <div class="tm-flex-center p-5">
-                    <div class="tm-md-flex-center">
-                        <h2 class="tm-text-color-primary mb-4">About This Dashboard</h2>
-                        <p class="mb-4">
-                            This website contains the fully digitized AIFMRM’s Equity Risk Service. 
-                            This service is aimed at providing up-to-date risk measures and associated 
-                            statistics for the stocks and indices that are listed on the Johannesburg Stock 
-                            Exchange (JSE) using an interactive dashboard. The Equity Risk Service is based 
-                            not only on the American and the British experience but also on an ongoing 
-                            research programme at the University of Cape Town (UCT). 
-                            The estimates are based on a price and volume series database sourced from the 
-                            JSE Ltd, Bloomberg L.P. and INET BFA - IRESS.
-                        </p>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <section class="row tm-section">
-            <div class="col-sm-12 col-md-12 col-lg-6 col-xl-6">
-                <div class="tm-flex-center p-5">
-                    <div class="tm-md-flex-center">
-                        <h2 class="tm-text-color-primary mb-4">Landing Page</h2>
-                        <p class="mb-4">
-                            This is the main dashboard page. It allows you to plot the cumulative returns 
-                            of each share in each index for a given market index over an adjustable period. 
-                            You also can plot multiple shares for a comparative analysis. 
-                            The betas of each shares can be viewed to see how consistent the betas 
-                            are for each share(s) over time.  The dashboard also includes an 
-                            interactive pie chart that breaks up the index into its respective 
-                            constituent shares. Finally, if you need beta, alpha, specific or total 
-                            risk information, this will also be available on this page. 
-                        </p>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-sm-12 col-md-12 col-lg-6 col-xl-6 p-0">
-                <div class="tm-flex-center p-5 tm-bg-color-secondary">
-                    <div class="tm-max-w-400 tm-flex-center tm-flex-col">
-                        <div class="icon">
-                            <a href="./#">
-                                <i class="fa fa-5x fa-chart-area"></i>
-                            </a>
+                    <div class="col-md-4">
+                        <div class="right-banner-content">
+                            <h2>Axone</h2>
+                            <span>For <em>Authors</em> To <em>Create</em></span>
+                            <div class="line-dec"></div>
+                            <p>“ Through the use of Blockchain and Webmonetization technologies, 
+                                Axone enables authors to truly own their work and earn 
+                                income through royalties from other authors continuing their work.
+                                Authors will use Google Docs to write their chapters and publish
+                                each chapter (using the Axone Google Docs Plugin) onto a Blockchain 
+                                Database. Take a look at the tutorial to learn more! ”</p>
+                            <ul class="social-icons">
+                                <!--<li><a href="#"><i class="fa fa-facebook"></i></a></li>
+                                <li><a href="#"><i class="fa fa-twitter"></i></a></li>
+                                <li><a href="#"><i class="fa fa-linkedin"></i></a></li>
+                                <li><a href="#"><i class="fa fa-rss"></i></a></li>
+                                <li><a href="#"><i class="fa fa-dribbble"></i></a></li>-->
+                            </ul>
                         </div>
                     </div>
                 </div>
             </div>
         </section>
 
-        <section class="row tm-section">
-            <div class="col-sm-12 col-md-12 col-lg-6 col-xl-6 p-0">
-                <div class="tm-flex-center p-5 tm-bg-color-secondary">
-                    <div class="tm-max-w-400 tm-flex-center tm-flex-col">
-                        <div class="icon">
-                            <a href="./#/betatables">
-                                <i class="fa fa-5x fa-table"></i>
-                            </a>
+        <section class="services" id="services-section">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-md-3">
+                        <div class="flip-container" ontouchstart="this.classList.toggle('hover');">
+                            <div class="flipper first-service">
+                                <div class="front">
+                                    <div class="icon">
+                                        <i class="large material-icons">mode_edit</i>
+                                    </div>
+                                    <h4>Write</h4>
+                                </div>
+                                <div class="back">
+                                    <p> 
+                                        Start your own book or continue an existing book, 
+                                        chapter by chapter. Stuck on a chapter? Let others 
+                                        finish the book for you and get paid royalties!
+                                    </p>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                </div>
-            </div>
-
-            <div class="col-sm-12 col-md-12 col-lg-6 col-xl-6">
-                <div class="tm-flex-center p-5">
-                    <div class="tm-md-flex-center">
-                        <h2 class="tm-text-color-primary mb-4">Beta Tables</h2>
-                        <p class="mb-4">
-                            This page displays to the user either the share betas or the 
-                            index level betas. It allows the user to filter through the tables 
-                            via the columns as well as drag and drop the required tables.
-                        </p>
+                    <div class="col-md-3">
+                        <div class="flip-container" ontouchstart="this.classList.toggle('hover');">
+                            <div class="flipper second-service">
+                                <div class="front">
+                                    <div class="icon">
+                                        <i class="large material-icons">monetization_on</i>
+                                    </div>
+                                    <h4>Monetize</h4>
+                                </div>
+                                <div class="back">
+                                    <p>
+                                        Through web monetization, readers stream payments to your
+                                        account. Authors who write a continuation of your chapter
+                                        will pay royalties to your account. You determine the royalty
+                                        percentage to be paid and you can change it with successive
+                                        versions of your chapter.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="flip-container" ontouchstart="this.classList.toggle('hover');">
+                            <div class="flipper third-service">
+                                <div class="front">
+                                    <div class="icon">
+                                        <i class="large material-icons">store</i>
+                                    </div>
+                                    <h4>SELL</h4>
+                                </div>
+                                <div class="back">
+                                    <p>
+                                        Convert your chapter into a Non Fungible Token and list it
+                                        on an NFT market to sell it. Ownership will be transferred to the
+                                        buyer meaning that both the chapter and the future income will belong
+                                        to the buyer. You can auction it to get the best deal!
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="flip-container" ontouchstart="this.classList.toggle('hover');">
+                            <div class="flipper fourth-service">
+                                <div class="front">
+                                    <div class="icon">
+                                        <i class="large material-icons">linear_scale</i>
+                                    </div>
+                                    <h4>Collaborate</h4>
+                                </div>
+                                <div class="back">
+                                    <p>
+                                        Are you stuck after the first chapter of your book? Publish it on
+                                        Axone and let other talented authors continue your book! You can
+                                        continue your book on another completely different and unique path
+                                        after you find somemore inspiration! You get royalties from every
+                                        author that directly continues from your chapter!
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
         </section>
 
-        <section class="row tm-section">
-            <div class="col-sm-12 col-md-12 col-lg-6 col-xl-6">
-                <div class="tm-flex-center p-5">
-                    <div class="tm-md-flex-center">
-                        <h2 class="tm-text-color-primary mb-4">Index Metrics</h2>
-                        <p class="mb-4">
-                            This page allows you to access synthetic index data, distributed by industry 
-                            over time. You will be able to access either betas, weights, systematic 
-                            volatility or specific volatility and view the raw data as well as a 
-                            visualised version of it. You will also be able to download the raw data.
-                        </p>
+        <footer>
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-md-12">
+                        <p>Copyright &copy; 2021 Axone 
+                        
+                        - <a rel="nofollow" href="./privacy" target="_parent">Privacy Policy</a> 
+                        and <a rel="nofollow" href="./service" target="_parent">Terms Of Service</a></p>
                     </div>
                 </div>
             </div>
-
-            <div class="col-sm-12 col-md-12 col-lg-6 col-xl-6 p-0">
-                <div class="tm-flex-center p-5 tm-bg-color-secondary">
-                    <div class="tm-max-w-400 tm-flex-center tm-flex-col">
-                        <div class="icon">
-                            <a href="./#/indexmetrics">
-                                <i class="fa fa-5x fa-chart-bar"></i>
-                            </a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <section class="row tm-section">
-            <div class="col-sm-12 col-md-12 col-lg-6 col-xl-6 p-0">
-                <div class="tm-flex-center p-5 tm-bg-color-secondary">
-                    <div class="tm-max-w-400 tm-flex-center tm-flex-col">
-                        <div class="icon">
-                            <a href="./#/downloads">
-                                <i class="fa fa-5x fa-download"></i>
-                            </a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-sm-12 col-md-12 col-lg-6 col-xl-6">
-                <div class="tm-flex-center p-5">
-                    <div class="tm-md-flex-center">
-                        <h2 class="tm-text-color-primary mb-4">Custom Tables</h2>
-                        <p class="mb-4">
-                            A page that allows you to access any of the other tables of data and 
-                            customize which columns to view. Additionally, you will also be able to 
-                            download your customised table if you so require.  
-                        </p>
-                    </div>
-                </div>
-            </div>
-        </section>
+        </footer>
     </div>
 </template>
+
+<script>
+
+export default {
+    mounted() {},
+    created(){
+        eventHub.$emit('showHeader', false);
+        document.title = 'Information';
+    },
+    methods: {
+        UISetup(){}
+    }
+}
+</script>
+
+<style lang="scss">
+    @import url('https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700,800');
+    @import '../assets/css/variables';
+    @import '../assets/css/templatemo-style';
+</style>

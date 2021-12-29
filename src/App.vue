@@ -7,9 +7,6 @@
       :collapsed="true"
       :hideToggle="true"
       @item-click="onItemClick">
-      <div slot="header" class="top-menu-item">
-        <img src="./assets/images/logo_128x128.png">
-      </div>
     </sidebar-menu>
 
     <router-view :searchQuery="searchText"/>
@@ -143,12 +140,18 @@
         show_header: false,
         menu: [
           {
-            header: true,
-            title: 'Axone Books',
-            hiddenOnCollapse: true
+            href: '/',
+            title: 'Axone',
+            class: 'top-menu-item',
+            icon: {
+              element: 'img',
+              attributes: {
+                src: require("./assets/images/logo_white.png")
+              }
+            }
           },
           {
-            href: '/',
+            href: '/library',
             title: 'Library',
             icon: 'fa fa-book'
           },
