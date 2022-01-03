@@ -27,7 +27,7 @@ When you register for an Account, we may ask for your contact information, inclu
 <b>How we use your information</b><br>
 We use the information we collect in various ways, including to:
 <br>
-<ul>
+<ul class="word_list">
     <li>Provide, operate, and maintain our website</li>
     <li>Improve, personalize, and expand our website</li>
     <li>Understand and analyze how you use our website</li>
@@ -56,7 +56,7 @@ You can choose to disable cookies through your individual browser options. To kn
 <b>CCPA Privacy Rights (Do Not Sell My Personal Information)</b><br>
 Under the CCPA, among other rights, California consumers have the right to:
 
-<ul>
+<ul class="word_list">
     <li>
 Request that a business that collects a consumer's personal data disclose the categories and specific pieces of personal data that a business has collected about consumers.
     </li>
@@ -72,7 +72,7 @@ If you make a request, we have one month to respond to you. If you would like to
 <br><br>
 <b>GDPR Data Protection Rights</b><br>
 We would like to make sure you are fully aware of all of your data protection rights. Every user is entitled to the following:
-<ul>
+<ul class="word_list">
     <li>
 The right to access – You have the right to request copies of your personal data. We may charge you a small fee for this service.
     </li>

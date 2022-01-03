@@ -15,7 +15,7 @@ By accessing this website we assume you accept these terms and conditions. Do no
 <br><br>
 The following terminology applies to these Terms and Conditions, Privacy Statement and Disclaimer Notice and all Agreements: 
 
-<ul>
+<ul class="word_list">
     <li>
 "Client", "You" and "Your" refers to you, the person log on this website and compliant to the Company’s terms and conditions. 
     </li>
@@ -41,7 +41,7 @@ Unless otherwise stated, Axone and/or its licensors own the intellectual propert
 <br><br>
 You must not:
 
-<ul>
+<ul class="word_list">
     <li>
 Republish material from Axone
     </li>
@@ -64,7 +64,7 @@ Axone reserves the right to monitor all Comments and to remove any Comments whic
 <br><br>
 You warrant and represent that:
 
-<ul>
+<ul class="word_list">
     <li>
 You are entitled to post the Comments on our website and have all necessary licenses and consents to do so;
     </li>
@@ -86,7 +86,7 @@ You hereby grant Axone a non-exclusive license to use, reproduce, edit and autho
 <b>Hyperlinking to our Content</b><br>
 The following organizations may link to our Website without prior written approval:
 
-<ul>
+<ul class="word_list">
     <li>
 Government agencies;
     </li>
@@ -108,7 +108,7 @@ These organizations may link to our home page, to publications or to other Websi
 <br><br>
 We may consider and approve other link requests from the following types of organizations:
 
-<ul>
+<ul class="word_list">
     <li>
 commonly-known consumer and/or business information sources;
     </li>
@@ -140,7 +140,7 @@ If you are one of the organizations listed in paragraph 2 above and are interest
 <br><br>
 Approved organizations may hyperlink to our Website as follows:
 
-<ul>
+<ul class="word_list">
     <li>
 By use of our corporate name; or
     </li>
@@ -174,7 +174,7 @@ We do not ensure that the information on this website is correct, we do not warr
 <b>Disclaimer</b><br>
 To the maximum extent permitted by applicable law, we exclude all representations, warranties and conditions relating to our website and the use of this website. Nothing in this disclaimer will:
 
-<ul>
+<ul class="word_list">
     <li>
 limit or exclude our or your liability for death or personal injury;
     </li>
