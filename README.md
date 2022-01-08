@@ -22,7 +22,7 @@ This repository contains the Client and Server code for Axone books.
 
 ## Google Cloud VM Setup Docker compose
 - https://www.digitalocean.com/community/tutorials/how-to-install-and-use-docker-on-ubuntu-20-04
--https://www.digitalocean.com/community/tutorials/how-to-install-and-use-docker-compose-on-ubuntu-20-04
+- https://www.digitalocean.com/community/tutorials/how-to-install-and-use-docker-compose-on-ubuntu-20-04
 - Install make if not found: sudo apt-get install -y make
 - Clone bigchaindb repo
 
@@ -75,6 +75,7 @@ Install it using these commands
 ```
 
 Install docker and docker compose
+On Mac install docker from the url https://docs.docker.com/desktop/mac/install
 Clone the bigchaindb git repository
 cd into the repo and run
 ```
