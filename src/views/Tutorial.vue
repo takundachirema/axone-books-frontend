@@ -1,123 +1,139 @@
 <template>
     <div id="app">
-        <section id="versions" class="row" style="margin-left: 5px">
-            <div class="col-sm-0 col-md-12 col-lg-12 col-xl-12"/>
+        <section id="new_chapter" class="row" style="margin-left: 5px">
             <div class="col-sm-12 col-md-6 col-lg-6 col-xl-12">
                 <div class="input-field col s12">
                     <blockquote>
                         <h5>Create Your First Chapter</h5>
                     </blockquote>
+                    <div class="row video-player">
+                        <div class="col-sm-0 col-md-12 col-lg-2 col-xl-2"/>
+                        <video 
+                            class="video col-sm-12 col-md-12 col-lg-8 col-xl-8"
+                            controls="controls autoplay">
+                            <source src="@/assets/videos/publish_first_chapter.mp4" type="video/mp4" />
+                        </video>
+                        <div class="col-sm-0 col-md-12 col-lg-2 col-xl-2"/>
+                    </div>
                     <blockquote style="border-left: 2px solid #64b5f6;">
-                        The document version will correspond to the chapter of a 
-                        book in many scenarios. This is not enforced to allow for different 
-                        scenarios depending on the author, but this makes it easier for the continuation
-                        of the book.
-                        <br><br>
-                        A chapter that continues from a previous chapter must have a version number That
-                        is greater than the previous chapter. This is enforced, to make sure that the
-                        structure of a book is kept.
+<ul class="word_list">
+    <li>Navigate to the Publish page</li>
+    <li>Expand the menu button, bottom right, and click the add button</li>
+    <li>Insert an existing private key OR generate a new one. NB you must keep the private key safe as proof of ownership</li>
+    <li>Insert your payment pointer given to you by a web monetization receiver</li>
+    <li>Adjust the royalty fees you would like to receive for authors who extend the book using your chapter</li>
+    <li>Click the publish button</li>
+</ul>
                     </blockquote>
                 </div>
             </div>
-            <div class="col-sm-0 col-md-12 col-lg-12 col-xl-12"/>
         </section>
-        <section id="keys" class="row" style="margin-left: 5px">
+
+
+        <section id="edit_chapter" class="row" style="margin-left: 5px">
             <div class="col-sm-0 col-md-12 col-lg-12 col-xl-12"/>
             <div class="col-sm-12 col-md-6 col-lg-6 col-xl-12">
                 <div class="input-field col s12">
                     <blockquote>
-                        <h5>Public Key Cryptography</h5>
+                        <h5>Edit Your Chapter</h5>
                     </blockquote>
+                    <div class="row video-player">
+                        <div class="col-sm-0 col-md-12 col-lg-2 col-xl-2"/>
+                        <video 
+                            class="video col-sm-12 col-md-12 col-lg-8 col-xl-8"
+                            controls="controls autoplay">
+                            <source src="@/assets/videos/edit_first_chapter.mp4" type="video/mp4" />
+                        </video>
+                        <div class="col-sm-0 col-md-12 col-lg-2 col-xl-2"/>
+                    </div>
                     <blockquote style="border-left: 2px solid #64b5f6;">
-                        Public key cryptography uses a pair of keys to encrypt and decrypt 
-                        data to protect it against unauthorized access or use. You will receive
-                        a public and private key pair. Keep the private key <b>SECRET</b> add
-                        never give it away. You'll use it when you update your chapter add
-                        when you transfer it to a new owner. 
-                        <br><br>
-                        Please <b>DO NOT LOSE</b> your
-                        private key as it is not recoverable and you lose the priviledge to 
-                        edit your chapter. <b>NOTE</b> We use the Ed25519 signatures with the
-                        private key having the public key in it as the last 32 bits. Therefore
-                        you only need to know you private key, the public key can be derived from
-                        your private key. For more information on public key cryptography click 
-                        <a href="https://en.wikipedia.org/wiki/Public-key_cryptography" target="_blank">
-                        here
-                        </a>.
+<ul class="word_list">
+    <li>Navigate to the Publish page</li>
+    <li>Expand the menu button, bottom right, and click the search button</li>
+    <li>Insert your private key OR public key. All chapters belonging to that public key pair will be retrieved</li>
+    <li>Select your new empty chapter and copy the transaction id</li>
+    <li>Navigate to your Google Docs document containing the content of your chapter and install the Axone Books add-on</li>
+    <li>Start the add-on and click Publish (Only after you are done with your chapter).</li>
+    <li>Insert your private key (This is required to authorize editing the chapter). Also insert your payment pointer.</li>
+    <li>Make sure all chapter properties are set (e.g. the cover picture, chapter title etc.)</li>
+    <li>Publish the chapter after you are done</li>
+    
+</ul>
                     </blockquote>
                 </div>
             </div>
             <div class="col-sm-0 col-md-12 col-lg-12 col-xl-12"/>
         </section>
-        <section id="webmonetization" class="row" style="margin-left: 5px">
+
+        <section id="extend_book" class="row" style="margin-left: 5px">
             <div class="col-sm-0 col-md-12 col-lg-12 col-xl-12"/>
             <div class="col-sm-12 col-md-6 col-lg-6 col-xl-12">
                 <div class="input-field col s12">
                     <blockquote>
-                        <h5>Web Monetization</h5>
+                        <h5>Extend An Existing Book</h5>
                     </blockquote>
+                    <div class="row video-player">
+                        <div class="col-sm-0 col-md-12 col-lg-2 col-xl-2"/>
+                        <video 
+                            class="video col-sm-12 col-md-12 col-lg-8 col-xl-8"
+                            controls="controls autoplay">
+                            <source src="@/assets/videos/extend_book.mp4" type="video/mp4" />
+                        </video>
+                        <div class="col-sm-0 col-md-12 col-lg-2 col-xl-2"/>
+                    </div>
                     <blockquote style="border-left: 2px solid #64b5f6;">
-                        Web Monetization (WM) is a standard that allows small amount payments
-                        or micropayments to be made from users consuming content on a website
-                        to the content creator or that website. 
-                        <br><br>
-                        To receive these payments,
-                        the <b>Author</b> must have a WM Receiver (WMR) like 
-                        <a href="https://uphold.com/">Uphold</a> and you'll get a payment pointer
-                        to put when publishing your chapters. For more information on WM please 
-                        click
-                        <a href="https://webmonetization.org/docs/explainer/" target="_blank">
-                        here.
-                        </a> 
-                        To get more information on setting up a WM receiver click
-                        <a href="https://webmonetization.org/docs/uphold/" target="_blank">
-                        here.
-                        </a>
-                        <br><br>
-                        To make payments, the <b>Reader</b> must create an account with a WM
-                        Provider (WMP) like <a href="https://uphold.com/">Coil</a>. The reader,
-                        will not be able to read until they have an account with a WMP and they
-                        are streaming payments to the author.
+<ul class="word_list">
+    <li>Navigate to the Library page</li>
+    <li>Select the chapter you would like to write the next chapter for. Click the explore button.</li>
+    <li>This brings up the chapter as a node. Point your cursor on the node and right click it.</li>
+    <li>Select the top right menu item if you are writing a succeeding chapter or top left item if you are writing a preciding chapter</li>
+    <li>A new node will appear. Point your cursor on this new node and click on the bottom menu item</li>
+    <li>This will bring up the publishing form. Fill in all the details and publish it.</li>
+    <li>To edit this new chapter the same actions apply as shown on the 'Edit Your Chapter' section.</li>
+    <li>To avoid re-entering all chapter properties you can import them from the preceding chapter</li>
+    <li>Navigate to the Library page and select the chapter you selected in step 1.</li>
+    <li>Copy it's transaction id and insert it on the form that comes up on the Google Docs when you press 'import' and press import</li>
+    <li>Edit the fields that must change e.g. Chapter Title and Summary. Also add any additional places or characters you developed.</li>
+    <li>Publish the chapter after you are done</li>
+</ul>
                     </blockquote>
                 </div>
             </div>
             <div class="col-sm-0 col-md-12 col-lg-12 col-xl-12"/>
         </section>
-        <section id="royalty" class="row" style="margin-left: 5px">
+
+        <section id="read_chapter" class="row" style="margin-left: 5px">
             <div class="col-sm-0 col-md-12 col-lg-12 col-xl-12"/>
             <div class="col-sm-12 col-md-6 col-lg-6 col-xl-12">
                 <div class="input-field col s12">
                     <blockquote>
-                        <h5>Royalty Fees</h5>
+                        <h5>Read A Chapter</h5>
                     </blockquote>
+                    <div class="row video-player">
+                        <div class="col-sm-0 col-md-12 col-lg-2 col-xl-2"/>
+                        <video 
+                            class="video col-sm-12 col-md-12 col-lg-8 col-xl-8"
+                            controls="controls autoplay">
+                            <source src="@/assets/videos/read_chapter.mp4" type="video/mp4" />
+                        </video>
+                        <div class="col-sm-0 col-md-12 col-lg-2 col-xl-2"/>
+                    </div>
                     <blockquote style="border-left: 2px solid #64b5f6;">
-                        Any chapters that reference the one you created will pay a royalty Fee
-                        that you set. Setting a high royalty fee might prohibit authors creating
-                        chapters that are a continuation from yours. The recommended royalty Fee
-                        is 5%.
+<ul class="word_list">
+    <li>Navigate to the Library page</li>
+    <li>Select the chapter you would like to read and click the read button.</li>
+    <li>This brings up the reader. If you have not activated webmonetization for your browser the page will show some warnings</li>
+    <li>To activate webmonetization go the your extensions and get the 'Coil' extension</li>
+    <li>After adding it to your browser, click on it and login to 'Coil' or sign up for an account</li>
+    <li>After you sign up, pay for the subscription fee so that you stream payments to the author while you read their content.</li>
+    <li>Refresh the page after these steps and the chapter will come up once micropayments are streaming to the author</li>
+</ul>
                     </blockquote>
                 </div>
             </div>
             <div class="col-sm-0 col-md-12 col-lg-12 col-xl-12"/>
         </section>
-        <section id="transactions" class="row" style="margin-left: 5px">
-            <div class="col-sm-0 col-md-12 col-lg-12 col-xl-12"/>
-            <div class="col-sm-12 col-md-6 col-lg-6 col-xl-12">
-                <div class="input-field col s12">
-                    <blockquote>
-                        <h5>Transactions</h5>
-                    </blockquote>
-                    <blockquote style="border-left: 2px solid #64b5f6;">
-                        The creation of a chapter and any subsequent updates to it will create
-                        a transaction which has a unique transaction id. You'll need the
-                        <b>CURRENT</b> transaction id when you update or transfer a chapter. 
-                        Each of these operations create a new transaction id. So if you 
-                        look on the updated chapter the id will be different from before.
-                    </blockquote>
-                </div>
-            </div>
-            <div class="col-sm-0 col-md-12 col-lg-12 col-xl-12"/>
-        </section>
+        
     </div>
 </template>
 
