@@ -186,8 +186,54 @@ export default {
             });
             pageModal = instances[0];
         },
+        registerMonetizationPolling() {
+            if (!document.monetization) {
+                eventHub.$emit(
+                    'showMessage',
+                    'warn',
+                    'Web Monetization',
+                    'Please enable Web Monetization',
+                    10000
+                );
+            } else {
+                self.handleMonetization()
+            }
+
+            setInterval(function(){ self.handleMonetization();}, 3000);
+        },
+        handleMonetization() {
+            if (document.monetization.state === this.monetization_state){
+                return;
+            }
+            if (document.monetization.state != "started") {
+                eventHub.$emit(
+                    'showMessage',
+                    'warn',
+                    'Web Monetization',
+                    'Please enable and start web monetization to continue reading.',
+                    5000
+                );
+                this.src = '';
+            }
+            else{
+                eventHub.$emit(
+                    'showMessage',
+                    'success',
+                    'Web Monetization',
+                    'State: ' + document.monetization.state,
+                    2000
+                );
+                if (this.pdfList.length === 0){
+                    this.getBook();
+                }else{
+                    this.src = this.pdfList[0]
+                }
+            }
+
+            this.monetization_state = document.monetization.state;
+        },
         getMonetizationState(){
-            return document.monetization.state;
+            return this.monetization_state;
         },
         getPaymentPointers(){
             axios.post(
@@ -238,13 +284,6 @@ export default {
             }
         },
         getBook() {
-            eventHub.$emit(
-                'showMessage',
-                'success',
-                'Web Monetization',
-                'State: ' + document.monetization.state,
-                2000
-            );
 
             axios.post(
                 'documents',
@@ -268,19 +307,6 @@ export default {
         getBookMetadata(){
             this.book_metadata = JSON.parse(localStorage.getItem(this.id));
         },
-        onWindowLoad(){
-            if (!document.monetization) {
-                eventHub.$emit(
-                    'showMessage',
-                    'warn',
-                    'Web Monetization',
-                    'Please enable Web Monetization',
-                    10000
-                );
-            } else {
-                document.monetization.addEventListener('monetizationstart', this.getBook())
-            }
-        },
         password: function(updatePassword, reason) {
             updatePassword(prompt('password is "test"'));
         },
@@ -291,6 +317,7 @@ export default {
     mounted(){
         this.show_header=false;
         this.registerEvents();
+        this.registerMonetizationPolling();
         this.UISetup();
     },
     created(){
@@ -302,7 +329,6 @@ export default {
         eventHub.$emit('hideMenu', 2, false);
         this.getBookMetadata();
         this.getPaymentPointers();
-        window.addEventListener("load", this.onWindowLoad);
     },
     destroyed(){
         eventHub.$emit('hideMenu', 2, true);
@@ -322,7 +348,8 @@ export default {
             referenced_nodes: {},
             payment_pointers: {},
             payment_pointer: '',
-            payment_pk: ''
+            payment_pk: '',
+            monetization_state: 'pending'
         }
     },
     metaInfo() {
