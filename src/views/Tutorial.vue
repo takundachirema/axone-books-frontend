@@ -1,11 +1,11 @@
 <template>
     <div id="app">
         <section id="versions" class="row" style="margin-left: 5px">
-            <div class="col-sm-0 col-md-3 col-lg-3 col-xl-3"/>
-            <div class="col-sm-12 col-md-6 col-lg-6 col-xl-6">
+            <div class="col-sm-0 col-md-12 col-lg-12 col-xl-12"/>
+            <div class="col-sm-12 col-md-6 col-lg-6 col-xl-12">
                 <div class="input-field col s12">
                     <blockquote>
-                        <h5>Document Versions</h5>
+                        <h5>Create Your First Chapter</h5>
                     </blockquote>
                     <blockquote style="border-left: 2px solid #64b5f6;">
                         The document version will correspond to the chapter of a 
@@ -19,11 +19,11 @@
                     </blockquote>
                 </div>
             </div>
-            <div class="col-sm-0 col-md-3 col-lg-3 col-xl-3"/>
+            <div class="col-sm-0 col-md-12 col-lg-12 col-xl-12"/>
         </section>
         <section id="keys" class="row" style="margin-left: 5px">
-            <div class="col-sm-0 col-md-3 col-lg-3 col-xl-3"/>
-            <div class="col-sm-12 col-md-6 col-lg-6 col-xl-6">
+            <div class="col-sm-0 col-md-12 col-lg-12 col-xl-12"/>
+            <div class="col-sm-12 col-md-6 col-lg-6 col-xl-12">
                 <div class="input-field col s12">
                     <blockquote>
                         <h5>Public Key Cryptography</h5>
@@ -47,11 +47,11 @@
                     </blockquote>
                 </div>
             </div>
-            <div class="col-sm-0 col-md-3 col-lg-3 col-xl-3"/>
+            <div class="col-sm-0 col-md-12 col-lg-12 col-xl-12"/>
         </section>
         <section id="webmonetization" class="row" style="margin-left: 5px">
-            <div class="col-sm-0 col-md-3 col-lg-3 col-xl-3"/>
-            <div class="col-sm-12 col-md-6 col-lg-6 col-xl-6">
+            <div class="col-sm-0 col-md-12 col-lg-12 col-xl-12"/>
+            <div class="col-sm-12 col-md-6 col-lg-6 col-xl-12">
                 <div class="input-field col s12">
                     <blockquote>
                         <h5>Web Monetization</h5>
@@ -81,11 +81,11 @@
                     </blockquote>
                 </div>
             </div>
-            <div class="col-sm-0 col-md-3 col-lg-3 col-xl-3"/>
+            <div class="col-sm-0 col-md-12 col-lg-12 col-xl-12"/>
         </section>
         <section id="royalty" class="row" style="margin-left: 5px">
-            <div class="col-sm-0 col-md-3 col-lg-3 col-xl-3"/>
-            <div class="col-sm-12 col-md-6 col-lg-6 col-xl-6">
+            <div class="col-sm-0 col-md-12 col-lg-12 col-xl-12"/>
+            <div class="col-sm-12 col-md-6 col-lg-6 col-xl-12">
                 <div class="input-field col s12">
                     <blockquote>
                         <h5>Royalty Fees</h5>
@@ -98,11 +98,11 @@
                     </blockquote>
                 </div>
             </div>
-            <div class="col-sm-0 col-md-3 col-lg-3 col-xl-3"/>
+            <div class="col-sm-0 col-md-12 col-lg-12 col-xl-12"/>
         </section>
         <section id="transactions" class="row" style="margin-left: 5px">
-            <div class="col-sm-0 col-md-3 col-lg-3 col-xl-3"/>
-            <div class="col-sm-12 col-md-6 col-lg-6 col-xl-6">
+            <div class="col-sm-0 col-md-12 col-lg-12 col-xl-12"/>
+            <div class="col-sm-12 col-md-6 col-lg-6 col-xl-12">
                 <div class="input-field col s12">
                     <blockquote>
                         <h5>Transactions</h5>
@@ -116,7 +116,7 @@
                     </blockquote>
                 </div>
             </div>
-            <div class="col-sm-0 col-md-3 col-lg-3 col-xl-3"/>
+            <div class="col-sm-0 col-md-12 col-lg-12 col-xl-12"/>
         </section>
     </div>
 </template>

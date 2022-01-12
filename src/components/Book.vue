@@ -138,7 +138,10 @@
           <div class="book__title">
             <h1 v-if="book.metadata.book_title" class="book__title-text">
               {{ book.metadata.book_title }}
-              <span v-if="book.metadata.chapter_title">{{ book.metadata.chapter_title }}</span>
+              <span v-if="book.metadata.chapter_title">
+                <div  v-formatChapter="book.version"></div>
+                {{ book.metadata.chapter_title }}
+              </span>
             </h1>
             
             <h1 v-if="!book.metadata.book_title" class="book__title-text">
@@ -227,6 +230,7 @@ import axios from 'axios'
 import storage from '../storage.js'
 import img from '../directives/v-image.js'
 import formatDate from '../directives/v-formatDate.js'
+import formatChapter from '../directives/v-formatChapter.js'
 import { ModelSelect } from 'vue-search-select'
 import $ from 'jquery'
 import Base58 from 'base-58';
@@ -241,7 +245,8 @@ export default {
   props: ['pk','book', 'type', 'node'],
   directives: {
     img: img,
-    formatDate: formatDate
+    formatDate: formatDate,
+    formatChapter: formatChapter
   },
   components: {
       ModelSelect,

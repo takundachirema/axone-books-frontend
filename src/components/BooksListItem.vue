@@ -5,8 +5,11 @@
         <img v-if="!noImage" class="books-item__img" src="../assets/images/placeholder.png" v-img="poster()" alt="">
         <img v-if="noImage" class="books-item__img is-loaded" src="../assets/images/book_cover.jpg" alt="">
       </figure>
-      <div class="books-item__content">
-        <p v-if="book.metadata.chapter_title" class="books-item__title">{{ book.metadata.chapter_title }}</p>
+      <div class="books-item__content book__title-text">
+        <span v-if="book.metadata.chapter_title">
+          <div  v-formatChapter="book.version"></div>
+          {{ book.metadata.chapter_title }}
+        </span>
         <p v-if="!book.metadata.chapter_title" class="books-item__title">New Untitled Book</p>
       </div>
     </a>
@@ -15,11 +18,13 @@
 
 <script>
 import img from '../directives/v-image.js'
+import formatChapter from '../directives/v-formatChapter.js'
 
 export default {
   props: ['pk','book'],
   directives: {
-    img: img
+    img: img,
+    formatChapter: formatChapter
   },
   data(){
     return{
