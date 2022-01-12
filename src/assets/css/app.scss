@@ -25,6 +25,13 @@ html, body, #app{
     list-style-type: disc !important;
  }
 
+ .word_list_numbered li {
+    font-size: 14px;
+    margin-left: 20px;
+    fill: black;
+    list-style-type: decimal !important;
+ }
+
 input[type="image"]:focus {
     outline: none;
 }

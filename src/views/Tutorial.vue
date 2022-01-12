@@ -16,7 +16,7 @@
                         <div class="col-sm-0 col-md-12 col-lg-2 col-xl-2"/>
                     </div>
                     <blockquote style="border-left: 2px solid #64b5f6;">
-<ul class="word_list">
+<ul class="word_list_numbered">
     <li>Navigate to the Publish page</li>
     <li>Expand the menu button, bottom right, and click the add button</li>
     <li>Insert an existing private key OR generate a new one. NB you must keep the private key safe as proof of ownership</li>
@@ -47,7 +47,7 @@
                         <div class="col-sm-0 col-md-12 col-lg-2 col-xl-2"/>
                     </div>
                     <blockquote style="border-left: 2px solid #64b5f6;">
-<ul class="word_list">
+<ul class="word_list_numbered">
     <li>Navigate to the Publish page</li>
     <li>Expand the menu button, bottom right, and click the search button</li>
     <li>Insert your private key OR public key. All chapters belonging to that public key pair will be retrieved</li>
@@ -82,7 +82,7 @@
                         <div class="col-sm-0 col-md-12 col-lg-2 col-xl-2"/>
                     </div>
                     <blockquote style="border-left: 2px solid #64b5f6;">
-<ul class="word_list">
+<ul class="word_list_numbered">
     <li>Navigate to the Library page</li>
     <li>Select the chapter you would like to write the next chapter for. Click the explore button.</li>
     <li>This brings up the chapter as a node. Point your cursor on the node and right click it.</li>
@@ -119,7 +119,7 @@
                         <div class="col-sm-0 col-md-12 col-lg-2 col-xl-2"/>
                     </div>
                     <blockquote style="border-left: 2px solid #64b5f6;">
-<ul class="word_list">
+<ul class="word_list_numbered">
     <li>Navigate to the Library page</li>
     <li>Select the chapter you would like to read and click the read button.</li>
     <li>This brings up the reader. If you have not activated webmonetization for your browser the page will show some warnings</li>
