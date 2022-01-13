@@ -57,6 +57,18 @@ server {
 sudo service nginx reload
 ```
 
+### Local Bigchaindb Setup
+
+- Clone the repo https://github.com/bigchaindb/bigchaindb
+- Then run: 
+```
+sudo make run
+```
+- To run it in the background:
+```
+sudo make run &> log.out &
+```
+
 ### Run these to create the text indexes
 
 ## Project setup
@@ -103,10 +115,6 @@ Then, in a new terminal, navigate to the dev-server folder and run the following
     npm run lint
 ```
 
-## Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
-
-
 ## Contributing to this project
 To make a contribution to the dashboard, please follow the standard github open source project colloboration guidelines (adapted from: https://github.com/necolas/issue-guidelines/blob/master/CONTRIBUTING.md)
 ### Raising an Issue
@@ -137,38 +145,6 @@ We always appreciate pull requests, improvements and patches. Here are some basi
     * Open a Pull Request with a clear title and description.
 
 IMPORTANT: By submitting a patch, you agree to allow the project owner to license your work under the same license as that used by the project.
-
-## Future Work
-If you would like to contribute to this project, these are the features that are currently in the pipeline:
-1. Allow users to create customised portfolios of stocks and calculate beta values and other risk measures across their uniquely selected portfolio.
-2. Add a history feature to the downloads tab to store previous request specifications made within a single user session.
-3. Retroactively write automated tests for the webserver once remote hosting and setup is complete.
-4. Add workflows to ensure PEP8 and ESLinter compliance.
-
-## NOTE: Changelog between first and second milestones
-### Documentation
-Up-to-date README.md with instructions on how to contribute and collaborate.
-
-### Downloads Tab
-The following changes were made:
-1. Added three new synthetic tables to be downloaded.
-2. Ability to remove/add columns from table before downloading.
-3. Ability to download only the information currently present in the table, i.e. download filtered table contents.
-4. Add tooltips to table columns which display on hover.
-5. Add alert boxes which prevent users from requesting a table without having provided all of the necessary information.
-6. Changed the drop down selectors to a vue-bootstrap component to allow for smoother selection, option resets upon table switching and greyed out instructional text at the top of each dropdown menue.
-
-### About Page
-We have one now. It's awesome. Contains full set of instructions for how to use the dashboard, as well as information about the service.
-
-### Index Metrics Page
-TODO.
-
-### Dashboard Landing Page
-TODO.
-
-### Testing
-1. Added CI for python tests using github actions.
 
 ### Linting and Refactoring
 Basic code cleanup, commenting improvements and style guide compliance.

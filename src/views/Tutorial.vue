@@ -8,11 +8,15 @@
                     </blockquote>
                     <div class="row video-player">
                         <div class="col-sm-0 col-md-12 col-lg-2 col-xl-2"/>
-                        <video 
+                        <iframe 
+                            width="560" height="500" 
                             class="video col-sm-12 col-md-12 col-lg-8 col-xl-8"
-                            controls="controls autoplay">
-                            <source src="@/assets/videos/publish_first_chapter.mp4" type="video/mp4" />
-                        </video>
+                            src="https://www.youtube.com/embed/TlnKbAaFq1U" 
+                            title="YouTube video player" 
+                            frameborder="0" 
+                            allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                            allowfullscreen>
+                        </iframe>
                         <div class="col-sm-0 col-md-12 col-lg-2 col-xl-2"/>
                     </div>
                     <blockquote style="border-left: 2px solid #64b5f6;">
@@ -39,11 +43,15 @@
                     </blockquote>
                     <div class="row video-player">
                         <div class="col-sm-0 col-md-12 col-lg-2 col-xl-2"/>
-                        <video 
+                        <iframe 
+                            width="560" height="500" 
                             class="video col-sm-12 col-md-12 col-lg-8 col-xl-8"
-                            controls="controls autoplay">
-                            <source src="@/assets/videos/edit_first_chapter.mp4" type="video/mp4" />
-                        </video>
+                            src="https://www.youtube.com/embed/vXm0vAlQ924" 
+                            title="YouTube video player" 
+                            frameborder="0" 
+                            allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                            allowfullscreen>
+                        </iframe>
                         <div class="col-sm-0 col-md-12 col-lg-2 col-xl-2"/>
                     </div>
                     <blockquote style="border-left: 2px solid #64b5f6;">
@@ -74,11 +82,15 @@
                     </blockquote>
                     <div class="row video-player">
                         <div class="col-sm-0 col-md-12 col-lg-2 col-xl-2"/>
-                        <video 
+                        <iframe 
+                            width="560" height="500" 
                             class="video col-sm-12 col-md-12 col-lg-8 col-xl-8"
-                            controls="controls autoplay">
-                            <source src="@/assets/videos/extend_book.mp4" type="video/mp4" />
-                        </video>
+                            src="https://www.youtube.com/embed/7Dsm0Y-OY8g" 
+                            title="YouTube video player" 
+                            frameborder="0" 
+                            allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                            allowfullscreen>
+                        </iframe>
                         <div class="col-sm-0 col-md-12 col-lg-2 col-xl-2"/>
                     </div>
                     <blockquote style="border-left: 2px solid #64b5f6;">
@@ -111,11 +123,15 @@
                     </blockquote>
                     <div class="row video-player">
                         <div class="col-sm-0 col-md-12 col-lg-2 col-xl-2"/>
-                        <video 
+                        <iframe 
+                            width="560" height="500" 
                             class="video col-sm-12 col-md-12 col-lg-8 col-xl-8"
-                            controls="controls autoplay">
-                            <source src="@/assets/videos/read_chapter.mp4" type="video/mp4" />
-                        </video>
+                            src="https://www.youtube.com/embed/FtEEevIspWg" 
+                            title="YouTube video player" 
+                            frameborder="0" 
+                            allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                            allowfullscreen>
+                        </iframe>
                         <div class="col-sm-0 col-md-12 col-lg-2 col-xl-2"/>
                     </div>
                     <blockquote style="border-left: 2px solid #64b5f6;">
