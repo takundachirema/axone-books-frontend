@@ -88,11 +88,13 @@ export default {
       
       parameters["mongodb_url"] = process.env.VUE_APP_BIGCHAINDB_MONGO_DB;
 
+      eventHub.$emit('isLoading', true);
       axios.post(
         url,
         parameters
       )
       .then(resp => {
+          eventHub.$emit('isLoading', false);
           let data = resp.data;
           eventHub.$emit('storeBooks', data.results);
           if (this.shortList) {
@@ -111,6 +113,7 @@ export default {
           console.log(resp.data.results) 
       })
       .catch(e => {
+          eventHub.$emit('isLoading', false);
           console.log(e)
       })
     },

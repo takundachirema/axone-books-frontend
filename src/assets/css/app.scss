@@ -23,14 +23,35 @@ html, body, #app{
     margin-left: 20px;
     fill: black;
     list-style-type: disc !important;
- }
+}
 
- .word_list_numbered li {
+.word_list_numbered li {
     font-size: 14px;
     margin-left: 20px;
     fill: black;
     list-style-type: decimal !important;
- }
+}
+
+.loader {  /* Loader Div Class */
+    justify-content: center;
+    position: absolute;
+    top:0px;
+    right:0px;
+    width:90%;
+    height:90%;
+    background-color: transparent;
+    background-size: 50px;
+    background-repeat:no-repeat;
+    background-position:center;
+    z-index:10000000;
+    text-align: center;
+}
+
+.loader div {
+    justify-content: center;
+    display: inline-block;
+    margin-top: 20%;
+}
 
 input[type="image"]:focus {
     outline: none;
@@ -509,28 +530,6 @@ div#custom-home {
     flex: 0 22%;
     height: 100px;
     margin-bottom: 2%; /* (100-32*3)/2 */
-}
-
-.loader {  /* Loader Div Class */
-    justify-content: center;
-    position: absolute;
-    top:0px;
-    right:0px;
-    width:100%;
-    height:100%;
-    background-color:#300;
-    background-size: 50px;
-    background-repeat:no-repeat;
-    background-position:center;
-    z-index:10000000;
-    opacity: 0.8;
-    filter: alpha(opacity=40);
-}
-
-.loader div {
-    justify-content: center;
-    display: inline-block;
-    margin-top: 20%;
 }
 
 .border{

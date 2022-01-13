@@ -1,5 +1,10 @@
 <template>
   <div id="app">
+    <div class="loader" v-if="loading">
+      <div>
+          <circle9></circle9>
+      </div>
+    </div>
     <notifications group="message" />
     <sidebar-menu
       :menu="menu"
@@ -36,10 +41,11 @@
   import M from 'materialize-css'
   import storage from './storage.js'
   import BookPopup from './components/BookPopup.vue'
+  import {Circle9} from 'vue-loading-spinner'
 
   export default {
     name: 'App',
-    components: {BookPopup},
+    components: {BookPopup, Circle9},
     methods: {
       search() {
         this.searchText = this.searchQuery
@@ -94,6 +100,9 @@
         this.menu[number].hidden = false;
         this.menu[number].child.push({href: url});
       },
+      isLoading(loading){
+        this.loading=loading;
+      },
       /**
        * type: error, warn, success
        */
@@ -124,6 +133,7 @@
       eventHub.$on('selectMenu', this.selectMenu);
       eventHub.$on('storeBooks', this.storeBooks);
       eventHub.$on('showMessage', this.showMessage);
+      eventHub.$on('isLoading', this.isLoading);
       if (this.isTouchDevice()) {
         document.querySelector('body').classList.add('touch');
       }
@@ -136,7 +146,7 @@
         pk: '',
         searchQuery: '',
         searchText: '',
-        loading: true,
+        loading: false,
         show_header: false,
         menu: [
           {
