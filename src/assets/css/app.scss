@@ -32,6 +32,11 @@ html, body, #app{
     list-style-type: decimal !important;
 }
 
+.material-tooltip
+{
+    z-index: 100000 !important;
+}
+
 .loader {  /* Loader Div Class */
     justify-content: center;
     position: absolute;

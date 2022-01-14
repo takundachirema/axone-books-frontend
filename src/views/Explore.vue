@@ -19,8 +19,6 @@ import cytoscape from 'cytoscape'
 import dagre from 'cytoscape-dagre';
 import edgehandles from 'cytoscape-edgehandles';
 import cxtmenu from 'cytoscape-cxtmenu';
-import Base58 from 'base-58';
-import nacl from "tweetnacl";
 import ProgressBar from 'vue-simple-progress'
 
 const driver = require('bigchaindb-driver')
@@ -125,8 +123,10 @@ export default {
         commands: [
           {
             // merge is for creating a parent. It points to the child hence merge name
-            content: '<i class="material-icons">call_merge</i>',
-            contentStyle: {"pointer-events": "all"},
+            content: '<i data-tooltip="Create Parent Chapter" id="merge-menu-btn" class="material-icons tooltipped">call_merge</i>',
+            contentStyle: {
+              "pointer-events": "all"
+            },
             select: function(ele){
               self.addNewNode(ele.data('id'), ele.data('id'), false);
             },
@@ -134,7 +134,7 @@ export default {
           },
           {
             // publish is only for new nodes
-            content: '<i class="material-icons">book</i>',
+            content: '<i data-tooltip="Publish Chapter" class="material-icons tooltipped">book</i>',
             contentStyle: {"pointer-events": "all"},
             select: function(ele){
               
@@ -143,7 +143,7 @@ export default {
           },
           {
             // split is for creating child. It points out meaning reproduce.
-            content: '<i class="material-icons">call_split</i>',
+            content: '<i data-tooltip="Create Child Chapter" class="material-icons tooltipped">call_split</i>',
             contentStyle: {"pointer-events": "all"},
             select: function(ele){
               self.addNewNode(ele.data('id'), ele.data('version'), true);
@@ -151,6 +151,7 @@ export default {
             enabled: false
           }
 				],
+        //activeFillColor: 'rgba(0, 0, 0, 0)',
         atMouse: false,
         openMenuEvents: 'cxttap', // cytoscape events that will open the menu (space separated)
       },
@@ -229,7 +230,10 @@ export default {
         M.FormSelect.init(elems, {});
       });
     },
-    registerEvents(){ },
+    registerEvents(){},
+    menuHover(element){
+      alert("hovered!")
+    },
     prepareGraph() {
       cytoscape.use(dagre);
 
@@ -269,6 +273,12 @@ export default {
         self.nodeClickListener(evt.target._private.data);
       });
 
+      cy.on('cxttap', 'node', function(evt){
+        // menu opened so register menu hover events
+        var elems = document.querySelectorAll('.tooltipped');
+        M.Tooltip.init(elems, {});
+      });
+      
       cy.center("#"+this.book.id);
       cy.zoom({
         level: 2
