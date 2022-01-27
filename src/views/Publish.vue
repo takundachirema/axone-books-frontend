@@ -53,8 +53,8 @@
                             </div>
                         </div>
                         <div class="h50px w100">
-                            <button type="button" id="cancel-search" class="modal-close btn waves-effect waves-light right margined-sides">Cancel</button>
-                            <button id="submit-search" class="btn waves-effect waves-light right margined-sides" type="submit">Submit</button>
+                            <button type="button" id="cancel-search" class="modal-close btn waves-effect waves-light right margined-sides primary">Cancel</button>
+                            <button id="submit-search" class="btn waves-effect waves-light right margined-sides primary" type="submit">Submit</button>
                         </div>
                     </form>
                 </div>

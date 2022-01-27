@@ -121,8 +121,8 @@
           </div>
 
           <div class="h50px w100">
-            <button type="button" id="cancel-publish" class="btn waves-effect waves-light right margined-sides">Cancel</button>
-            <button id="submit-publication" class="btn waves-effect waves-light right margined-sides" type="submit">Publish</button>
+            <button type="button" id="cancel-publish" class="btn waves-effect waves-light right margined-sides primary">Cancel</button>
+            <button id="submit-publication" class="btn waves-effect waves-light right margined-sides primary" type="submit">Publish</button>
           </div>
 
         </form>
@@ -137,7 +137,7 @@
           </figure>
           <div class="book__title">
             <h1 v-if="book.metadata.book_title" class="book__title-text">
-              {{ book.metadata.book_title }}
+                {{ book.metadata.book_title }}
               <span v-if="book.metadata.chapter_title">
                 <div  v-formatChapter="book.version"></div>
                 {{ book.metadata.chapter_title }}
@@ -168,8 +168,9 @@
       <div class="book__main">
         <div class="book__wrap book__wrap--main" :class="{'book__wrap--page': type=='page'}">
           <div class="book__actions" >
-            <button v-if="book.transaction_type !== 'CREATE'" id="read" class="btn waves-effect waves-light" @click.prevent="readBook()">Read</button>
+            <button v-if="book.transaction_type !== 'CREATE'" id="read" class="btn waves-effect waves-light margined primary" @click.prevent="readBook()">Read</button>
             <button v-if="book.transaction_type !== 'CREATE'" id="transfer" class="btn waves-effect waves-light margined orange" @click.prevent="exploreBook()">Explore</button>
+            <button v-if="book.transaction_type !== 'CREATE'" id="transfer" class="btn waves-effect waves-light margined green" @click.prevent="tokenizeBook()">NFT</button>
             <button v-if="book.transaction_type == 'CREATE'" id="edit" class="btn waves-effect waves-light" @click.prevent="editBook()">Edit</button>
             
             <div v-if="book.transaction_type !== 'CREATE'" class="input-field s12 id_container">
@@ -177,7 +178,7 @@
                 id="copy_id" 
                 class="material-icons prefix clickable tooltipped"
                 data-position="left" 
-                data-tooltip="Copy Tranaction Id">
+                data-tooltip="Copy Transaction Id">
                   content_copy
               </i>
               <input 
@@ -325,6 +326,14 @@ export default {
     },
     editBook(){
       window.open("https://docs.google.com/document/create", '_blank');
+    },
+    exploreBook(){
+      let route = this.$router.resolve('/explore');
+      window.open(route.href+"/"+this.book.id+"/"+this.book.metadata.book_title, '_blank');
+    },
+    tokenizeBook(){
+      let route = this.$router.resolve('/tokenize');
+      window.open(route.href+"/"+this.book.id+"/"+this.book.metadata.book_title, '_blank');
     },
     showBook(){
       this.bookLoaded = true;
@@ -526,10 +535,6 @@ export default {
 
           postTransaction (conn, tx, edPrivateKey_32);
       })
-    },
-    exploreBook(){
-      let route = this.$router.resolve('/explore');
-      window.open(route.href+"/"+this.book.id+"/"+this.book.metadata.book_title, '_blank');
     },
     /**
      * ED key pair is only for signing.

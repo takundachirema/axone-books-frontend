@@ -365,7 +365,18 @@
           left: 40px;
         }
       }
-        &__img{
+      &__picture{
+        display: none;
+        @include tablet-min{
+          background: $c-dark;
+          display: block;
+          position: absolute;
+          width: calc(30% - 40px);
+          top: 40px;
+          left: 40px;
+        }
+      }
+      &__img{
           display: block;
           width: 100%;
           opacity: 0;

@@ -18,6 +18,7 @@ import Library from './views/Library.vue'
 import Publish from './views/Publish.vue'
 import Read from './views/Read.vue'
 import Explore from './views/Explore.vue'
+import Tokenize from './views/Tokenize.vue'
 
 import 'materialize-css/dist/css/materialize.min.css'
 import 'material-design-icons/iconfont/material-icons.css'
@@ -76,6 +77,11 @@ const router = new VueRouter({
       path: '/explore/:id/:title',
       name: 'Explore',
       component: Explore
+    },
+    {
+      path: '/tokenize/:id/:title',
+      name: 'Tokenize',
+      component: Tokenize
     },
     {
       path: '/info',

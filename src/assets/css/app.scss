@@ -32,6 +32,41 @@ html, body, #app{
     list-style-type: decimal !important;
 }
 
+.h-90 {
+    max-height: 90% !important;
+    height: 90% !important;
+}
+
+.h-50 {
+    max-height: 50% !important;
+    height: 50% !important;
+}
+
+.card-image img {
+    width: 100%;
+    object-fit: cover;
+}
+
+.card .x-large {
+    height: 900px;
+}
+
+.vue-select-image__item {
+    width: 40%;
+}
+
+.center{
+    text-align: center;
+    margin-bottom: 0px;
+}
+
+.address{
+    color: white;
+    background: $c-primary;
+    border-radius: 10px;
+    padding: 5px;
+}
+
 .material-tooltip
 {
     z-index: 100000 !important;
@@ -402,7 +437,7 @@ footer#custom-footer {
 
 .modal__medium { 
     width: 40% !important ; 
-    height: 55% !important ;
+    height: 60% !important ;
     outline: none !important;
     .modal-content, .modal-footer {
         outline: none !important;
@@ -477,10 +512,6 @@ div#custom-home {
     margin-top: 0px;
 }
 
-.btn {
-    background-color: $c-primary !important;
-}
-
 .margined {
     margin: 1em !important;
 }
@@ -553,9 +584,9 @@ div#custom-home {
     background: red;
 }
 
-.orange{
-    color: white;
-    background: orange;
+.primary{
+    background: $c-primary !important;
+    color: white !important;
 }
 
 .text{

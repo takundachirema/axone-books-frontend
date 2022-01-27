@@ -187,6 +187,14 @@
             icon: 'fa fa-globe'
           },
           {
+            href: '/tokenize',
+            title: 'Tokenize',
+            hidden: true,
+            icon: 'fab fa-ethereum',
+            class: 'vsm--link_active',
+            child: []
+          },
+          {
             href: '/info',
             title: 'Information',
             icon: 'fa fa-info',

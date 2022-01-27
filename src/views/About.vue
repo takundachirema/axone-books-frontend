@@ -21,7 +21,7 @@
                             <h2>Axone</h2>
                             <span>For <em>Authors</em> To <em>Create</em></span>
                             <div class="line-dec"></div>
-                            <p>“ Through the use of Blockchain and Webmonetization technologies, 
+                            <p>“ Through the use of Blockchain and Web Monetization technologies, 
                                 Axone enables authors to truly own their work and earn 
                                 income through royalties from other authors continuing their work.
                                 Authors will use Google Docs to write their chapters and publish
