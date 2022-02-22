@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "engines": {
-    "node" : ">= 14.0.0 < 15.0.0"
+    "node": ">= 14.0.0 < 15.0.0"
   },
   "scripts": {
     "serve": "vue-cli-service serve",
@@ -12,10 +12,6 @@
     "start": "node server.js"
   },
   "dependencies": {
-    "@ckeditor/ckeditor5-build-classic": "^26.0.0",
-    "@ckeditor/ckeditor5-build-decoupled-document": "^26.0.0",
-    "@ckeditor/ckeditor5-comments": "^26.0.0",
-    "@ckeditor/ckeditor5-pagination": "^26.0.0",
     "axios": "^0.20.0",
     "base-58": "^0.0.1",
     "bigchaindb-driver": "^4.2.2",
@@ -34,15 +30,9 @@
     "cytoscape-klay": "^3.1.4",
     "dns": "^0.2.2",
     "express": "^4.17.1",
-    "flipbook-vue": "^0.10.2",
     "jquery": "^3.6.0",
     "material-design-icons": "^3.0.1",
     "materialize-css": "^1.0.0-rc.2",
-    "module": "^1.2.5",
-    "moment": "^2.27.0",
-    "mongodb": "^3.6.2",
-    "mongoose": "^5.10.2",
-    "morgan": "^1.10.0",
     "numeral": "^2.0.4",
     "popper.js": "^1.16.1",
     "tweetnacl": "^1.0.3",
@@ -57,10 +47,7 @@
     "vue-sidebar-menu": "^4.7.1",
     "vue-simple-progress": "^1.1.1",
     "vue-tippy": "^4.10.1",
-    "vuex": "^3.4.0",
-    "zingchart": "^2.9.1",
-    "zingchart-vue": "^2.0.1",
-    "zinggrid": "^1.2.2"
+    "vuex": "^3.4.0"
   },
   "devDependencies": {
     "@babel/cli": "^7.10.5",
@@ -79,6 +66,7 @@
     "nodemon": "^2.0.15",
     "sass-loader": "^6.0.7",
     "vue-template-compiler": "^2.6.11",
+    "webpack-bundle-analyzer": "^4.5.0",
     "webpack-cli": "^4.9.1"
   }
 }
