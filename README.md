@@ -57,6 +57,13 @@ server {
 sudo service nginx reload
 ```
 
+### Heroku CLI on Mac Book
+
+- Run:
+```
+arch -arm64 brew tap heroku/brew && arch -arm64 brew install heroku
+```
+
 ### Local Bigchaindb Setup
 
 - Clone the repo https://github.com/bigchaindb/bigchaindb
