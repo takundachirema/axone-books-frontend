@@ -59,7 +59,7 @@ sudo service nginx reload
 
 ### Heroku CLI on Mac Book
 
-- Run:
+- Run :
 ```
 arch -arm64 brew tap heroku/brew && arch -arm64 brew install heroku
 ```
