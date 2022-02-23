@@ -8,12 +8,6 @@ module.exports = {
       config.plugin('CompressionPlugin').use(CompressionPlugin);
     },
     configureWebpack: {
-      optimization: {
-        splitChunks: {
-          minSize: 10000,
-          maxSize: 250000,
-        }
-      },
       devServer: {
         historyApiFallback: true
       }
