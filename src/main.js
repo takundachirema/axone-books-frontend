@@ -23,7 +23,6 @@ import 'vue-search-select/dist/VueSearchSelect.css'
 import 'bootstrap/dist/css/bootstrap.css';
 import 'bootstrap-vue/dist/bootstrap-vue.css';
 
-import { BootstrapVue, IconsPlugin } from 'bootstrap-vue'
 import VueTippy, { TippyComponent } from "vue-tippy";
 import Notifications from 'vue-notification'
 import VueMeta from 'vue-meta'
@@ -31,8 +30,6 @@ import VueMeta from 'vue-meta'
 window.eventHub = new Vue();
 
 Vue.use(VueTippy);
-Vue.use(BootstrapVue)
-Vue.use(IconsPlugin)
 Vue.use(Notifications)
 Vue.use(VueMeta)
 Vue.use(VueRouter)
