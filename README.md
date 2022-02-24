@@ -16,6 +16,10 @@ This repository contains the Client and Server code for Axone books.
 ```
 sudo apt install mongodb
 ```
+- For remote access change; bind_ip from 127.0.0.1 to 0.0.0.0:
+```
+sudo nano /etc/mongod.conf
+```
 - Install bigchaindb from:
 - http://docs.bigchaindb.com/projects/server/en/latest/simple-deployment-template/set-up-node-software.html
 - If you see port already in use after starting mongodb run this:
@@ -128,6 +132,7 @@ cd into the repo and run
 ```
     sudo make run
 ```
+- If you get cors issues from backend make sure that the mongodb port is exposed for external applications
 
 ### Compiling and serving the dashboard
 From the terminal, navigate to the root folder of the project and run the following command to serve the frontend of the project:
