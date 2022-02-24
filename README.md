@@ -12,13 +12,37 @@ This repository contains the Client and Server code for Axone books.
 - Then now you can query from any of the collections
 
 ## Google Cloud Bigchaindb Node
-- Setup the VM instance: https://cloud.google.com/compute/docs/quickstart-linux
-- SSH connect to it with following steps:
-- Install google skd: https://cloud.google.com/sdk/docs/quickstart
-- Download using the curl command (go to home directory as recommended) it's easier.
-- Unzip the folder: tar -zxf google-cloud-sdk-*
-- Then run: ./google-cloud-sdk/install.sh
-- Then run: ./google-cloud-sdk/bin/gcloud init
+- Install MongoDB:
+```
+sudo apt install mongodb
+```
+- Install bigchaindb from:
+- http://docs.bigchaindb.com/projects/server/en/latest/simple-deployment-template/set-up-node-software.html
+- If you see port already in use after starting mongodb run this:
+```
+sudo lsof -iTCP -sTCP:LISTEN -n -P
+```
+- Then kill the mongodb process:
+```
+sudo kill <process_id>
+```
+- Then start the bigchaindb:
+```
+nohup bigchaindb start 2>&1 > bigchaindb.log &
+```
+- Then start the tendermint node:
+```
+tendermint node &> tendermint.out &
+```
+- To stop it first check process id and then kill it as below. Don't forget the -2 parameter.
+```
+ps -ef | grep bigchaindb
+sudo kill -2 <process_id>
+```
+- If you get an error about itdangerous in the bigchaindb.log run this:
+```
+pip3 install itsdangerous==2.0.1
+```
 
 ## Google Cloud VM Setup Docker compose
 - https://www.digitalocean.com/community/tutorials/how-to-install-and-use-docker-on-ubuntu-20-04
@@ -55,6 +79,10 @@ server {
 - Then reload nginx:
 ```
 sudo service nginx reload
+```
+- For errors in connection logs are here:
+```
+nano /var/log/nginx/error.log
 ```
 
 ### Heroku CLI on Mac Book
