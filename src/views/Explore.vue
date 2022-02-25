@@ -504,6 +504,7 @@ export default {
     this.book = JSON.parse(localStorage.getItem(this.id));
     eventHub.$emit('showHeader', false);
     eventHub.$emit('hideMenu', 3, false);
+    document.title = 'Explore';
   },
   destroyed(){
     eventHub.$emit('hideMenu', 3, true);

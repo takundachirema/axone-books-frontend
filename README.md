@@ -30,9 +30,11 @@ sudo lsof -iTCP -sTCP:LISTEN -n -P
 ```
 sudo kill <process_id>
 ```
+
+### Manual Bigchaindb Startup
 - Then start the bigchaindb:
 ```
-nohup bigchaindb start 2>&1 > bigchaindb.log &
+nohup bigchaindb start > bigchaindb.log 2>&1 &
 ```
 - Then start the tendermint node:
 ```
@@ -44,9 +46,106 @@ ps -ef | grep bigchaindb
 sudo kill -2 <process_id>
 ```
 - If you get an error about itdangerous in the bigchaindb.log run this:
+- Do for both sudo and non-sudo because of python environments:
 ```
 pip3 install itsdangerous==2.0.1
+sudo pip3 install itsdangerous==2.0.1
 ```
+- If you get a waring; RuntimeWarning: greenlet.greenlet size changed:
+```
+sudo pip install --upgrade gevent
+```
+
+### Using Monit - Recommended
+- Monit can be used to make sure that both the bigchaindb process is started and that tendermint are running
+```
+sudo apt install monit 
+bigchaindb-monit-config 
+```
+- These create the .bigchaindb-monit folder
+- The script that is run is called .bigchaindb-monit/monit_script
+- put this in that script:
+```
+#!/bin/bash
+case $1 in
+
+  start_bigchaindb)
+
+    pushd $4
+
+      nohup bigchaindb start > $3/bigchaindb.out 2>&1 &
+
+      echo $! > $2
+    popd
+
+    ;;
+
+  stop_bigchaindb)
+
+    kill -2 `cat $2`
+    rm -f $2
+
+    ;;
+
+  start_tendermint)
+
+    pushd $4
+
+      sudo nohup tendermint node >> $3/tendermint.out.log 2>> $3/tendermint.err.log &
+
+      echo $! > $2
+    popd
+
+    ;;
+
+  stop_tendermint)
+
+    kill -2 `cat $2`
+    rm -f $2
+
+    ;;
+
+esac
+exit 0
+```
+- Then initialize tendermint which creates the .tendermint folder:
+```
+sudo tendermint init
+```
+- Now to start the monit service we need to show it what processes to start:
+```
+sudo nano /etc/monit/monitrc
+```
+- Then fill that file with the below in the SERVICES section:
+```
+check process bigchaindb_process
+    with pidfile /home/takundachirema/.bigchaindb-monit/monit_processes/bigchaindb.pid
+    start program "/home/takundachirema/.bigchaindb-monit/monit_script start_bigchaindb /home/takundachirema/.bigchaindb-monit/monit_processes/bigchaindb.pid /home/takundachirema/.bigchaindb-monit/logs /home/takundachirema/.bigchaindb-monit/logs"
+    restart program "/home/takundachirema/.bigchaindb-monit/monit_script start_bigchaindb /home/takundachirema/.bigchaindb-monit/monit_processes/bigchaindb.pid /home/takundachirema/.bigchaindb-monit/logs /home/takundachirema/.bigchaindb-monit/logs"
+    stop program "/home/takundachirema/.bigchaindb-monit/monit_script stop_bigchaindb /home/takundachirema/.bigchaindb-monit/monit_processes/bigchaindb.pid /home/takundachirema/.bigchaindb-monit/logs /home/takundachirema/.bigchaindb-monit/logs"
+
+check process tendermint
+    with pidfile /home/takundachirema/.bigchaindb-monit/monit_processes/tendermint.pid
+    start program "/home/takundachirema/.bigchaindb-monit/monit_script start_tendermint /home/takundachirema/.bigchaindb-monit/monit_processes/tendermint.pid /home/takundachirema/.bigchaindb-monit/logs /home/takundachirema/.bigchaindb-monit/logs"
+    restart program "/home/takundachirema/.bigchaindb-monit/monit_script start_tendermint /home/takundachirema/.bigchaindb-monit/monit_processes/tendermint.pid /home/takundachirema/.bigchaindb-monit/logs /home/takundachirema/.bigchaindb-monit/logs"
+    stop program "/home/takundachirema/.bigchaindb-monit/monit_script stop_tendermint /home/takundachirema/.bigchaindb-monit/monit_processes/tendermint.pid /home/takundachirema/.bigchaindb-monit/logs /home/takundachirema/.bigchaindb-monit/logs"
+    depends on bigchaindb
+
+check file tendermint.out.log with path /home/takundachirema/.bigchaindb-monit/logs/tendermint.out.log
+    if size > 200 MB then
+        exec "/home/takundachirema/.bigchaindb-monit/monit_script_logrotate rotate_tendermint_logs /home/takundachirema/.bigchaindb-monit/logs/tendermint.out.log /home/takundachirema/.bigchaindb-monit/monit_processes/tendermint.pid"
+
+check file tendermint.err.log with path /home/takundachirema/.bigchaindb-monit/logs/tendermint.err.log
+    if size > 200 MB then
+        exec "/home/takundachirema/.bigchaindb-monit/monit_script_logrotate rotate_tendermint_logs /home/takundachirema/.bigchaindb-monit/logs/tendermint.err.log /home/takundachirema/.bigchaindb-monit/monit_processes/tendermint.pid"
+
+```
+- Then start the monit service:
+```
+sudo /etc/init.d/monit restart
+```
+- Then check that all processes are running
+
 
 ## Google Cloud VM Setup Docker compose
 - https://www.digitalocean.com/community/tutorials/how-to-install-and-use-docker-on-ubuntu-20-04
