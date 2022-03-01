@@ -2,26 +2,82 @@
 
 This repository contains the Client and Server code for Axone books.
 
-## Test Setup
-
-### Connect to Mongodb
-- sudo docker exec -it bigchaindb_mongodb_1 bash
-- Then run: mongo
-- Then run: use bigchain
-- Then run: show collections
-- Then now you can query from any of the collections
-
 ## Google Cloud Bigchaindb Node
-- Install MongoDB:
+
+### Setup SSL
+
+- Install nginx: 
 ```
+sudo apt update
+sudo apt install nginx
+```
+- update the http and https to redirect to port 9984:
+```
+sudo nano /etc/nginx/sites-enabled/default
+```
+- Then paste this:
+```
+server {
+    ...
+    location / {
+        proxy_pass http://127.0.0.1:9984;
+    }
+    ...
+```
+- Then reload nginx:
+```
+sudo service nginx reload
+```
+- For errors in connection logs are here:
+```
+nano /var/log/nginx/error.log
+```
+- Now install lets encrypt and we'll use it for obtaining a certificate for https connection to the node
+```
+sudo apt update && sudo apt install certbot python3-certbot-nginx
+```
+- Get SSL certificate
+```
+sudo certbot --nginx
+```
+- When asked about your domain names put like this:
+```
+nececity.net www.nececity.net
+```
+
+### Install MongoDB:
+```
+sudo apt-get update
 sudo apt install mongodb
 ```
 - For remote access change; bind_ip from 127.0.0.1 to 0.0.0.0:
 ```
-sudo nano /etc/mongod.conf
+sudo nano /etc/mongodb.conf
 ```
-- Install bigchaindb from:
-- http://docs.bigchaindb.com/projects/server/en/latest/simple-deployment-template/set-up-node-software.html
+- The restart the service. Its mongodb on ubuntu 20.04 and mongod on others:
+```
+sudo service mongodb restart
+```
+
+### Install Bigchaindb and Tendermint
+- http://docs.bigchaindb.com/projects/server/en/latest/simple-deployment-template/set-up-node-software.html OR:
+```
+sudo apt install -y python3-pip libssl-dev
+sudo pip3 install -U pip
+sudo pip3 install bigchaindb==2.2.2
+```
+- Install tendermint
+```
+sudo apt install -y unzip
+wget https://github.com/tendermint/tendermint/releases/download/v0.31.5/tendermint_v0.31.5_linux_amd64.zip
+unzip tendermint_v0.31.5_linux_amd64.zip
+rm tendermint_v0.31.5_linux_amd64.zip
+sudo mv tendermint /usr/local/bin
+```
+- Initialize tendermint
+```
+sudo tendermint init
+```
 - If you see port already in use after starting mongodb run this:
 ```
 sudo lsof -iTCP -sTCP:LISTEN -n -P
@@ -31,34 +87,10 @@ sudo lsof -iTCP -sTCP:LISTEN -n -P
 sudo kill <process_id>
 ```
 
-### Manual Bigchaindb Startup
-- Then start the bigchaindb:
-```
-nohup bigchaindb start > bigchaindb.log 2>&1 &
-```
-- Then start the tendermint node:
-```
-tendermint node &> tendermint.out &
-```
-- To stop it first check process id and then kill it as below. Don't forget the -2 parameter.
-```
-ps -ef | grep bigchaindb
-sudo kill -2 <process_id>
-```
-- If you get an error about itdangerous in the bigchaindb.log run this:
-- Do for both sudo and non-sudo because of python environments:
-```
-pip3 install itsdangerous==2.0.1
-sudo pip3 install itsdangerous==2.0.1
-```
-- If you get a waring; RuntimeWarning: greenlet.greenlet size changed:
-```
-sudo pip install --upgrade gevent
-```
-
-### Using Monit - Recommended
+### Start Bigchaindb Using Monit - Recommended
 - Monit can be used to make sure that both the bigchaindb process is started and that tendermint are running
 ```
+sudo apt-get update
 sudo apt install monit 
 bigchaindb-monit-config 
 ```
@@ -73,7 +105,7 @@ case $1 in
 
     pushd $4
 
-      nohup bigchaindb start > $3/bigchaindb.out 2>&1 &
+      nohup bigchaindb start > $3/bigchaindb.out.log 2>&1 &
 
       echo $! > $2
     popd
@@ -108,14 +140,11 @@ case $1 in
 esac
 exit 0
 ```
-- Then initialize tendermint which creates the .tendermint folder:
-```
-sudo tendermint init
-```
 - Now to start the monit service we need to show it what processes to start:
 ```
 sudo nano /etc/monit/monitrc
 ```
+- First make the monit be 5 seconds: set daemon 5
 - Then fill that file with the below in the SERVICES section:
 ```
 check process bigchaindb_process
@@ -131,23 +160,64 @@ check process tendermint
     stop program "/home/takundachirema/.bigchaindb-monit/monit_script stop_tendermint /home/takundachirema/.bigchaindb-monit/monit_processes/tendermint.pid /home/takundachirema/.bigchaindb-monit/logs /home/takundachirema/.bigchaindb-monit/logs"
     depends on bigchaindb
 
+check file bigchaindb.out.log with path /home/takundachirema/.bigchaindb-monit/logs/bigchaindb.out.log
+    if size > 20 MB then
+        exec "/home/takundachirema/.bigchaindb-monit/monit_script_logrotate rotate_tendermint_logs /home/takundachirema/.bigchaindb-monit/logs/bigchaindb.out.log /home/takundachirema/.bigchaindb-monit/monit_processes/bigchaindb.pid"
+
 check file tendermint.out.log with path /home/takundachirema/.bigchaindb-monit/logs/tendermint.out.log
-    if size > 200 MB then
+    if size > 20 MB then
         exec "/home/takundachirema/.bigchaindb-monit/monit_script_logrotate rotate_tendermint_logs /home/takundachirema/.bigchaindb-monit/logs/tendermint.out.log /home/takundachirema/.bigchaindb-monit/monit_processes/tendermint.pid"
 
 check file tendermint.err.log with path /home/takundachirema/.bigchaindb-monit/logs/tendermint.err.log
-    if size > 200 MB then
+    if size > 20 MB then
         exec "/home/takundachirema/.bigchaindb-monit/monit_script_logrotate rotate_tendermint_logs /home/takundachirema/.bigchaindb-monit/logs/tendermint.err.log /home/takundachirema/.bigchaindb-monit/monit_processes/tendermint.pid"
 
 ```
+- ** NB - Run the commands in the Errors for both Monit and Manual section
 - Then start the monit service:
 ```
 sudo /etc/init.d/monit restart
 ```
 - Then check that all processes are running
+```
+sudo lsof -iTCP -sTCP:LISTEN -n -P
+```
+- If not, check the logs from the monit process
+```
+sudo nano /var/log/monit.log
+```
 
+### Start Bigchaindb Manual
+- ** NB - Run the commands in the Errors for both Monit and Manual section
+- Then start the bigchaindb:
+```
+nohup bigchaindb start > bigchaindb.out.log 2>&1 &
+```
+- Then start the tendermint node:
+```
+tendermint node &> tendermint.out &
+```
+- To stop it first check process id and then kill it as below. Don't forget the -2 parameter.
+```
+ps -ef | grep bigchaindb
+sudo kill -2 <process_id>
+```
 
-## Google Cloud VM Setup Docker compose
+### Errors for both Monit and Manual
+
+- If you get an error about itdangerous in the bigchaindb.out.log run this:
+- Do for both sudo and non-sudo because of python environments:
+```
+pip3 install itsdangerous==2.0.1
+sudo pip3 install itsdangerous==2.0.1
+```
+- If you get a waring; RuntimeWarning: greenlet.greenlet size changed:
+```
+sudo pip install --upgrade gevent
+```
+
+## Bigchaindb Docker setup Google Cloud VM
+
 - https://www.digitalocean.com/community/tutorials/how-to-install-and-use-docker-on-ubuntu-20-04
 - https://www.digitalocean.com/community/tutorials/how-to-install-and-use-docker-compose-on-ubuntu-20-04
 - Install make if not found: sudo apt-get install -y make
@@ -159,43 +229,22 @@ cd bigchaindb
 make run
 ```
 
-### Setup SSL
+### Connect to Mongodb
+- sudo docker exec -it bigchaindb_mongodb_1 bash
+- Then run: mongo
+- Then run: use bigchain
+- Then run: show collections
+- Then now you can query from any of the collections
 
-- Install nginx: 
-```
-sudo apt update
-sudo apt install nginx
-```
-- update the http and https to redirect to port 9984:
-```
-sudo nano /etc/nginx/sites-enabled/default
-```
-- Then paste this:
-```
-server {
-    ...
-    location / {
-        proxy_pass http://127.0.0.1:9984;
-    }
-    ...
-```
-- Then reload nginx:
-```
-sudo service nginx reload
-```
-- For errors in connection logs are here:
-```
-nano /var/log/nginx/error.log
-```
 
-### Heroku CLI on Mac Book
+## Heroku CLI on Mac Book
 
 - Run :
 ```
 arch -arm64 brew tap heroku/brew && arch -arm64 brew install heroku
 ```
 
-### Local Bigchaindb Setup
+## Local Bigchaindb Setup
 
 - Clone the repo https://github.com/bigchaindb/bigchaindb
 - Then run: 
