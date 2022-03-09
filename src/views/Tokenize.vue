@@ -21,11 +21,13 @@
                             <i class="material-icons right">close</i>
                         </span>
                         <vue-select-image
+                            :h="100"
+                            :w="auto"
                             :dataImages="dataImages"
                             @onselectimage="onSelectImage">
                         </vue-select-image>
-                        <div class="h50px w100 center">
-                            <button id="publish" class="btn waves-effect waves-light margined primary" @click.prevent="publishToken()">Publish Token</button>
+                        <div class="h50px w100 center bottom">
+                            <button id="publish" class="btn waves-effect waves-light margined primary bottom" @click.prevent="publishToken()">Publish Token</button>
                         </div>
                     </div>
                 </div>
@@ -213,22 +215,22 @@ export default {
             dataImages: [
                 {
                     id: '1',
-                    src: require("../assets/images/algorand_logo.png"),
+                    src: require("../assets/images/named_logo.png"),
                     alt: 'Alt Image 1'
                 }, 
                 {
                     id: '2',
-                    src: require("../assets/images/ethereum_logo.jpg"),
+                    src: require("../assets/images/zest_logo.jpg"),
                     alt: 'Alt Image 1'
                 }, 
                 {
                     id: '3',
-                    src: require("../assets/images/cardano_logo.png"),
+                    src: require("../assets/images/axie_logo.jpeg"),
                     alt: 'Alt Image 1'
                 },
                 {
                     id: '4',
-                    src: require("../assets/images/solana_logo.jpg"),
+                    src: require("../assets/images/rarible_logo.jpeg"),
                     alt: 'Alt Image 1'
                 }
             ]

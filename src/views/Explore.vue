@@ -394,7 +394,7 @@ export default {
       // asset_id is ID of asset represented by the node.
       // this is not unique for every node since there can be different versions of one asset.
       node_data["data"]["asset_id"] = asset_id;
-      node_data["data"]["title"] = title;
+      node_data["data"]["title"] = "Ch "+parseInt(version)+": "+title;
       node_data["data"]["version"] = version;
       node_data["data"]["royalty"] = royalty;
       node_data["data"]["parent_version"] = parent_version;
