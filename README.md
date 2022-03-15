@@ -182,6 +182,10 @@ sudo /etc/init.d/monit restart
 ```
 sudo lsof -iTCP -sTCP:LISTEN -n -P
 ```
+- To check a specific process run:
+```
+ps aux | grep -i tendermint
+```
 - If not, check the logs from the monit process
 ```
 sudo nano /var/log/monit.log
