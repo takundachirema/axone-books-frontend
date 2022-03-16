@@ -24,6 +24,17 @@ server {
     }
     ...
 ```
+- Also increase the file size max that can be sent
+```
+sudo nano /etc/nginx/nginx.conf
+```
+- Then add this into the http tag:
+```
+http {
+    ...
+    client_max_body_size 20M;
+} 
+```
 - Then reload nginx:
 ```
 sudo service nginx reload
