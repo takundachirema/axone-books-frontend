@@ -1,5 +1,26 @@
 <template>
     <div id="app">
+
+        <section id="payment_pointer" class="row" style="margin-left: 5px">
+            <div class="col-sm-12 col-md-6 col-lg-6 col-xl-12">
+                <div class="input-field col s12">
+                    <blockquote>
+                        <h5>Get A Payment Pointer</h5>
+                    </blockquote>
+                    <blockquote style="border-left: 2px solid #64b5f6;">
+<ul class="word_list_numbered">
+    <li>Creators can monetize their content by getting a payment pointer</li>
+    <li>Open an account on <a href="https://wallet.uphold.com/signup" target="_blank">uphold</a></li>
+    <li>Get your payment pointer by following these 
+        <a href="https://support.uphold.com/hc/en-us/articles/360043227832-How-to-find-your-ILP-address-Interledger-payment-pointer-" target="_blank">instructions</a>    
+        <br><b>NB If you want your content to be free, you can leave the payment pointer section blank during chapter creation</b>
+    </li>
+</ul>
+                    </blockquote>
+                </div>
+            </div>
+        </section>
+
         <section id="new_chapter" class="row" style="margin-left: 5px">
             <div class="col-sm-12 col-md-6 col-lg-6 col-xl-12">
                 <div class="input-field col s12">
@@ -24,7 +45,9 @@
     <li>Navigate to the Publish page</li>
     <li>Expand the menu button, bottom right, and click the add button</li>
     <li>Insert an existing private key OR generate a new one. NB you must keep the private key safe as proof of ownership</li>
-    <li>Insert your payment pointer given to you by a web monetization receiver</li>
+    <li>Insert your payment pointer given to you by a web monetization receiver
+        <br><b>NB If you want your content to be free, you can leave the payment pointer section blank during chapter creation</b>
+    </li>
     <li>Adjust the royalty fees you would like to receive for authors who extend the book using your chapter</li>
     <li>Click the publish button</li>
 </ul>

@@ -187,6 +187,11 @@ export default {
             pageModal = instances[0];
         },
         registerMonetizationPolling() {
+            if (!this.monetize){
+                this.getBook();
+                return
+            }
+
             if (!document.monetization) {
                 eventHub.$emit(
                     'showMessage',
@@ -205,6 +210,7 @@ export default {
             if (document.monetization.state === this.monetization_state){
                 return;
             }
+            
             if (document.monetization.state != "started") {
                 eventHub.$emit(
                     'showMessage',
@@ -215,7 +221,7 @@ export default {
                 );
                 this.src = '';
             }
-            else{
+            else {
                 eventHub.$emit(
                     'showMessage',
                     'success',
@@ -250,6 +256,7 @@ export default {
                 console.log("referenced nodes");
                 console.log(this.referenced_nodes);
                 this.setPaymentMetadata();
+                this.registerMonetizationPolling();
             })
             .catch(e => {
                 console.log(e)
@@ -258,6 +265,13 @@ export default {
         setPaymentMetadata(){
             // start off at 100 and deduct for each referenced node
             var revenue_share = 100;
+            
+            // for now if payment pointer is empty no one gets revenue. even referenced content won't get revenue.
+            if (!this.book_metadata.metadata.payment_pointer){
+                this.monetize = false;
+                return;
+            }
+
             for (var i=0; i < this.referenced_nodes.length; i++){
                 var node = this.referenced_nodes[i];
                 var share = parseInt(node.metadata.royalty);
@@ -317,7 +331,7 @@ export default {
     mounted(){
         this.show_header=false;
         this.registerEvents();
-        this.registerMonetizationPolling();
+        //this.registerMonetizationPolling();
         this.UISetup();
     },
     created(){
@@ -349,7 +363,8 @@ export default {
             payment_pointers: {},
             payment_pointer: '',
             payment_pk: '',
-            monetization_state: 'pending'
+            monetization_state: 'pending',
+            monetize: true
         }
     },
     metaInfo() {

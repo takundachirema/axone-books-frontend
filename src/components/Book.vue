@@ -73,8 +73,6 @@
                 <i class="material-icons prefix">monetization_on</i>
                 <input 
                 id="payment-text-area"
-                required="" 
-                aria-required="true" 
                 type="text"
                 class="validate">
                 <label for="payment-text-area">Payment Pointer</label>
@@ -261,7 +259,7 @@ export default {
       userLoggedIn: storage.sessionId ? true : false,
       favoriteChecked: false,
       favorite: '',
-      royalty_paid: '10',
+      royalty_paid: '0',
       // keeps nodes loaded so far
       nodes: {},
       versionCodes: [],
