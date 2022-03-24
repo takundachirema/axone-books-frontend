@@ -133,6 +133,11 @@ case $1 in
   start_tendermint)
 
     pushd $4
+      
+      kill -2 `cat $5`
+      rm -f $5
+    
+      nohup bigchaindb start > $3/bigchaindb.out.log 2>&1 &
 
       sudo nohup tendermint node >> $3/tendermint.out.log 2>> $3/tendermint.err.log &
 
@@ -166,10 +171,10 @@ check process bigchaindb_process
 
 check process tendermint
     with pidfile /home/takundachirema/.bigchaindb-monit/monit_processes/tendermint.pid
-    start program "/home/takundachirema/.bigchaindb-monit/monit_script start_tendermint /home/takundachirema/.bigchaindb-monit/monit_processes/tendermint.pid /home/takundachirema/.bigchaindb-monit/logs /home/takundachirema/.bigchaindb-monit/logs"
-    restart program "/home/takundachirema/.bigchaindb-monit/monit_script start_tendermint /home/takundachirema/.bigchaindb-monit/monit_processes/tendermint.pid /home/takundachirema/.bigchaindb-monit/logs /home/takundachirema/.bigchaindb-monit/logs"
+    start program "/home/takundachirema/.bigchaindb-monit/monit_script start_tendermint /home/takundachirema/.bigchaindb-monit/monit_processes/tendermint.pid /home/takundachirema/.bigchaindb-monit/logs /home/takundachirema/.bigchaindb-monit/logs /home/takundachirema/.bigchaindb-monit/monit_processes/bigchaindb.pid"
+    restart program "/home/takundachirema/.bigchaindb-monit/monit_script start_tendermint /home/takundachirema/.bigchaindb-monit/monit_processes/tendermint.pid /home/takundachirema/.bigchaindb-monit/logs /home/takundachirema/.bigchaindb-monit/logs /home/takundachirema/.bigchaindb-monit/monit_processes/bigchaindb.pid"
     stop program "/home/takundachirema/.bigchaindb-monit/monit_script stop_tendermint /home/takundachirema/.bigchaindb-monit/monit_processes/tendermint.pid /home/takundachirema/.bigchaindb-monit/logs /home/takundachirema/.bigchaindb-monit/logs"
-    depends on bigchaindb
+    depends on bigchaindb_process
 
 check file bigchaindb.out.log with path /home/takundachirema/.bigchaindb-monit/logs/bigchaindb.out.log
     if size > 20 MB then
@@ -250,7 +255,7 @@ make run
 - Then run: use bigchain
 - Then run: show collections
 - Then now you can query from any of the collections
-
+- To view indexes of metadata: db.metadata.getIndexes()
 
 ## Heroku CLI on Mac Book
 
@@ -271,6 +276,17 @@ sudo make run
 sudo make run &> log.out &
 ```
 
+### Understanding Tendermint and BigchainDB
+
+- Tendermint seeks to abstract the BFT (Bazantyne Fault Tolerance) such that it is not a monolithic structure.
+- For decentralized BFT we need the brain (logic), the storage (state) and the 2 need to communicate.
+- With blockchains such as Ethereum the brain and storage are all one structure with the communication hidden inside it.
+- Tendermint wants to abstract that such that the brain i.e. Tendermint Node (TN) just has to get data from the storage without knowing the storage implementation.
+- To do that the TN needs to have an API structure which is called the ABCI (application blockchain interface).
+- So the TN is the consensus engine, which also includes the peer to peer layers (since the TN nodes need communication for BFT).
+- The TN is decoupled from the storage using the ABCI. So TN is on one end and the application is on the other end of the ABCI.
+- The application is responsible for giving the TN whatever it needs, e.g. the UTXO's etc. so that the TN can make decisions.sh
+## Tendermint Node
 ### Run these to create the text indexes
 
 ## Project setup
