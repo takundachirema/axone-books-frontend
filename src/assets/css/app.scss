@@ -446,6 +446,17 @@ footer#custom-footer {
     }
 }
 
+.modal__medium-small { 
+    width: 40% !important ; 
+    height: 50% !important ;
+    outline: none !important;
+    .modal-content, .modal-footer {
+        outline: none !important;
+        border-bottom: 0px !important;
+        border-radius: 0px !important;
+    }
+}
+
 div#custom-home {
     height: 100%;
     display: flex;

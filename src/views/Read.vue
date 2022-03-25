@@ -298,7 +298,7 @@ export default {
             }
         },
         getBook() {
-
+            eventHub.$emit('isLoading', true);
             axios.post(
                 'documents',
                 {
@@ -307,6 +307,7 @@ export default {
                 }
             )
             .then(resp => {
+                eventHub.$emit('isLoading', false);
                 let data = resp.data;
                 this.numPages = data.pages;
                 console.log(data)
@@ -315,6 +316,7 @@ export default {
                 this.pdfList.push(url)
             })
             .catch(e => {
+                eventHub.$emit('isLoading', false);
                 console.log(e)
             })
         },

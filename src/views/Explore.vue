@@ -92,6 +92,10 @@ export default {
             return undefined;
           }
 
+          if (!sourceNode.edgesWith( targetNode ).empty()){
+            return undefined;
+          }
+
           var source_version = source_data.version;
           var target_version = target_data.version;
 
@@ -140,6 +144,15 @@ export default {
               
             },
             enabled: false
+          },
+          {
+            // this is just for closing the menu
+            content: '<i data-tooltip="Close Menu" class="material-icons tooltipped">close</i>',
+            contentStyle: {"pointer-events": "all"},
+            select: function(ele){
+              
+            },
+            enabled: true
           },
           {
             // split is for creating child. It points out meaning reproduce.
@@ -276,6 +289,7 @@ export default {
       cy.on('cxttap', 'node', function(evt){
         // menu opened so register menu hover events
         var elems = document.querySelectorAll('.tooltipped');
+        //console.log(elems)
         M.Tooltip.init(elems, {});
       });
       
@@ -427,7 +441,7 @@ export default {
         eventHub.$emit('openBookPopup', null, null, node._private)
       }
 
-      menu.commands[2].select = function(node){
+      menu.commands[3].select = function(node){
         self.addNewNode(node.data('id'), node.data('version'), true);
       }
       
@@ -438,7 +452,7 @@ export default {
         menu.commands[1].enabled = true;
       }
       if (create_child){
-        menu.commands[2].enabled = true;
+        menu.commands[3].enabled = true;
       }
       cy.cxtmenu(menu);
     },

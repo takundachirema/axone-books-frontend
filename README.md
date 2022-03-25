@@ -135,9 +135,6 @@ case $1 in
     pushd $4
       
       kill -2 `cat $5`
-      rm -f $5
-    
-      nohup bigchaindb start > $3/bigchaindb.out.log 2>&1 &
 
       sudo nohup tendermint node >> $3/tendermint.out.log 2>> $3/tendermint.err.log &
 
@@ -234,6 +231,22 @@ sudo pip3 install itsdangerous==2.0.1
 - If you get a waring; RuntimeWarning: greenlet.greenlet size changed:
 ```
 sudo pip install --upgrade gevent
+```
+
+## Reset BigchainDB
+
+- Run these commands:
+```
+sudo bigchaindb drop
+sudo tendermint unsafe_reset_all
+```
+- delete the directory:
+```
+sudo rm -R /root/.tendermint
+```
+- then re-initialize it
+```
+sudo tendermint init
 ```
 
 ## Bigchaindb Docker setup Google Cloud VM

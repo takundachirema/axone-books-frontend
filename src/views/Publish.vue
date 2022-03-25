@@ -22,7 +22,7 @@
             </div>
         </div>
 
-        <div id="search-modal" class="modal modal__medium">
+        <div id="search-modal" class="modal modal__medium-small">
             <div class="modal-content">
                 <h4>Get Published</h4>
                 <div class="row">
@@ -54,7 +54,7 @@
                         </div>
                         <div class="h50px w100">
                             <button type="button" id="cancel-search" class="modal-close btn waves-effect waves-light right margined-sides primary">Cancel</button>
-                            <button id="submit-search" class="btn waves-effect waves-light right margined-sides primary" type="submit">Submit</button>
+                            <button id="submit-search" class="btn modal-close waves-effect waves-light right margined-sides primary" type="submit">Submit</button>
                         </div>
                     </form>
                 </div>

@@ -583,8 +583,10 @@ export default {
       // Send the transaction off to BigchainDB
       let conn = new driver.Connection(api_url)
 
+      eventHub.$emit('isLoading', true);
       conn.postTransactionCommit(txSigned)
         .then(res => {
+          eventHub.$emit('isLoading', false);
           localStorage.setItem("public_key", edPublicKey);
           eventHub.$emit(
             'showMessage',
@@ -595,6 +597,17 @@ export default {
           );
           eventHub.$emit('closeBookPopup',true);
         })
+        .catch(err => {
+          eventHub.$emit('isLoading', false);
+          eventHub.$emit(
+            'showMessage',
+            'error',
+            'Publishing',
+            err.message,
+            3000
+          );
+        })
+
     },
     toggleClass(class_name, class_change){
       $('.'+class_name).toggleClass(class_change);
