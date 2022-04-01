@@ -133,11 +133,11 @@ case $1 in
   start_tendermint)
 
     pushd $4
-      
-      kill -2 `cat $5`
 
       sudo nohup tendermint node >> $3/tendermint.out.log 2>> $3/tendermint.err.log &
-
+      
+      sudo bigchaindb init
+      
       echo $! > $2
     popd
 
@@ -153,11 +153,28 @@ case $1 in
 esac
 exit 0
 ```
+- The script that takes care of logs is called: .bigchaindb-monit/monit_script_logrotate
+```
+#!/bin/bash
+case $1 in
+  rotate_tendermint_logs)
+    /bin/rm $2.tar.gz
+    /bin/tar -cvf $2.tar.gz $2    
+    /bin/cp /dev/null $2
+    ;;
+esac
+exit 0
+```
 - Now to start the monit service we need to show it what processes to start:
 ```
 sudo nano /etc/monit/monitrc
 ```
 - First make the monit be 5 seconds: set daemon 5
+- Make log files go to: set log /var/log/monit.log
+- If you have to remove the monitrc file run this command:
+```
+sudo chmod 600 /etc/monit/monitrc
+```
 - Then fill that file with the below in the SERVICES section:
 ```
 check process bigchaindb_process
@@ -171,7 +188,6 @@ check process tendermint
     start program "/home/takundachirema/.bigchaindb-monit/monit_script start_tendermint /home/takundachirema/.bigchaindb-monit/monit_processes/tendermint.pid /home/takundachirema/.bigchaindb-monit/logs /home/takundachirema/.bigchaindb-monit/logs /home/takundachirema/.bigchaindb-monit/monit_processes/bigchaindb.pid"
     restart program "/home/takundachirema/.bigchaindb-monit/monit_script start_tendermint /home/takundachirema/.bigchaindb-monit/monit_processes/tendermint.pid /home/takundachirema/.bigchaindb-monit/logs /home/takundachirema/.bigchaindb-monit/logs /home/takundachirema/.bigchaindb-monit/monit_processes/bigchaindb.pid"
     stop program "/home/takundachirema/.bigchaindb-monit/monit_script stop_tendermint /home/takundachirema/.bigchaindb-monit/monit_processes/tendermint.pid /home/takundachirema/.bigchaindb-monit/logs /home/takundachirema/.bigchaindb-monit/logs"
-    depends on bigchaindb_process
 
 check file bigchaindb.out.log with path /home/takundachirema/.bigchaindb-monit/logs/bigchaindb.out.log
     if size > 20 MB then

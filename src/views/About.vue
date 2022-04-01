@@ -9,7 +9,7 @@
                                 <div class="">
                                     <div class="logo"><a href="./library"><img src="../assets/images/logo_orange_circle.png" alt=""></a></div>
                                 </div>
-                                <h1>Write | Own | Collaborate</h1>
+                                <h1>Create | Own | Collaborate</h1>
                                 <div class="white-border-button">
                                     <a href="#services-section" class="scroll-link" data-id="services-section">Discover More</a>
                                 </div>
@@ -19,14 +19,15 @@
                     <div class="col-md-4">
                         <div class="right-banner-content">
                             <h2>Axone</h2>
-                            <span>For <em>Authors</em> To <em>Create</em></span>
+                            <span>For <em>Creators</em> To <em>Collaborate</em> and <em>Innovate</em></span>
                             <div class="line-dec"></div>
-                            <p>“ Through the use of Blockchain and Web Monetization technologies, 
-                                Axone enables authors to truly own their work and earn 
-                                income through royalties from other authors continuing their work.
-                                Authors will use Google Docs to write their chapters and publish
-                                each chapter (using the Axone Google Docs Plugin) onto a Blockchain 
-                                Database. Take a look at the tutorial to learn more! ”</p>
+                            <p>“ Axone is a platform for content creators to collaborate in a unique way. 
+                                Inspired by the theory of “parallel universes”, 
+                                Axone allows content to have alternative parallel paths. 
+                                Through collaboration, different creators can expand a piece of content by creating an 
+                                alternate version of it! Alternate versions of the alternate version can be created resulting 
+                                in an alternative path of a content’s evolution! Features on Axone include <em>Web Monetization</em> and 
+                                <em>NFT Minting</em>. See below for more!”</p>
                             <ul class="social-icons">
                                 <!--<li><a href="#"><i class="fa fa-facebook"></i></a></li>
                                 <li><a href="#"><i class="fa fa-twitter"></i></a></li>
@@ -50,13 +51,13 @@
                                     <div class="icon">
                                         <i class="large material-icons">mode_edit</i>
                                     </div>
-                                    <h4>Write</h4>
+                                    <h4>Create</h4>
                                 </div>
                                 <div class="back">
                                     <p> 
-                                        Start your own book or continue an existing book, 
-                                        chapter by chapter. Stuck on a chapter? Let others 
-                                        finish the book for you and get paid royalties!
+                                        Create and publish your content whether it be a book chapter, animation episode, digital art,
+                                        you name it, or continue an existing piece of content e.g. the next chapter of a book written
+                                        by another author or the next episode of an animated series by another creator!
                                     </p>
                                 </div>
                             </div>
@@ -73,11 +74,13 @@
                                 </div>
                                 <div class="back">
                                     <p>
-                                        Are you stuck after the first chapter of your book? Publish it on
-                                        Axone and let other talented authors continue your book! You can
-                                        continue your book on another completely different and unique path
+                                        Stuck on a project? Publish whatever small content blocks you have done so far and 
+                                        let others continue your work and get paid royalties for it! It can be the first chapter 
+                                        of your book or a short 2 minute animated clip; publish it on
+                                        Axone and let other talented creators continue your work! You can
+                                        continue your book or series on another completely different and unique path
                                         after you find somemore inspiration! You get royalties from every
-                                        author that directly continues from your chapter!
+                                        creator that directly continues from your work!
                                     </p>
                                 </div>
                             </div>
@@ -94,11 +97,10 @@
                                 </div>
                                 <div class="back">
                                     <p>
-                                        Through web monetization, readers stream payments to your
-                                        account. Authors who write a continuation of your chapter
-                                        will pay royalties to your account. You determine the royalty
-                                        percentage to be paid and you can change it with successive
-                                        versions of your chapter.
+                                        Through web monetization, viewers of your content stream payments to your web monetization
+                                        account. Creators who create continuations of your content
+                                        will also pay royalties to your account. You determine the royalty
+                                        percentage to be paid and you can change it as your content becomes popular!
                                     </p>
                                 </div>
                             </div>
@@ -115,10 +117,11 @@
                                 </div>
                                 <div class="back">
                                     <p>
-                                        Convert your chapter into a Non Fungible Token and list it
-                                        on an NFT market to sell it. Ownership will be transferred to the
-                                        buyer meaning that both the chapter and the future income will belong
-                                        to the buyer. You can auction it to get the best deal!
+                                        Convert your content into a Non Fungible Token and list it
+                                        on the Axone NFT marketplace to sell it. You can create as many NFTs from one content and split
+                                        the web monetization revenue with the owner of each NFT! For example 100 NFTs means each
+                                        NFT holder will get 1% of the web monetization revenue, thus making your NFTs more valuable!
+                                        You don't have to list them all at once, list a few and then the rest when they are popular!
                                     </p>
                                 </div>
                             </div>
