@@ -27,7 +27,13 @@
                             @onselectimage="onSelectImage">
                         </vue-select-image>
                         <div class="h50px w100 center bottom">
-                            <button id="publish" class="btn waves-effect waves-light margined primary bottom" @click.prevent="publishToken()">Publish Token</button>
+                            <button id="publish" 
+                                class="btn waves-effect waves-light margined primary bottom tooltipped" 
+                                data-position="bottom" 
+                                data-tooltip="Coming Soon!"
+                                @click.prevent="publishToken()">
+                                    Publish Token
+                            </button>
                         </div>
                     </div>
                 </div>
