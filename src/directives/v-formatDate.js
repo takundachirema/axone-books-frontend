@@ -2,7 +2,7 @@ let setValue = function(el, binding) {
   let value = binding.value;
   let dateArray = value.split(' ');
   //let monthsArray = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'June', 'July', 'Aug', 'Sept', 'Oct', 'Nov', 'Dec'];
-  el.innerText =  `${dateArray[2]} ${dateArray[1]} ${dateArray[3]}`;
+  el.innerText =  `${dateArray[2]} ${dateArray[1]} ${dateArray[3]} ${dateArray[4]}`;
 };
 module.exports = {
   isLiteral: true,

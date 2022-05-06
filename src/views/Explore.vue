@@ -121,49 +121,57 @@ export default {
           return undefined;
         },
       },
+      merge_command: {
+        // merge is for creating a parent. It points to the child hence merge name
+        content: '<i data-tooltip="Create Parent Chapter" id="merge-menu-btn" class="material-icons tooltipped">call_merge</i>',
+        contentStyle: {
+          "pointer-events": "all"
+        },
+        select: function(ele) {
+          self.addNewNode(ele.data('id'), ele.data('id'), false);
+        },
+        enabled: false
+      },
+      publish_command: {
+        // publish is only for new nodes
+        content: '<i data-tooltip="Publish Chapter" class="material-icons tooltipped">book</i>',
+        contentStyle: {"pointer-events": "all"},
+        select: function(ele){
+          
+        },
+        enabled: false
+      },
+      read_command: {
+        // publish is only for new nodes
+        content: '<i data-tooltip="Read Chapter" class="material-icons tooltipped">chrome_reader_mode</i>',
+        contentStyle: {"pointer-events": "all"},
+        select: function(ele){
+          
+        },
+        enabled: false
+      },
+      close_command: {
+        // this is just for closing the menu
+        content: '<i data-tooltip="Close Menu" class="material-icons tooltipped">close</i>',
+        contentStyle: {"pointer-events": "all"},
+        select: function(ele){
+          
+        },
+        enabled: true
+      },
+      split_command: {
+        // split is for creating child. It points out meaning reproduce.
+        content: '<i data-tooltip="Create Child Chapter" class="material-icons tooltipped">call_split</i>',
+        contentStyle: {"pointer-events": "all"},
+        select: function(ele){
+          self.addNewNode(ele.data('id'), ele.data('version'), true);
+        },
+        enabled: false
+      },
       menuLayout: {
         menuRadius: 100, // the radius of the circular menu in pixels
         selector: '#node', // elements matching this Cytoscape.js selector will trigger cxtmenus
-        commands: [
-          {
-            // merge is for creating a parent. It points to the child hence merge name
-            content: '<i data-tooltip="Create Parent Chapter" id="merge-menu-btn" class="material-icons tooltipped">call_merge</i>',
-            contentStyle: {
-              "pointer-events": "all"
-            },
-            select: function(ele){
-              self.addNewNode(ele.data('id'), ele.data('id'), false);
-            },
-            enabled: false
-          },
-          {
-            // publish is only for new nodes
-            content: '<i data-tooltip="Publish Chapter" class="material-icons tooltipped">book</i>',
-            contentStyle: {"pointer-events": "all"},
-            select: function(ele){
-              
-            },
-            enabled: false
-          },
-          {
-            // this is just for closing the menu
-            content: '<i data-tooltip="Close Menu" class="material-icons tooltipped">close</i>',
-            contentStyle: {"pointer-events": "all"},
-            select: function(ele){
-              
-            },
-            enabled: true
-          },
-          {
-            // split is for creating child. It points out meaning reproduce.
-            content: '<i data-tooltip="Create Child Chapter" class="material-icons tooltipped">call_split</i>',
-            contentStyle: {"pointer-events": "all"},
-            select: function(ele){
-              self.addNewNode(ele.data('id'), ele.data('version'), true);
-            },
-            enabled: false
-          }
-				],
+        commands: [],
         //activeFillColor: 'rgba(0, 0, 0, 0)',
         atMouse: false,
         openMenuEvents: 'cxttap', // cytoscape events that will open the menu (space separated)
@@ -433,27 +441,44 @@ export default {
       // console.log(menu);
       menu.selector = "#"+id;
 
+      menu.commands.push(JSON.parse(JSON.stringify(self.merge_command)))
       menu.commands[0].select = function(node){
         self.addNewNode(node.data('id'), node.data('version'), false);
       }
 
-      menu.commands[1].select = function(node){
-        eventHub.$emit('openBookPopup', null, null, node._private)
+      if (publish){
+        menu.commands.push(JSON.parse(JSON.stringify(self.publish_command)))
+        menu.commands[1].enabled = true;
+        menu.commands[1].select = function(node){
+          eventHub.$emit('openBookPopup', null, null, node._private)
+        }
+      } else{
+        menu.commands.push(JSON.parse(JSON.stringify(self.read_command)))
+        menu.commands[1].enabled = true;
+        menu.commands[1].select = function(node){
+          self.readBook(node.data('id'),node.data('title'))
+        }
       }
 
+      menu.commands.push(JSON.parse(JSON.stringify(self.close_command)))
+
+      menu.commands.push(JSON.parse(JSON.stringify(self.split_command)))
       menu.commands[3].select = function(node){
         self.addNewNode(node.data('id'), node.data('version'), true);
       }
-      
+
       if (create_parent){
         menu.commands[0].enabled = true;
+      }else{
+        menu.commands[0].enabled = false;
       }
-      if (publish){
-        menu.commands[1].enabled = true;
-      }
+      
       if (create_child){
         menu.commands[3].enabled = true;
+      }else{
+        menu.commands[3].enabled = false;
       }
+
       cy.cxtmenu(menu);
     },
     getNodeStyle(id, ipfs_id){
@@ -480,6 +505,10 @@ export default {
     },
     openBookPopup(event){
         eventHub.$emit('openBookPopup', null, event);
+    },
+    readBook(id, title){
+      let route = this.$router.resolve('/read');
+      window.open(route.href+"/"+id+"/"+title, '_blank');
     },
     poster() {
       if(this.book.metadata.cover){

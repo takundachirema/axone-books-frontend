@@ -63,12 +63,18 @@
         this.node=node;
         document.querySelector('body').classList.add('hidden');
       },
-      closeBookPopup(reload=false){
+      closeBookPopup(reload=false, page=''){
         storage.createBookPopup = false;
         this.bookPopupIsVisible = false;
         document.querySelector('body').classList.remove('hidden');
         if (reload){
           window.location.reload();
+        }
+        else{
+          if (page){
+            let route = this.$router.resolve('/'+page);
+            window.location = route.href;
+          }
         }
       },
       onToggleCollapse (collapsed) {

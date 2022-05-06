@@ -133,7 +133,6 @@ case $1 in
   start_tendermint)
 
     pushd $4
-
       sudo nohup tendermint node >> $3/tendermint.out.log 2>> $3/tendermint.err.log &
       
       sudo bigchaindb init
@@ -236,6 +235,57 @@ ps -ef | grep bigchaindb
 sudo kill -2 <process_id>
 ```
 
+### Bigchaindb backups
+- You must set backups because tendermint is not reliable
+- Run this command to create the backups directories:
+```
+sudo mkdir /var/backups/mongo/
+sudo mkdir /var/backups/tendermint/
+```
+- Create a script called check_collections.js in .bigchaindb-monit folder:
+```
+use bigchain
+db.transactions.find().count()
+```
+- Create a script named backup_script in .bigchaindb-monit folder:
+```
+#!/bin/bash
+
+RESULT=$(mongo < /home/takundachirema/.bigchaindb-monit/check_collections.js | tail -2 | head -n 1)
+
+if [ $RESULT == "0" ]; then
+    echo "No Transactions Collection Found!"
+else
+    sudo mongodump --db bigchain --out /var/backups/mongo/`date +"%m-%d-%y_%H:%M"`
+    sudo cp -a /root/.tendermint/. /var/backups/tendermint/`date +"%m-%d-%y_%H:%M"`
+
+    sudo find /var/backups/mongo/ -mindepth 1 -mmin +$((60*24*3)) -type d -exec rm -r {} ';'
+    sudo find /var/backups/tendermint/ -mindepth 1 -mmin +$((60*24*3)) -type d -exec rm -r {} ';'
+fi
+```
+- Make it executable by running:
+```
+sudo chmod u+x /home/takundachirema/.bigchaindb-monit/backup_script
+```
+- Then setup a cron job for this to run every hour by first running:
+```
+sudo crontab -e
+```
+- The put the below into that file:
+```
+0 */12 * * * /home/takundachirema/.bigchaindb-monit/backup_script >> /home/takundachirema/.bigchaindb-monit/logs/backup.out.log 2>&1
+```
+- Whenever the tendermint process restarts it will backup the current bigchaindb in that folder.
+- It is also necessary to backup the tendermint data which is also done by those scripts.
+- To restore a db run the below. Replace the times with the backup one:
+```
+sudo mongorestore --db bigchain --drop /var/backups/mongo/04-28-22_15\:30/bigchain/
+```
+- Also copy the same time backup of the tendermint into it's directory:
+```
+sudo cp -a /var/backups/tendermint/04-28-22_15\:30/. /root/.tendermint/
+```
+
 ### Errors for both Monit and Manual
 
 - If you get an error about itdangerous in the bigchaindb.out.log run this:
@@ -244,7 +294,11 @@ sudo kill -2 <process_id>
 pip3 install itsdangerous==2.0.1
 sudo pip3 install itsdangerous==2.0.1
 ```
-- If you get a waring; RuntimeWarning: greenlet.greenlet size changed:
+- If you get an error; cannot import name 'BaseResponse' from 'werkzeug.wrappers', run this:
+```
+sudo pip3 install werkzeug==2.0.3
+```
+- If you get a warning; RuntimeWarning: greenlet.greenlet size changed:
 ```
 sudo pip install --upgrade gevent
 ```
@@ -253,12 +307,23 @@ sudo pip install --upgrade gevent
 
 - Run these commands:
 ```
-sudo bigchaindb drop
 sudo tendermint unsafe_reset_all
 ```
 - delete the directory:
 ```
 sudo rm -R /root/.tendermint
+```
+- Then stop the tendermint process
+```
+ps aux | grep -i tendermint
+```
+- Then reset the bigchaindb
+```
+sudo bigchaindb drop
+```
+- Then stop bigchaindb process
+```
+ps aux | grep -i bigchaindb
 ```
 - then re-initialize it
 ```
@@ -321,16 +386,21 @@ sudo make run &> log.out &
 ## Project setup
 
 ### Installing Dependencies
-To setup and install the necessary packages and modules required to run the dashboard, run the command below in both the root directory of the project and the folder `dev-server`.
+- To setup and install the necessary packages and modules required to run the dashboard, run the command below in both the root directory of the project and the folder `dev-server`.
 ```
     npm install
 ```
-node-sass 4.14.1 requires node version 14.8.1
-Install it using these commands
+- node-sass 4.14.1 requires node version 14.8.1
+- Install it using these commands
 ```
     sudo npm cache clean -f
     sudo npm install -g n
     sudo n 14.18.1
+```
+- On Mac using homebrew you must first unlink it and then relink it like so:
+```
+brew unlink node
+brew link --overwrite node@14
 ```
 
 Install docker and docker compose

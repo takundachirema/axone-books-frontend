@@ -595,7 +595,7 @@ export default {
             'Successfully Published!',
             3000
           );
-          eventHub.$emit('closeBookPopup',true);
+          eventHub.$emit('closeBookPopup',false,'publish')
         })
         .catch(err => {
           eventHub.$emit('isLoading', false);

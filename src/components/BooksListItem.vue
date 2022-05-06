@@ -6,11 +6,11 @@
         <img v-if="noImage" class="books-item__img is-loaded" src="../assets/images/book_cover.jpg" alt="">
       </figure>
       <div class="books-item__content book__title-text">
-        <span v-if="book.metadata.chapter_title">
+        <span>
           <div  v-formatChapter="book.version"></div>
+          <span v-if="!book.metadata.chapter_title" class="books-item__title">New Untitled Chapter</span>
           {{ book.metadata.chapter_title }}
         </span>
-        <p v-if="!book.metadata.chapter_title" class="books-item__title">New Untitled Book</p>
       </div>
     </a>
   </li>
