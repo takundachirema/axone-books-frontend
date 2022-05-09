@@ -327,8 +327,8 @@ export default {
       .then(resp => {
           let data = resp.data;
           self.adjacentNodes[asset_id] = data.results;
-
-          //console.log(data.results)
+          console.log("*** results ***")
+          console.log(data.results)
           self.updateGraphData(id, data.results);
       })
       .catch(e => {
@@ -357,7 +357,7 @@ export default {
           false
         );
 
-        // put in the edges
+        // put in the edges stored in the incoming nodes
         for(var j = 0; j < book.parents.length; j++) {
           var parent = book.parents[j]
           if (parent in this.nodes){
@@ -370,6 +370,13 @@ export default {
           if (child in this.nodes){
             this.pushEdge(book.id, this.nodes[child]);
           }
+        }
+
+        // put in the edge that might be stored only in the clicked node
+        if (book.is_parent){
+          this.pushEdge(book.id, book_id);
+        }else{
+          this.pushEdge(book_id, book.id);
         }
 
         const layout = cy.makeLayout(this.dagreLayout);
