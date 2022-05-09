@@ -327,7 +327,8 @@ export default {
       .then(resp => {
           let data = resp.data;
           self.adjacentNodes[asset_id] = data.results;
-          console.log(data.results)
+
+          //console.log(data.results)
           self.updateGraphData(id, data.results);
       })
       .catch(e => {
@@ -356,11 +357,19 @@ export default {
           false
         );
 
-        // put in the edge
-        if (book.is_parent){
-          this.pushEdge(book.id, book_id);
-        }else{
-          this.pushEdge(book_id, book.id);
+        // put in the edges
+        for(var j = 0; j < book.parents.length; j++) {
+          var parent = book.parents[j]
+          if (parent in this.nodes){
+            this.pushEdge(this.nodes[parent], book.id);
+          }
+        }
+
+        for(var j = 0; j < book.children.length; j++) {
+          var child = book.children[j]
+          if (child in this.nodes){
+            this.pushEdge(book.id, this.nodes[child]);
+          }
         }
 
         const layout = cy.makeLayout(this.dagreLayout);
@@ -372,6 +381,8 @@ export default {
       var node_data = this.getNodeData(id, asset_id, version, royalty, title, parent_version);
       cy.add(node_data)
 
+      // then add the node
+      this.nodes[asset_id] = id
       this.pushMenu(id, create_child, create_parent, publish);
 
       // put in the styling
