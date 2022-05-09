@@ -30,7 +30,7 @@
         <div class="input-field col s1">
           <i class="material-icons prefix">search</i>
           <input id="icon_prefix header__search-input" type="text" v-model.trim="searchQuery" @keyup.enter="search">
-          <label for="icon_prefix">search for book...</label>
+          <label for="icon_prefix">search for chapter...</label>
         </div>
       </div>
     </header>
