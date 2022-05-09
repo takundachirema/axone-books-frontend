@@ -360,14 +360,14 @@ export default {
         // put in the edges stored in the incoming nodes
         for(var j = 0; j < book.parents.length; j++) {
           var parent = book.parents[j]
-          if (parent in this.nodes){
+          if (parent in this.nodes && this.nodes[parent] !== book_id){
             this.pushEdge(this.nodes[parent], book.id);
           }
         }
 
         for(var j = 0; j < book.children.length; j++) {
           var child = book.children[j]
-          if (child in this.nodes){
+          if (child in this.nodes && this.nodes[child] !== book_id){
             this.pushEdge(book.id, this.nodes[child]);
           }
         }
