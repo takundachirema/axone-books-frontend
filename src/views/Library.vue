@@ -4,7 +4,7 @@
             :type="'component'" 
             :mode="'collection'" 
             :category="'popular'" 
-            :shortList="true"
+            :shortList="false"
             :page="'library'"
             :pageTitle="'Latest Books'"
             :searchQuery="searchQuery">

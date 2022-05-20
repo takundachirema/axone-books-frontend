@@ -98,9 +98,9 @@ export default {
           let data = resp.data;
           eventHub.$emit('storeBooks', data.results);
           if (this.shortList) {
-            this.books = data.results.slice(0, 10);
+            this.books = data.results.slice(0, 100);
             this.pages = 1;
-            this.results = 10;
+            this.results = 100;
           } else {
             this.books = data.results;
             this.pages = data.total_pages;
@@ -122,9 +122,9 @@ export default {
       .then(function(resp) {
           let data = resp.data;
           if(this.shortList){
-            this.books = data.results.slice(0, 5);
+            this.books = data.results.slice(0, 100);
             this.pages = 1;
-            this.results = 10;
+            this.results = 100;
           } else {
             this.books = data.results;
             this.pages = data.total_pages;
