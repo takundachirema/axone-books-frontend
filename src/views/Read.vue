@@ -110,7 +110,7 @@
                 style="font-family: Pattaya" 
                 class="btn-floating btn-large green modal-trigger" 
                 href="#page-modal">
-                <i class="large">{{page}}</i>
+                <i class="large">{{page}}/{{numPages}}</i>
             </a>
             
             <ul>

@@ -18,7 +18,7 @@
         </books-list-item>
       </ul>
       <div class="books__nav" v-if="!shortList" :class="{'is-hidden' : currentPage == pages}">
-        <button @click="loadMore" class="button">Load More</button>
+        <!--<button @click="loadMore" class="button">Load More</button> -->
       </div>
     </div>
     <i v-if="!listLoaded" class="loader"></i>
