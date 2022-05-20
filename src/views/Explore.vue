@@ -327,6 +327,7 @@ export default {
       .then(resp => {
           let data = resp.data;
           self.adjacentNodes[asset_id] = data.results;
+          eventHub.$emit('storeBooks', data.results);
           console.log("*** results ***")
           console.log(data.results)
           self.updateGraphData(id, data.results);

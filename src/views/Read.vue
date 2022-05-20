@@ -322,6 +322,8 @@ export default {
         },
         getBookMetadata(){
             this.book_metadata = JSON.parse(localStorage.getItem(this.id));
+            console.log("*** metadata ***")
+            console.log(this.book_metadata)
         },
         password: function(updatePassword, reason) {
             updatePassword(prompt('password is "test"'));
