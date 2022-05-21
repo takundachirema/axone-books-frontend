@@ -53,6 +53,13 @@
       storeBooks(books){
         for (var i=0;i<books.length;i++){
           console.log(JSON.stringify(books[i]));
+          var book_title = books[i].metadata.book_title
+          
+          book_title = (book_title) ? book_title : "No Title";
+          book_title = (book_title.trim()) ? book_title : "No Title";
+
+          books[i].metadata.book_title = book_title
+
           localStorage.setItem(books[i].id,JSON.stringify(books[i]))
         }
       },

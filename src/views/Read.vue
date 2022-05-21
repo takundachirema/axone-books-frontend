@@ -187,6 +187,7 @@ export default {
             pageModal = instances[0];
         },
         registerMonetizationPolling() {
+            
             if (!this.monetize){
                 this.getBook();
                 return
