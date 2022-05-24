@@ -6,7 +6,7 @@
           <div class="row small-margin">
             <div class="input-field col s12">
                 <blockquote>
-                  Please select the document version. 
+                  Please select the document chapter number. 
                   For more information click
                   <a href="./info/#versions" target="_blank">here</a>.
                 </blockquote>
@@ -17,7 +17,7 @@
             <div class="input-field col s12">
                 <i class="material-icons prefix">format_list_numbered</i>
                 <select id="version_select" class="materialSelect"></select>
-                <label for="version_select">Version</label>
+                <label for="version_select">Chapter</label>
             </div>
           </div>
 
@@ -456,15 +456,26 @@ export default {
           max_int = min_int + 1*multiplier + 1;
         }
         
+        // We only want versions up until the 10th digit changes
+        // So divide by 10 and when that number changes stop
+        var start_ten_div = parseInt(min_int / 10);
+
         console.log(min_int+" - "+max_int+" - "+multiplier)
         for (var i = min_int + 1; i < max_int; i++) {
+          
           var version = i/parseFloat(multiplier);
           version = version.toFixed(exp);
 
           var version_l = version.toString();
-          //console.log(i+" : "+version_l)
+          console.log(i+" : "+version_l)
           var $newOpt = $("<option>").attr("value",version_l).text(version_l);
           $("#version_select").append($newOpt);
+
+          var ten_div = parseInt(i / 10);
+          console.log("10 div - "+start_ten_div+" : "+ten_div)
+          if (ten_div !== start_ten_div){
+            break;
+          }
         }
       }
 

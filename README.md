@@ -257,7 +257,7 @@ if [ $RESULT == "0" ]; then
     echo "No Transactions Collection Found!"
 else
     sudo mongodump --db bigchain --out /var/backups/mongo/`date +"%m-%d-%y_%H:%M"`
-    sudo cp -a /root/.tendermint/. /var/backups/tendermint/`date +"%m-%d-%y_%H:%M"`
+    sudo cp -r /root/.tendermint/. /var/backups/tendermint/`date +"%m-%d-%y_%H:%M"`
 
     sudo find /var/backups/mongo/ -mindepth 1 -mmin +$((60*24*3)) -type d -exec rm -r {} ';'
     sudo find /var/backups/tendermint/ -mindepth 1 -mmin +$((60*24*3)) -type d -exec rm -r {} ';'
@@ -329,6 +329,22 @@ ps aux | grep -i bigchaindb
 ```
 sudo tendermint init
 ```
+
+### Useful queries
+
+- Check last row in collection:
+```
+db.blocks.find().limit(1).sort({$natural:-1})
+```
+- Remove all blocks height greater than:
+```
+db.products.remove( { qty: { $gt: 20 } } )
+```
+- Drop all collections:
+```
+db.getCollectionNames().forEach(function(x) {db[x].drop()});
+```
+
 
 ## Bigchaindb Docker setup Google Cloud VM
 
