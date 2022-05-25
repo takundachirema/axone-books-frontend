@@ -142,7 +142,7 @@
               </span>
             </h1>
             
-            <h1 v-if="!book.metadata.book_title" class="book__title-text">
+            <h1 v-if="book.transaction_type === 'CREATE'" class="book__title-text">
               Transaction ID
               <div class="input-field col s12 id_container">
                 <i 
