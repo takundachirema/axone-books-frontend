@@ -9,7 +9,8 @@ module.exports = {
     },
     configureWebpack: {
       devServer: {
-        historyApiFallback: true
+        historyApiFallback: true,
+        disableHostCheck: true
       }
     }
 }

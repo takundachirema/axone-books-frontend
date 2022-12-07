@@ -3,34 +3,36 @@
         <div class="row">
             <div class="col-sm-0 col-md-12 col-lg-5 col-xl-5 margined-s">
                 <div class="card large">
-                    <div class="card-image h-90">
-                        <figure class="books-item__poster">
-                            <img v-if="bookPosterSrc" class="book__img" src="../assets/images/placeholder.png" v-img="bookPosterSrc">
-                            <img v-if="!bookPosterSrc" class="books-item__img is-loaded" src="../assets/images/book_cover.jpg">
-                        </figure>
+                   
+                    <div 
+                        v-if="bookPosterSrc" 
+                        :style="{ backgroundImage: `url('${bookPosterSrc}')` }" 
+                        class="card-image h-90">
                     </div>
+
+                    <div  
+                        v-if="!bookPosterSrc" 
+                        :style="{ backgroundImage: 'url(\'' + require('../assets/images/book_cover.jpg') + '\')' }" 
+                        class="card-image h-90">
+                    </div>
+
                     <div class="card-content">
-                        <span class="address activator grey-text text-darken-4">
-                            0x68sj284jka82238jhe928hiys8w62hg
+                        <span class="activator grey-text text-darken-4">
                             <i class="material-icons right clickable">more_vert</i>
                         </span>
                     </div>
-                    <div class="card-reveal">
+                    
+                    <div class="center card-reveal">
                         <span class="card-title grey-text text-darken-4">
                             Publish Token
                             <i class="material-icons right">close</i>
                         </span>
                         <vue-select-image
-                            :h="100"
-                            :w="auto"
-                            :dataImages="dataImages"
-                            @onselectimage="onSelectImage">
+                            :dataImages="dataImages">
                         </vue-select-image>
                         <div class="h50px w100 center bottom">
                             <button id="publish" 
-                                class="btn waves-effect waves-light margined primary bottom tooltipped" 
-                                data-position="bottom" 
-                                data-tooltip="Coming Soon!"
+                                class="btn waves-effect waves-light margined primary bottom"
                                 @click.prevent="publishToken()">
                                     Publish Token
                             </button>
@@ -103,6 +105,7 @@
 
 <script>
 
+import axios from 'axios'
 import BookReader from '../components/BookReader.vue'
 import pdf from 'vue-pdf'
 import $ from 'jquery'
@@ -181,6 +184,26 @@ export default {
             resultString = nestedArray.join(', ');
             return resultString;
         },
+        publishToken(){
+
+            var url = 'xumm/mint_nft'
+            var parameters = {'id': this.id}
+
+            eventHub.$emit('isLoading', true);
+            axios.post(
+                url,
+                parameters
+            )
+            .then(resp => {
+                eventHub.$emit('isLoading', false);
+                console.log(resp.data)
+                window.open(resp.data.next.always, '_blank');
+            })
+            .catch(e => {
+                eventHub.$emit('isLoading', false);
+                console.log(e)
+            })
+        },
         error: function(err) {
             console.log(err);
         }
@@ -221,24 +244,14 @@ export default {
             dataImages: [
                 {
                     id: '1',
-                    src: require("../assets/images/named_logo.png"),
-                    alt: 'Alt Image 1'
-                }, 
-                {
-                    id: '2',
-                    src: require("../assets/images/zest_logo.jpg"),
-                    alt: 'Alt Image 1'
-                }, 
-                {
-                    id: '3',
-                    src: require("../assets/images/axie_logo.jpeg"),
+                    src: require("../assets/images/xrp_logo.png"),
                     alt: 'Alt Image 1'
                 },
-                {
-                    id: '4',
-                    src: require("../assets/images/rarible_logo.jpeg"),
-                    alt: 'Alt Image 1'
-                }
+                // {
+                //     id: '2',
+                //     src: require("../assets/images/algorand_logo.png"),
+                //     alt: 'Alt Image 2'
+                // }
             ]
         }
     }
